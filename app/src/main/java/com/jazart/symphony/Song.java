@@ -9,6 +9,7 @@ public class Song {
     private List<String> mArtists;
     private Date mDate;
     private URI mURI;
+    private long mLength;
 
     public Song(){
 
