@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "869046089685",
+    "firebase_url": "https://symphony-jpken.firebaseio.com",
+    "project_id": "symphony-jpken",
+    "storage_bucket": "symphony-jpken.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:869046089685:android:1889715dda854d18",
+        "android_client_info": {
+          "package_name": "com.jazart.symphony"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "869046089685-1eja9jhclu8763hdll6ai1gd8s057a8s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.jazart.symphony",
+            "certificate_hash": "3461d7397a9c6ef88325075f16935a7dab4b2f09"
+          }
+        },
+        {
+          "client_id": "869046089685-h14ulo71gpvoeoh216jr2q0tn9emelqb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBmgIWrPCGBohjH8jgfR1AfjXgUb_D4Sq0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "869046089685-h14ulo71gpvoeoh216jr2q0tn9emelqb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
