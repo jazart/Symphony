@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
-    private TextView mTextMessage;
     private android.support.v4.app.FragmentManager mFragmentManager;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -22,18 +21,17 @@ public class MainActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    mTextMessage.setText(R.string.title_home);
                     FeaturedMusicFragment fragment = new FeaturedMusicFragment();
                     mFragmentManager.beginTransaction()
-                            .add(R.id.frag_container, fragment)
+                            .replace(R.id.frag_container, fragment)
                             .commit();
 
                     return true;
                 case R.id.nav_my_music:
-                    mTextMessage.setText(R.string.title_music);
+//                    mTextMessage.setText(R.string.title_music);
                     return true;
                 case R.id.nav_events:
-                    mTextMessage.setText(R.string.title_posts);
+  //                  mTextMessage.setText(R.string.title_posts);
                     return true;
             }
             return false;
@@ -45,9 +43,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mFragmentManager = getSupportFragmentManager();
-
-        mTextMessage = findViewById(R.id.message);
+        mFragmentManager.beginTransaction().replace(R.id.frag_container, new FeaturedMusicFragment())
+                .commit();
         BottomNavigationView navigation = findViewById(R.id.navigation);
+        navigation.setSelectedItemId(R.id.navigation_home);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
 
