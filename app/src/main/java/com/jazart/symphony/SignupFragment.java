@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 
 import com.google.firebase.auth.FirebaseAuth;
 
-public class SignupFragment extends Fragment {
+public class SignupFragment extends Fragment implements View.OnClickListener{
     private FirebaseAuth mAuth;
 
 
@@ -24,8 +24,13 @@ public class SignupFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return super.onCreateView(inflater, container, savedInstanceState);
+        View view = inflater.inflate(R.layout.signup_fragment, container);
+        view.findViewById(R.id.google_sign_in_button).setOnClickListener(this);
+        return view;
     }
 
+    @Override
+    public void onClick(View view) {
 
+    }
 }

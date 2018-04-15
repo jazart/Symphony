@@ -28,10 +28,12 @@ dependencies {
     //google
     implementation 'com.google.android.gms:play-services-auth:15.0.0'
 
-
     //firebase
     implementation 'com.google.firebase:firebase-core:15.0.0'
     implementation 'com.google.firebase:firebase-auth:15.0.0'
+    implementation 'com.google.firebase:firebase-firestore:15.0.0'
+    implementation 'com.google.firebase:firebase-storage:15.0.0'
+
     //exoplayer
     implementation 'com.google.android.exoplayer:exoplayer:2.7.3'
     implementation 'com.google.android.exoplayer:exoplayer-core:2.7.3'

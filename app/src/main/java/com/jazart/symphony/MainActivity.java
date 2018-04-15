@@ -76,6 +76,18 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
+    private void signUp(int signupMethod) {
+        switch (signupMethod) {
+            case R.id.google_sign_in_button:
+                signIn();
+                break;
+            case R.id.email_sign_in_button:
+                //email signin
+                break;
+
+        }
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -128,6 +140,7 @@ public class MainActivity extends AppCompatActivity {
             //todo update ui for curr user
             return;
         }
+     //   showSigninFragment()
         signIn();
 
     }
