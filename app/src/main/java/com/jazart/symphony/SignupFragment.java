@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,9 +34,11 @@ they are taken back to the main activity to use the app.
 
 public class SignupFragment extends Fragment implements View.OnClickListener{
     private static final String TAG = "SignupFragment" ;
+    public static final int RC_SIGN_UP = 1;
     private FirebaseAuth mAuth;
     private GoogleSignInClient mSignInClient;
-
+    private String mEmail;
+    private String mPassword;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -80,7 +83,7 @@ public class SignupFragment extends Fragment implements View.OnClickListener{
                 signInEmail();
                 break;
             case R.id.email_sign_in_button2:
-                signUpEmail();
+                showSignInDialog();
                 break;
         }
     }
@@ -91,7 +94,10 @@ public class SignupFragment extends Fragment implements View.OnClickListener{
     }
 
     private void showSignInDialog() {
-
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        SignUpDialog signUpDialog = new SignUpDialog();
+        signUpDialog.setTargetFragment(this, RC_SIGN_UP);
+        signUpDialog.show(fragmentManager, SignUpDialog.TAG);
     }
 
     /*
@@ -110,12 +116,12 @@ public class SignupFragment extends Fragment implements View.OnClickListener{
     }
 
     private void signUpEmail() {
-        mAuth.createUserWithEmailAndPassword(new String(), new String())
+        mAuth.createUserWithEmailAndPassword(mEmail, mPassword)
                 .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()) {
-                            Toast.makeText(getActivity(), "Added", Toast.LENGTH_SHORT)
+                            Toast.makeText(getActivity(), "Sign-Up Complete!", Toast.LENGTH_SHORT)
                                     .show();
                             //new user successfully added
                             getActivity().finish();
@@ -137,6 +143,12 @@ public class SignupFragment extends Fragment implements View.OnClickListener{
             GoogleSignInAccount account = task.getResult();
             firebaseGoogAuth(account);
 
+        }
+
+        if(requestCode == RC_SIGN_UP) {
+            mEmail = data.getStringExtra(SignUpDialog.EXTRA_EMAIL);
+            mPassword = data.getStringExtra(SignUpDialog.EXTRA_PASSWORD);
+            signUpEmail();
         }
     }
 
