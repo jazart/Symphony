@@ -7,4 +7,6 @@
     <string name="title_events">Events</string>
     <string name="web_client_id">869046089685-h14ulo71gpvoeoh216jr2q0tn9emelqb.apps.googleusercontent.com</string>
     <string name="email_password">Email/Password</string>
+    <string name="sign_in">Sign-in</string>
+    <string name="sign_up">Sign-up</string>
 </resources>
