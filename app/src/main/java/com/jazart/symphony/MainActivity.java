@@ -40,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
     private MediaSource mediaSource;
     private TrackSelection.Factory trackSelectionFactory;
     private SimpleExoPlayer player;
-    private final String streamUrl = "http://bbcwssc.ic.llnwd.net/stream/bbcwssc_mp1_ws-einws"; //bbc world service url
     private TrackSelector trackSelector;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
