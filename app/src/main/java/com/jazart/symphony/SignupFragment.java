@@ -161,6 +161,7 @@ public class SignupFragment extends Fragment implements View.OnClickListener{
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
                             Snackbar.make(getView().findViewById(R.id.activ_main_root), "Authentication Failed.", Snackbar.LENGTH_SHORT)
                                     .show();
+
                             //updateUI(null);
                         }
 
