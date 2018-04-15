@@ -54,7 +54,7 @@ public class SignupFragment extends Fragment implements View.OnClickListener{
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.signup_fragment, container);
+        View view = inflater.inflate(R.layout.signup_fragment, container, false);
 
         //setting on click listener for buttons
         view.findViewById(R.id.google_sign_in_button).setOnClickListener(this);
