@@ -90,6 +90,10 @@ public class SignupFragment extends Fragment implements View.OnClickListener{
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
+    private void showSignInDialog() {
+
+    }
+
     /*
     method for signing the user in with email/password
     generic string arguments used. These will be the email/password values the user inputs
