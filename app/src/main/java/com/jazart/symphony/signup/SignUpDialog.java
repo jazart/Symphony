@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.DialogFragment;
 import android.text.TextUtils;
@@ -18,8 +19,6 @@ import android.widget.ImageButton;
 import com.bumptech.glide.Glide;
 import com.jazart.symphony.R;
 
-import static com.jazart.symphony.signup.SignupFragment.RC_SIGN_UP;
-
 public class SignUpDialog extends DialogFragment implements DialogInterface.OnClickListener, View.OnClickListener {
 
     public static final String TAG = "SignUpDialog";
@@ -29,6 +28,18 @@ public class SignUpDialog extends DialogFragment implements DialogInterface.OnCl
 
     private View mView;
     private Uri selectedImg;
+    private TextInputLayout mEmailLayout;
+    private TextInputLayout mNameLayout;
+    private TextInputLayout mPasswordLayout;
+    private TextInputLayout mVerifyPassLayout;
+    private TextInputEditText mEmailEt;
+    private TextInputEditText mNameEt;
+    private TextInputEditText mPassEt;
+    private TextInputEditText mVerifyPassEt;
+
+
+
+
 
     private void sendResult(int resultCode, String email, String password) {
         if(getTargetFragment() == null) {
@@ -46,6 +57,13 @@ public class SignUpDialog extends DialogFragment implements DialogInterface.OnCl
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         mView = LayoutInflater.from(getContext())
                 .inflate(R.layout.sign_up_dialog, null);
+
+        mEmailLayout = mView.findViewById(R.id.sign_up_email);
+        mPasswordLayout = mView.findViewById(R.id.sign_up_password);
+        mVerifyPassLayout = mView.findViewById(R.id.sign_up_reenter_password);
+
+        setErrMsgs();
+
         mView.findViewById(R.id.sign_up_photo).setOnClickListener(this);
         return new AlertDialog.Builder(getContext())
                 .setView(mView)
@@ -60,14 +78,14 @@ then sends result back to to the fragment to sign up via firebase
  */
     @Override
     public void onClick(DialogInterface dialogInterface, int i) {
-        TextInputLayout emailLayout = mView.findViewById(R.id.sign_up_email);
-        String email = emailLayout.getEditText().getText().toString();
+    //    String email = emailLayout.getEditText().getText().toString();
 
-        TextInputLayout passwordLayout = mView.findViewById(R.id.sign_up_password);
-        String password = passwordLayout.getEditText().getText().toString();
-        if(isValidEmail(email) && isValidPassword(password)) {
-            sendResult(RC_SIGN_UP, email, password);
-        }
+
+  //      passwordLayout.setError(getString(R.string.sign_up_pass_error));
+   //     String password = passwordLayout.getEditText().getText().toString();
+  //      if(isValidEmail(email) && isValidPassword(password)) {
+  //          sendResult(RC_SIGN_UP, email, password);
+
     }
 
     private boolean isValidEmail(CharSequence target) {
@@ -95,5 +113,11 @@ then sends result back to to the fragment to sign up via firebase
             Glide.with(this).load(selectedImg)
                     .into((ImageButton)mView.findViewById(R.id.sign_up_photo));
         }
+    }
+
+    private void setErrMsgs() {
+        mEmailLayout.setError(getString(R.string.sign_up_email_error));
+        mVerifyPassLayout.setError(getString(R.string.sign_up_pass_error));
+
     }
 }
