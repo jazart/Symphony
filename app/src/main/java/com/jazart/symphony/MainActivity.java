@@ -14,6 +14,8 @@ import com.jazart.symphony.com.jazart.symphony.featured.FeaturedMusicFragment;
 import com.jazart.symphony.signup.SignUpActivity;
 
 
+
+
 public class MainActivity extends AppCompatActivity {
 
     public static final int RC_SIGN_IN = 0;
@@ -21,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     private android.support.v4.app.FragmentManager mFragmentManager;
     private FirebaseAuth mAuth;
     private Handler mainHandler;
+
     private FirebaseUser mCurrentUser;
 
 
@@ -56,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         mAuth = FirebaseAuth.getInstance();
         mFragmentManager = getSupportFragmentManager();

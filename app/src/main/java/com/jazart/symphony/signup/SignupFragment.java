@@ -135,7 +135,7 @@ public class SignupFragment extends Fragment implements View.OnClickListener{
                             setUpUser(mUser, "bob", mPhoto);
                             getActivity().finish();
                         } else {
-                            Toast.makeText(getActivity(), "Authencation Failed", Toast.LENGTH_SHORT)
+                            Toast.makeText(getActivity(), "Authentication Failed", Toast.LENGTH_SHORT)
                                     .show();
                         }
                     }
@@ -149,8 +149,10 @@ public class SignupFragment extends Fragment implements View.OnClickListener{
         if(requestCode == RC_SIGN_IN && data != null) {
             Task<GoogleSignInAccount> task =
                     GoogleSignIn.getSignedInAccountFromIntent(data);
-            GoogleSignInAccount account = task.getResult();
-            firebaseGoogAuth(account);
+            if(task.isSuccessful()) {
+                GoogleSignInAccount account = task.getResult();
+                firebaseGoogAuth(account);
+            }
 
         }
 
