@@ -68,8 +68,6 @@ public class SignupFragment extends Fragment implements View.OnClickListener{
     }
 
 
-    //Implementing the logic for deciding what to do on each button click.
-    // TODO: 4/15/2018 Implement interface for the user to enter email/password and pass it to email auth methods
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
