@@ -2,6 +2,7 @@ package com.jazart.symphony;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
@@ -10,17 +11,6 @@ import android.view.MenuItem;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import android.os.Handler;
-import com.google.android.exoplayer2.RenderersFactory;
-import com.google.android.exoplayer2.upstream.*;
-import com.google.android.exoplayer2.LoadControl;
-import com.google.android.exoplayer2.extractor.*;
-import com.google.android.exoplayer2.source.MediaSource;
-import com.google.android.exoplayer2.trackselection.*;
-import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.DefaultRenderersFactory;
-import com.google.android.exoplayer2.ExoPlayerFactory;
-import com.google.android.exoplayer2.DefaultLoadControl;
 
 
 
