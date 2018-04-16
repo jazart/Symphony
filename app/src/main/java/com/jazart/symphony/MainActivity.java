@@ -2,6 +2,7 @@ package com.jazart.symphony;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
@@ -10,17 +11,6 @@ import android.view.MenuItem;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import android.os.Handler;
-import com.google.android.exoplayer2.RenderersFactory;
-import com.google.android.exoplayer2.upstream.*;
-import com.google.android.exoplayer2.LoadControl;
-import com.google.android.exoplayer2.extractor.*;
-import com.google.android.exoplayer2.source.MediaSource;
-import com.google.android.exoplayer2.trackselection.*;
-import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.DefaultRenderersFactory;
-import com.google.android.exoplayer2.ExoPlayerFactory;
-import com.google.android.exoplayer2.DefaultLoadControl;
 
 
 
@@ -32,15 +22,7 @@ public class MainActivity extends AppCompatActivity {
     private android.support.v4.app.FragmentManager mFragmentManager;
     private FirebaseAuth mAuth;
     private Handler mainHandler;
-    private RenderersFactory renderersFactory;
-    private BandwidthMeter bandwidthMeter;
-    private LoadControl loadControl;
-    private DataSource.Factory dataSourceFactory;
-    private ExtractorsFactory extractorsFactory;
-    private MediaSource mediaSource;
-    private TrackSelection.Factory trackSelectionFactory;
-    private SimpleExoPlayer player;
-    private TrackSelector trackSelector;
+
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -74,18 +56,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        renderersFactory = new DefaultRenderersFactory(getApplicationContext());
-        bandwidthMeter = new DefaultBandwidthMeter();
-        trackSelectionFactory = new AdaptiveTrackSelection.Factory(bandwidthMeter);
-        trackSelector = new DefaultTrackSelector(trackSelectionFactory);
-        loadControl = new DefaultLoadControl();
 
-        player = ExoPlayerFactory.newSimpleInstance(renderersFactory, trackSelector, loadControl);
-        //player.addListener(this);
-
-        dataSourceFactory = new DefaultDataSourceFactory(getApplicationContext(), "ExoplayerDemo");
-        extractorsFactory = new DefaultExtractorsFactory();
-        mainHandler = new Handler();
 
         mAuth = FirebaseAuth.getInstance();
         mFragmentManager = getSupportFragmentManager();
