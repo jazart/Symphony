@@ -32,15 +32,7 @@ public class MainActivity extends AppCompatActivity {
     private android.support.v4.app.FragmentManager mFragmentManager;
     private FirebaseAuth mAuth;
     private Handler mainHandler;
-    private RenderersFactory renderersFactory;
-    private BandwidthMeter bandwidthMeter;
-    private LoadControl loadControl;
-    private DataSource.Factory dataSourceFactory;
-    private ExtractorsFactory extractorsFactory;
-    private MediaSource mediaSource;
-    private TrackSelection.Factory trackSelectionFactory;
-    private SimpleExoPlayer player;
-    private TrackSelector trackSelector;
+
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -74,18 +66,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        renderersFactory = new DefaultRenderersFactory(getApplicationContext());
-        bandwidthMeter = new DefaultBandwidthMeter();
-        trackSelectionFactory = new AdaptiveTrackSelection.Factory(bandwidthMeter);
-        trackSelector = new DefaultTrackSelector(trackSelectionFactory);
-        loadControl = new DefaultLoadControl();
 
-        player = ExoPlayerFactory.newSimpleInstance(renderersFactory, trackSelector, loadControl);
-        //player.addListener(this);
-
-        dataSourceFactory = new DefaultDataSourceFactory(getApplicationContext(), "ExoplayerDemo");
-        extractorsFactory = new DefaultExtractorsFactory();
-        mainHandler = new Handler();
 
         mAuth = FirebaseAuth.getInstance();
         mFragmentManager = getSupportFragmentManager();

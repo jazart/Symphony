@@ -15,6 +15,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "869046089685-pb7vosb2ud9j6q6d1l3h371a2s629keg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.jazart.symphony",
+            "certificate_hash": "97eac043f625f9fca02a8ba8dc5843908d359385"
+          }
+        },
+        {
+          "client_id": "869046089685-kh5gsjrtmkcji10150muj5879o3t9j7f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.jazart.symphony",
+            "certificate_hash": "c08b8b86e717a6f30b20c0e5cb109e826f181983"
+          }
+        },
+        {
           "client_id": "869046089685-1eja9jhclu8763hdll6ai1gd8s057a8s.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

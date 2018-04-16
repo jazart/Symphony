@@ -137,7 +137,7 @@ public class SignupFragment extends Fragment implements View.OnClickListener{
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == RC_SIGN_IN) {
+        if(requestCode == RC_SIGN_IN && data != null) {
             Task<GoogleSignInAccount> task =
                     GoogleSignIn.getSignedInAccountFromIntent(data);
             GoogleSignInAccount account = task.getResult();
