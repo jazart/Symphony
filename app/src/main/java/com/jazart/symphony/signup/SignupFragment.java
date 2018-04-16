@@ -1,6 +1,7 @@
-package com.jazart.symphony;
+package com.jazart.symphony.signup;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -24,6 +25,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.auth.UserProfileChangeRequest;
+import com.jazart.symphony.R;
 
 import static com.jazart.symphony.MainActivity.RC_SIGN_IN;
 
@@ -36,9 +39,11 @@ public class SignupFragment extends Fragment implements View.OnClickListener{
     private static final String TAG = "SignupFragment" ;
     public static final int RC_SIGN_UP = 1;
     private FirebaseAuth mAuth;
+    private FirebaseUser mUser;
     private GoogleSignInClient mSignInClient;
     private String mEmail;
     private String mPassword;
+    private Uri mPhoto;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -108,7 +113,10 @@ public class SignupFragment extends Fragment implements View.OnClickListener{
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         //user signed in;
-                        getActivity().finish();
+                        if(task.isSuccessful()) {
+                            mUser = mAuth.getCurrentUser();
+                            getActivity().finish();
+                        }
                     }
                 });
     }
@@ -122,6 +130,9 @@ public class SignupFragment extends Fragment implements View.OnClickListener{
                             Toast.makeText(getActivity(), "Sign-Up Complete!", Toast.LENGTH_SHORT)
                                     .show();
                             //new user successfully added
+                            mUser = mAuth.getCurrentUser();
+                            mUser.sendEmailVerification();
+                            setUpUser(mUser, "bob", mPhoto);
                             getActivity().finish();
                         } else {
                             Toast.makeText(getActivity(), "Authencation Failed", Toast.LENGTH_SHORT)
@@ -146,6 +157,7 @@ public class SignupFragment extends Fragment implements View.OnClickListener{
         if(requestCode == RC_SIGN_UP) {
             mEmail = data.getStringExtra(SignUpDialog.EXTRA_EMAIL);
             mPassword = data.getStringExtra(SignUpDialog.EXTRA_PASSWORD);
+            mPhoto = data.getData();
             signUpEmail();
         }
     }
@@ -167,7 +179,7 @@ public class SignupFragment extends Fragment implements View.OnClickListener{
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
+                            mUser = mAuth.getCurrentUser();
                             getActivity().finish();
                             //   updateUI(user);
                         } else {
@@ -182,6 +194,23 @@ public class SignupFragment extends Fragment implements View.OnClickListener{
                         // [START_EXCLUDE]
                         // hideProgressDialog();
                         // [END_EXCLUDE]
+                    }
+                });
+    }
+
+    private void setUpUser(FirebaseUser user, String name, Uri photoUrl) {
+        UserProfileChangeRequest changeRequest = new UserProfileChangeRequest.Builder()
+                .setDisplayName(name)
+                .setPhotoUri(photoUrl)
+                .build();
+        user.updateProfile(changeRequest)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()) {
+                            Toast.makeText(getContext(), "Succussful Sign-Up!", Toast.LENGTH_SHORT)
+                                    .show();
+                        }
                     }
                 });
     }

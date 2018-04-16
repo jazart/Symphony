@@ -2,27 +2,16 @@ package com.jazart.symphony;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
 import android.view.MenuItem;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import android.os.Handler;
-import com.google.android.exoplayer2.RenderersFactory;
-import com.google.android.exoplayer2.upstream.*;
-import com.google.android.exoplayer2.LoadControl;
-import com.google.android.exoplayer2.extractor.*;
-import com.google.android.exoplayer2.source.MediaSource;
-import com.google.android.exoplayer2.trackselection.*;
-import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.DefaultRenderersFactory;
-import com.google.android.exoplayer2.ExoPlayerFactory;
-import com.google.android.exoplayer2.DefaultLoadControl;
-
-
+import com.jazart.symphony.com.jazart.symphony.featured.FeaturedMusicFragment;
+import com.jazart.symphony.signup.SignUpActivity;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -32,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
     private android.support.v4.app.FragmentManager mFragmentManager;
     private FirebaseAuth mAuth;
     private Handler mainHandler;
+    private FirebaseUser mCurrentUser;
 
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -67,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         mAuth = FirebaseAuth.getInstance();
         mFragmentManager = getSupportFragmentManager();
         mFragmentManager.beginTransaction().replace(R.id.frag_container, new FeaturedMusicFragment())
@@ -82,18 +71,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         //checks to see if the user is signed in or not, if not we send them to SignUpActivity
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser == null) {
+        mCurrentUser = mAuth.getCurrentUser();
+        if(mCurrentUser == null) {
             Intent intent = new Intent(this, SignUpActivity.class);
             startActivity(intent);
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-
-        return super.onCreateOptionsMenu(menu);
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

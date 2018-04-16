@@ -1,9 +1,11 @@
-package com.jazart.symphony;
+package com.jazart.symphony.signup;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+
+import com.jazart.symphony.R;
 
 public class SignUpActivity extends AppCompatActivity {
 

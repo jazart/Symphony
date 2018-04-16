@@ -1,4 +1,4 @@
-package com.jazart.symphony;
+package com.jazart.symphony.com.jazart.symphony.featured;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,11 +9,16 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TextView;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.jazart.symphony.MusicAdapter;
+import com.jazart.symphony.R;
 
 public class FeaturedMusicFragment extends Fragment {
     private MusicAdapter mMusicAdapter;
+    FirebaseAuth mAuth;
+    FirebaseUser mUser;
 
 
     public FeaturedMusicFragment() {
@@ -23,6 +28,8 @@ public class FeaturedMusicFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mAuth = FirebaseAuth.getInstance();
+        mUser = mAuth.getCurrentUser();
     }
 
     @Nullable
