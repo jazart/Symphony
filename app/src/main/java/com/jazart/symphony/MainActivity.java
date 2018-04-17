@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
                             .commit();
                     return true;
                 case R.id.nav_events:
-                    //goto events page
+                    //goto events pagejj
                     return true;
             }
             return false;
