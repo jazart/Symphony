@@ -17,10 +17,11 @@ import android.view.ViewGroup;
 import com.github.clans.fab.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.jazart.symphony.FindURI;
 import com.jazart.symphony.MusicAdapter;
 import com.jazart.symphony.R;
 
-public class FeaturedMusicFragment extends Fragment {
+public class FeaturedMusicFragment extends FindURI {
     private MusicAdapter mMusicAdapter;
     private FloatingActionButton upFAB;
     private Uri uriSound;
@@ -54,11 +55,7 @@ public class FeaturedMusicFragment extends Fragment {
         upFAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent musicIntent = new Intent();
-                musicIntent.setAction(Intent.ACTION_GET_CONTENT);
-                musicIntent.setType("audio/mp3");
-                startActivityForResult(Intent.createChooser(
-                        musicIntent, "Open Audio (mp3) file"),1);
+                setmURI();
 
 
             }
@@ -67,21 +64,7 @@ public class FeaturedMusicFragment extends Fragment {
         return v;
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        if (resultCode == Activity.RESULT_OK){
-            //Log.d("DEBUG","RESULT OK");
-            if (requestCode == 1){
-                //Log.d("DEBUG","REQUEST OK");
-                uriSound = data.getData();
-                //Log.d("DEBUG",uriSound.toString());
-                MediaMetadataRetriever musicInfoRetr = new MediaMetadataRetriever();
-                musicInfoRetr.setDataSource(uriSound.toString());
-
-            }
-        }
-    }
 
 
 
