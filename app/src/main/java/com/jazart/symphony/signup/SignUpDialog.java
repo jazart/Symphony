@@ -11,7 +11,9 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.DialogFragment;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
@@ -19,7 +21,7 @@ import android.widget.ImageButton;
 import com.bumptech.glide.Glide;
 import com.jazart.symphony.R;
 
-public class SignUpDialog extends DialogFragment implements DialogInterface.OnClickListener, View.OnClickListener {
+public class SignUpDialog extends DialogFragment implements DialogInterface.OnClickListener, View.OnClickListener, TextWatcher {
 
     public static final String TAG = "SignUpDialog";
     public static final String EXTRA_EMAIL = "com.jazart.symphony.extra_email";
@@ -61,6 +63,7 @@ public class SignUpDialog extends DialogFragment implements DialogInterface.OnCl
         mEmailLayout = mView.findViewById(R.id.sign_up_email);
         mPasswordLayout = mView.findViewById(R.id.sign_up_password);
         mVerifyPassLayout = mView.findViewById(R.id.sign_up_reenter_password);
+
 
         setErrMsgs();
 
@@ -118,6 +121,21 @@ then sends result back to to the fragment to sign up via firebase
     private void setErrMsgs() {
         mEmailLayout.setError(getString(R.string.sign_up_email_error));
         mVerifyPassLayout.setError(getString(R.string.sign_up_pass_error));
+
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+    }
+
+    @Override
+    public void afterTextChanged(Editable editable) {
 
     }
 }
