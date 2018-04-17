@@ -27,6 +27,7 @@ public class SignUpDialog extends DialogFragment implements DialogInterface.OnCl
     public static final String EXTRA_EMAIL = "com.jazart.symphony.extra_email";
     public static final String EXTRA_PASSWORD = "com.jazart.symphony.extra_password";
     public static final String EXTRA_PHOTO = "com.jazart.symphony.extra_photo";
+    private static final int MIN_PASS_LENGTH = 8;
 
     private View mView;
     private Uri selectedImg;
@@ -63,9 +64,10 @@ public class SignUpDialog extends DialogFragment implements DialogInterface.OnCl
         mEmailLayout = mView.findViewById(R.id.sign_up_email);
         mPasswordLayout = mView.findViewById(R.id.sign_up_password);
         mVerifyPassLayout = mView.findViewById(R.id.sign_up_reenter_password);
+        mVerifyPassEt = (TextInputEditText) mVerifyPassLayout.getEditText();
+        mVerifyPassEt.addTextChangedListener(this);
+        mPassEt = (TextInputEditText) mPasswordLayout.getEditText();
 
-
-        setErrMsgs();
 
         mView.findViewById(R.id.sign_up_photo).setOnClickListener(this);
         return new AlertDialog.Builder(getContext())
@@ -97,7 +99,7 @@ then sends result back to to the fragment to sign up via firebase
     }
 
     private boolean isValidPassword(CharSequence target) {
-        return true;
+        return target.length() >= MIN_PASS_LENGTH && !TextUtils.isDigitsOnly(target);
     }
 
     @Override
@@ -118,11 +120,7 @@ then sends result back to to the fragment to sign up via firebase
         }
     }
 
-    private void setErrMsgs() {
-        mEmailLayout.setError(getString(R.string.sign_up_email_error));
-        mVerifyPassLayout.setError(getString(R.string.sign_up_pass_error));
 
-    }
 
     @Override
     public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -136,6 +134,10 @@ then sends result back to to the fragment to sign up via firebase
 
     @Override
     public void afterTextChanged(Editable editable) {
-
+        if(!editable.equals(mPassEt.getText())) {
+            mVerifyPassLayout.setError(getString(R.string.sign_up_pass_error_2));
+        } else {
+            mVerifyPassLayout.setErrorEnabled(false);
+        }
     }
 }

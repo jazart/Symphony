@@ -12,6 +12,7 @@
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="reenter_password">Re-enter Password</string>
-    <string name="sign_up_pass_error">Sorry your password is invalid</string>
+    <string name="sign_up_pass_error_1">Sorry your password is invalid</string>
+    <string name="sign_up_pass_error_2">Make sure both passwords match</string>
     <string name="sign_up_email_error">Please enter a valid email address</string>
 </resources>
