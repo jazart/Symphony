@@ -9,23 +9,25 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
-
+import android.support.v4.app.FragmentManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.jazart.symphony.com.featured.FeaturedMusicFragment;
 import com.jazart.symphony.signup.SignUpActivity;
+import com.jazart.symphony.signup.SignUpDialog;
 
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, UploadDialog.SongPost {
 
     public static final FirebaseFirestore sDb = FirebaseFirestore.getInstance();
     public static final int RC_SIGN_IN = 0;
+    public static final int UPLOAD_MP3 = 2;
     public static final String TAG = "MainActivity";
     private static final int URI_REQUEST = 1;
     protected Uri mURI;
-    private android.support.v4.app.FragmentManager mFragmentManager;
+    private FragmentManager mFragmentManager;
     private FirebaseAuth mAuth;
     private FirebaseUser mUser;
     private DocumentReference mDocRef;
@@ -99,6 +101,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == URI_REQUEST) {
             mURI = data.getData();
+            UploadDialog uploadDialogFragment = UploadDialog.newInstance(mURI);
+            uploadDialogFragment.show(mFragmentManager, uploadDialogFragment.TAG);
+
         }
     }
 
@@ -132,5 +137,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         musicIntent.setType("audio/mpeg");
         startActivityForResult(Intent.createChooser(
                 musicIntent, "Open Audio (mp3) file"), URI_REQUEST);
+    }
+
+    @Override
+    public void onPOst(Song song) {
+        sDb.collection("songs").add(song);
     }
 }
