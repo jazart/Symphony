@@ -1,4 +1,4 @@
-package com.jazart.symphony;
+package com.jazart.symphony.posts;
 
 import android.net.Uri;
 
@@ -15,7 +15,7 @@ public class UserPost {
     private String mBody;
 
     @SerializedName("user")
-    private User mAuthor;
+    private String mAuthor;
 
     @SerializedName("image_uri")
     private Uri mImageUri;
@@ -29,6 +29,14 @@ public class UserPost {
 
     public UserPost() {
 
+    }
+
+    public UserPost(UserPost.Builder builder) {
+        mAuthor = builder.mAuthor;
+        mBody = builder.mBody;
+        mImageUri = builder.mImg;
+        mPostDate = builder.mPostDate;
+        mTitle = builder.mTitle;
     }
 
     public String getTitle() {
@@ -47,11 +55,11 @@ public class UserPost {
         mBody = body;
     }
 
-    public User getAuthor() {
+    public String getAuthor() {
         return mAuthor;
     }
 
-    public void setAuthor(User author) {
+    public void setAuthor(String author) {
         mAuthor = author;
     }
 
@@ -73,5 +81,34 @@ public class UserPost {
 
     public Date getPostDate() {
         return mPostDate;
+    }
+
+    public static class Builder {
+        private String mTitle;
+        private String mBody;
+        private String mAuthor;
+        private Date mPostDate = new Date();
+        private Uri mImg;
+
+        public Builder title(String title) {
+            mTitle = title;
+            return this;
+        }
+
+        public Builder body(String body) {
+            mBody = body;
+            return this;
+        }
+
+        public Builder author(String author) {
+            mAuthor = author;
+            return this;
+        }
+
+
+        public UserPost build() {
+            return new UserPost(this);
+        }
+
     }
 }

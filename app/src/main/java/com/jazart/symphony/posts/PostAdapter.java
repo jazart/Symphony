@@ -1,4 +1,4 @@
-package com.jazart.symphony;
+package com.jazart.symphony.posts;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -23,9 +23,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
 
     @Override
     public int getItemCount() {
-        return 0;
+        return mPosts.size();
     }
 
+    public void setPosts(List<UserPost> posts) {
+        mPosts = posts;
+    }
     public class PostHolder extends RecyclerView.ViewHolder {
 
         public PostHolder(View itemView) {

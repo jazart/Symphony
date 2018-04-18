@@ -16,6 +16,11 @@
     <string name="sign_up_pass_error_2">Make sure both passwords match</string>
     <string name="sign_up_email_error">Please enter a valid email address</string>
     <string name="post_new">New Post</string>
+    <string name="post_new_title">Title</string>
+    <string name="post_new_body">Body</string>
+    <string name="post_error_empty">This field cannot be empty</string>
+    <string name="post_img_desc">Add image</string>
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
