@@ -1,6 +1,6 @@
 package com.jazart.symphony;
 
-/**
+/*
  * Created by kendrickgholston on 4/15/18.
  */
 
@@ -13,11 +13,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TextView;
 
 public class MyMusicFragment extends Fragment {
-    private MusicAdapter mMusicAdapter;
+    private PostAdapter mPostAdapter;
+
 
 
     public MyMusicFragment() {
@@ -34,7 +33,7 @@ public class MyMusicFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = LayoutInflater.from(getContext()).inflate(R.layout.my_music_fragment, container, false);
         RecyclerView recyclerView = v.findViewById(R.id.my_songs);
-        recyclerView.setAdapter(mMusicAdapter);
+        recyclerView.setAdapter(mPostAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         return v;

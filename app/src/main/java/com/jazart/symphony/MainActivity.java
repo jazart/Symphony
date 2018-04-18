@@ -1,30 +1,37 @@
 package com.jazart.symphony;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.jazart.symphony.com.jazart.symphony.featured.FeaturedMusicFragment;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.jazart.symphony.com.featured.FeaturedMusicFragment;
 import com.jazart.symphony.signup.SignUpActivity;
 
 
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-
-public class MainActivity extends AppCompatActivity {
-
+    public static final FirebaseFirestore sDb = FirebaseFirestore.getInstance();
     public static final int RC_SIGN_IN = 0;
     public static final String TAG = "MainActivity";
+    private static final int URI_REQUEST = 1;
+    protected Uri mURI;
     private android.support.v4.app.FragmentManager mFragmentManager;
     private FirebaseAuth mAuth;
+    private FirebaseUser mUser;
+    private DocumentReference mDocRef;
     private Handler mainHandler;
+    private User mCurrentUser;
 
-    private FirebaseUser mCurrentUser;
 
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -62,23 +69,54 @@ public class MainActivity extends AppCompatActivity {
 
 
         mAuth = FirebaseAuth.getInstance();
+        mUser = mAuth.getCurrentUser();
+
+        findViewById(R.id.fab_menu).bringToFront();
+        findViewById(R.id.fab_upload).setOnClickListener(this);
+
         mFragmentManager = getSupportFragmentManager();
         mFragmentManager.beginTransaction().replace(R.id.frag_container, new FeaturedMusicFragment())
                 .commit();
+
         BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setSelectedItemId(R.id.navigation_home);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
 
-
     @Override
     protected void onStart() {
         super.onStart();
         //checks to see if the user is signed in or not, if not we send them to SignUpActivity
-        mCurrentUser = mAuth.getCurrentUser();
-        if(mCurrentUser == null) {
+        if (mUser == null) {
             Intent intent = new Intent(this, SignUpActivity.class);
             startActivity(intent);
+        }
+    }
+
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == URI_REQUEST) {
+            mURI = data.getData();
+        }
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.fab_upload:
+                setURI();
+                break;
+//            case R.id.fab_gototop:
+//                //scroll to top
+//                break;
+//            case R.id.fab_search:
+//                //search
+//                break;
+            case R.id.fab_new_post:
+                //new post
+                break;
         }
     }
 
@@ -86,5 +124,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         return super.onOptionsItemSelected(item);
+    }
+
+    private void setURI() {
+        Intent musicIntent = new Intent();
+        musicIntent.setAction(Intent.ACTION_GET_CONTENT);
+        musicIntent.setType("audio/mpeg");
+        startActivityForResult(Intent.createChooser(
+                musicIntent, "Open Audio (mp3) file"), URI_REQUEST);
     }
 }

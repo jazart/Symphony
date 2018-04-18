@@ -27,8 +27,10 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.jazart.symphony.R;
+import com.jazart.symphony.User;
 
 import static com.jazart.symphony.MainActivity.RC_SIGN_IN;
+import static com.jazart.symphony.MainActivity.sDb;
 
 /*
 This fragment class displays the sign-in/up screen for the user. Once the user has been authenticated
@@ -89,6 +91,7 @@ public class SignupFragment extends Fragment implements View.OnClickListener{
                 showSignInDialog();
                 break;
         }
+
     }
 
     private void signIn() {
@@ -181,7 +184,7 @@ public class SignupFragment extends Fragment implements View.OnClickListener{
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
-                            mUser = mAuth.getCurrentUser();
+                            addToDb();
                             getActivity().finish();
                             //   updateUI(user);
                         } else {
@@ -200,6 +203,12 @@ public class SignupFragment extends Fragment implements View.OnClickListener{
                 });
     }
 
+    private void addToDb() {
+        mUser = mAuth.getCurrentUser();
+        sDb.collection("users").document(mUser.getUid())
+                .set(new User(mUser));
+    }
+
     private void setUpUser(FirebaseUser user, String name, Uri photoUrl) {
         UserProfileChangeRequest changeRequest = new UserProfileChangeRequest.Builder()
                 .setDisplayName(name)
@@ -210,7 +219,8 @@ public class SignupFragment extends Fragment implements View.OnClickListener{
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if(task.isSuccessful()) {
-                            Toast.makeText(getContext(), "Succussful Sign-Up!", Toast.LENGTH_SHORT)
+                            addToDb();
+                            Toast.makeText(getContext(), "Successful Sign-Up!", Toast.LENGTH_SHORT)
                                     .show();
                         }
                     }

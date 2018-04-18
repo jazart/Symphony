@@ -10,6 +10,8 @@ public class Song {
     private Date mDate;
     private URI mURI;
     private long mLength;
+    private int mLikes;
+
 
     public Song(){
 
@@ -49,4 +51,13 @@ public class Song {
     public Date getDate() {
         return mDate;
     }
+
+    public int getLikes() {
+        return mLikes;
+    }
+
+    public void setLikes(int likes) {
+        mLikes = likes;
+    }
+
 }
