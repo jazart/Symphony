@@ -20,11 +20,11 @@ public class UserPost {
     @SerializedName("image_uri")
     private Uri mImageUri;
 
-    @SerializedName("post_uri")
-    private Uri mPostUri;
-
     @SerializedName("post_date")
     private Date mPostDate = new Date();
+
+    @SerializedName("user_pic")
+    private String mProfilePic;
 
 
     public UserPost() {
@@ -37,6 +37,7 @@ public class UserPost {
         mImageUri = builder.mImg;
         mPostDate = builder.mPostDate;
         mTitle = builder.mTitle;
+        mProfilePic = builder.mProfilePic;
     }
 
     public String getTitle() {
@@ -71,16 +72,16 @@ public class UserPost {
         mImageUri = imageUri;
     }
 
-    public Uri getPostUri() {
-        return mPostUri;
-    }
-
-    public void setPostUri(Uri postUri) {
-        mPostUri = postUri;
+    public String getProfilePic() {
+        return mProfilePic;
     }
 
     public Date getPostDate() {
         return mPostDate;
+    }
+
+    public void setProfilePic(String postUri) {
+        mProfilePic = postUri;
     }
 
     public static class Builder {
@@ -89,6 +90,7 @@ public class UserPost {
         private String mAuthor;
         private Date mPostDate = new Date();
         private Uri mImg;
+        private String mProfilePic;
 
         public Builder title(String title) {
             mTitle = title;
@@ -102,6 +104,16 @@ public class UserPost {
 
         public Builder author(String author) {
             mAuthor = author;
+            return this;
+        }
+
+        public Builder profilePic(String profilePic) {
+            mProfilePic = profilePic;
+            return this;
+        }
+
+        public Builder image(Uri image) {
+            mImg = image;
             return this;
         }
 

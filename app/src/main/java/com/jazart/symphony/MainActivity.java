@@ -155,6 +155,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onUserPost(@NonNull UserPost post) {
         post.setAuthor(mUser.getUid());
+        post.setProfilePic(mUser.getPhotoUrl().toString());
         sDb.collection("posts")
                 .add(post);
         Toast.makeText(this, "Post Created!", Toast.LENGTH_SHORT)
