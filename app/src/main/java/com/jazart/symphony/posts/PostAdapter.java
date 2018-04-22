@@ -67,6 +67,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
             ButterKnife.bind(this, itemView);
         }
 
+        //binds view widgets with post data
         void bind(UserPost post) {
             mTitleTv.setText(post.getTitle());
             mPostBodtyTv.setText(post.getBody());
