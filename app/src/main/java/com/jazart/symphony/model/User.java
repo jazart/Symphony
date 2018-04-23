@@ -1,4 +1,4 @@
-package com.jazart.symphony;
+package com.jazart.symphony.model;
 
 
 import com.google.firebase.auth.FirebaseUser;
@@ -16,7 +16,6 @@ public class User {
 
     @SerializedName("date_joined")
     private Date mDateJoined = new Date();
-
 
     @SerializedName("friends")
     private User[] mFriends;

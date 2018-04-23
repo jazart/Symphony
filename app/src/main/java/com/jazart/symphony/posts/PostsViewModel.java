@@ -15,6 +15,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.List;
 
+import static com.jazart.symphony.Constants.POSTS;
 import static com.jazart.symphony.MainActivity.sDb;
 
 public class PostsViewModel extends AndroidViewModel {
@@ -32,7 +33,9 @@ public class PostsViewModel extends AndroidViewModel {
     }
 
     public Task<List<UserPost>> getUserPosts() {
-        Query query = sDb.collection("posts").whereEqualTo("author", mUser.getUid());
+
+
+        Query query = sDb.collection(POSTS).whereEqualTo("author", mUser.getUid());
         return query.get()
                 .continueWith(new Continuation<QuerySnapshot, List<UserPost>>() {
                     @Override
@@ -41,6 +44,7 @@ public class PostsViewModel extends AndroidViewModel {
                         return snapshot.toObjects(UserPost.class);
                     }
                 });
+
     }
 
     public Uri getUserProfilePic() {

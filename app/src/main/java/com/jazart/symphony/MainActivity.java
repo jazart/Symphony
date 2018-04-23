@@ -11,7 +11,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
-import android.util.Log;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -23,16 +22,21 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.jazart.symphony.com.featured.FeaturedMusicFragment;
+import com.jazart.symphony.featured.FeaturedMusicFragment;
+import com.jazart.symphony.model.Song;
+import com.jazart.symphony.model.User;
 import com.jazart.symphony.posts.MyMusicFragment;
+import com.jazart.symphony.posts.NewPostFragment;
 import com.jazart.symphony.posts.UploadDialog;
 import com.jazart.symphony.posts.UserPost;
 import com.jazart.symphony.signup.SignUpActivity;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.nio.file.Path;
+
+import static com.jazart.symphony.Constants.POSTS;
+import static com.jazart.symphony.Constants.SONGS;
+import static com.jazart.symphony.Constants.USERS;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, NewPostFragment.Post, UploadDialog.SongPost {
@@ -166,21 +170,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onPost(Song song)  {
         sDb.collection("songs").add(song);
         Uri songPath = Uri.parse(song.getURI());
-       // Uri songFile = Uri.fromFile(new File(path));
-        //InputStream fileInputStream;
+
         try {
-            //fileInputStream = openFileInput(song.getName());
             ContentResolver songResolver = getContentResolver();
 
             InputStream songStream = songResolver.openInputStream(songPath);
             songResolver.getType(songPath);
 
-        //Log.d("DEBUG",songFile.toString());
         StorageReference store = FirebaseStorage.getInstance().getReference();
-        //Log.d("DEBUG",store.toString());
-        //StorageReference songRef = store.child("songs");
-        //Lo
-        StorageReference songRef = store.child("users/" + mUser.getUid() + "/songs/" + song.getName());
+            StorageReference songRef = store.child(USERS +
+                    "/" +
+                    mUser.getUid() +
+                    "/" +
+                    SONGS +
+                    "/" +
+                    song.getName());
         UploadTask songTask = songRef.putStream(songStream);
 
 
@@ -207,7 +211,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onUserPost(@NonNull UserPost post) {
         post.setAuthor(mUser.getUid());
         post.setProfilePic(mUser.getPhotoUrl().toString());
-        sDb.collection("posts")
+        sDb.collection(POSTS)
                 .add(post);
         Toast.makeText(this, "Post Created!", Toast.LENGTH_SHORT)
                 .show();

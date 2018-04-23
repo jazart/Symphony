@@ -2,10 +2,13 @@ package com.jazart.symphony.posts;
 
 import android.net.Uri;
 
+import com.google.firebase.firestore.Exclude;
+import com.google.firebase.firestore.IgnoreExtraProperties;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
 
+@IgnoreExtraProperties
 public class UserPost {
 
     @SerializedName("title")
@@ -29,6 +32,12 @@ public class UserPost {
     @SerializedName("author_name")
     private String mAuthorName;
 
+    @SerializedName("likes")
+    private int mLikes;
+
+    @Exclude
+    private String mId;
+
 
     public UserPost() {
 
@@ -42,6 +51,7 @@ public class UserPost {
         mTitle = builder.mTitle;
         mProfilePic = builder.mProfilePic;
         mAuthorName = builder.mAuthorName;
+        mLikes = builder.mLikes;
     }
 
     public String getTitle() {
@@ -96,6 +106,14 @@ public class UserPost {
         mAuthorName = authorName;
     }
 
+    public int getLikes() {
+        return mLikes;
+    }
+
+    public void setLikes(int likes) {
+        mLikes = likes;
+    }
+
     public static class Builder {
         private String mTitle;
         private String mBody;
@@ -104,6 +122,7 @@ public class UserPost {
         private Uri mImg;
         private String mProfilePic;
         private String mAuthorName;
+        private int mLikes;
 
         public Builder title(String title) {
             mTitle = title;
@@ -132,6 +151,11 @@ public class UserPost {
 
         public Builder authorName(String name) {
             mAuthorName = name;
+            return this;
+        }
+
+        public Builder likes(int likes) {
+            mLikes = likes;
             return this;
         }
 

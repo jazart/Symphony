@@ -27,7 +27,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.jazart.symphony.R;
-import com.jazart.symphony.User;
+import com.jazart.symphony.model.User;
 
 import static com.jazart.symphony.MainActivity.RC_SIGN_IN;
 import static com.jazart.symphony.MainActivity.sDb;

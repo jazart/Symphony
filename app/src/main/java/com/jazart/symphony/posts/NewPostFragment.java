@@ -1,4 +1,4 @@
-package com.jazart.symphony;
+package com.jazart.symphony.posts;
 
 
 import android.content.Context;
@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.jazart.symphony.posts.UserPost;
+import com.jazart.symphony.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

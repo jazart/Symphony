@@ -20,20 +20,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="70dp"
-            android:layout_height="49dp"
-
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp"
-            android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/linearLayout"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0"
-            app:srcCompat="@color/colorAccent" />
-
         <LinearLayout
             android:id="@+id/linearLayout"
             android:layout_width="0dp"
@@ -47,8 +33,8 @@
             <TextView
                 android:id="@+id/post_title"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
+                android:layout_height="match_parent"
+                android:layout_weight="4"
                 android:paddingEnd="16dp"
                 android:paddingStart="16dp"
 
@@ -58,18 +44,34 @@
             <TextView
                 android:id="@+id/post_author"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:paddingEnd="16dp"
                 android:paddingStart="16dp" />
 
+            <ImageView
+                android:id="@+id/post_profile_pic"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_weight="1"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/linearLayout"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"
+                app:srcCompat="@color/colorAccent" />
+
         </LinearLayout>
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/post_image"
             android:layout_width="0dp"
-            android:layout_height="102dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:layout_weight="2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -79,7 +81,7 @@
         <TextView
             android:id="@+id/post_body"
             android:layout_width="0dp"
-            android:layout_height="134dp"
+            android:layout_height="0dp"
             android:layout_gravity="center_vertical"
             android:layout_marginBottom="8dp"
             android:layout_marginTop="8dp"
@@ -87,43 +89,13 @@
             android:paddingStart="16dp"
             android:textAppearance="@android:style/TextAppearance.Material.Body1"
             android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView" />
+            app:layout_constraintTop_toBottomOf="@+id/post_image" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="@+id/post_body"
-            app:layout_constraintStart_toStartOf="parent">
-
-            <ImageButton
-                android:id="@+id/imageButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@color/colorPrimary"
-                app:srcCompat="@drawable/ic_heart1_white" />
-
-            <ImageButton
-                android:id="@+id/imageButton2"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@color/colorPrimary"
-                app:srcCompat="@drawable/ic_insert_comment_white_24dp" />
-
-            <ImageButton
-                android:id="@+id/imageButton3"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@color/colorPrimary"
-                app:srcCompat="@drawable/ic_share_white_24dp" />
-        </LinearLayout>
+        <include layout="@layout/post_share_bar" />
 
     </android.support.constraint.ConstraintLayout>
 

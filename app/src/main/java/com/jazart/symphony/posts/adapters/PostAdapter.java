@@ -1,8 +1,11 @@
-package com.jazart.symphony.posts;
+package com.jazart.symphony.posts.adapters;
 
 import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +16,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.jazart.symphony.R;
+import com.jazart.symphony.posts.UserPost;
 
 import java.util.List;
 
@@ -56,21 +60,34 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
         TextView mAuthorTv;
 
         @BindView(R.id.post_body)
-        TextView mPostBodtyTv;
+        TextView mPostBodyTv;
 
-        @BindView(R.id.imageView2)
+        @BindView(R.id.post_profile_pic)
         ImageView mProfilePic;
 
 
         PostHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    FragmentManager fm = ((AppCompatActivity) mInflater.getContext())
+                            .getSupportFragmentManager();
+                    fm.beginTransaction()
+                            .addToBackStack(null)
+                            .add(R.id.frag_container, new Fragment())
+                            .commit();
+
+                }
+            });
+
         }
 
         //binds view widgets with post data
         void bind(UserPost post) {
             mTitleTv.setText(post.getTitle());
-            mPostBodtyTv.setText(post.getBody());
+            mPostBodyTv.setText(post.getBody());
             if (post.getProfilePic() != null) {
                 Glide.with(mInflater.getContext())
                         .load(Uri.parse(post.getProfilePic()))

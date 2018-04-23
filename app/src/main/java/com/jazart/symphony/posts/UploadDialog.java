@@ -16,7 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.jazart.symphony.R;
-import com.jazart.symphony.Song;
+import com.jazart.symphony.model.Song;
 
 
 public class UploadDialog extends DialogFragment  implements DialogInterface.OnClickListener {

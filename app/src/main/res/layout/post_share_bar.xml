@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout2"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    tools:showIn="@layout/list_item_post">
+
+    <ImageButton
+        android:id="@+id/btn_post_heart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@color/colorPrimary"
+        app:srcCompat="@drawable/ic_heart1_white" />
+
+    <ImageButton
+        android:id="@+id/btn_post_comment"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@color/colorPrimary"
+        app:srcCompat="@drawable/ic_insert_comment_white_24dp" />
+
+    <ImageButton
+        android:id="@+id/btn_post_share"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@color/colorPrimary"
+        app:srcCompat="@drawable/ic_share_white_24dp" />
+</LinearLayout>

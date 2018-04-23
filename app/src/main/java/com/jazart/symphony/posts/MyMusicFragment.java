@@ -20,6 +20,7 @@ import android.widget.ProgressBar;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.jazart.symphony.R;
+import com.jazart.symphony.posts.adapters.PostAdapter;
 
 import java.util.List;
 

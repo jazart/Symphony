@@ -1,4 +1,4 @@
-package com.jazart.symphony.com.featured;
+package com.jazart.symphony.featured;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;

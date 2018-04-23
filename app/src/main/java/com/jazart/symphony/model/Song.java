@@ -1,4 +1,4 @@
-package com.jazart.symphony;
+package com.jazart.symphony.model;
 
 import java.util.Date;
 import java.util.List;
