@@ -180,7 +180,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //Log.d("DEBUG",store.toString());
         //StorageReference songRef = store.child("songs");
         //Lo
-        StorageReference songRef = store.child("songs/" + song.getName());
+        StorageReference songRef = store.child("users/" + mUser.getUid() + "/songs/" + song.getName());
         UploadTask songTask = songRef.putStream(songStream);
 
 
