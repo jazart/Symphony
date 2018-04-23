@@ -1,5 +1,6 @@
 package com.jazart.symphony;
 
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,16 +11,28 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
+import android.util.Log;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.jazart.symphony.com.featured.FeaturedMusicFragment;
 import com.jazart.symphony.posts.MyMusicFragment;
 import com.jazart.symphony.posts.UploadDialog;
 import com.jazart.symphony.posts.UserPost;
 import com.jazart.symphony.signup.SignUpActivity;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.nio.file.Path;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, NewPostFragment.Post, UploadDialog.SongPost {
@@ -150,8 +163,44 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    public void onPost(Song song) {
+    public void onPost(Song song)  {
         sDb.collection("songs").add(song);
+        Uri songPath = Uri.parse(song.getURI());
+       // Uri songFile = Uri.fromFile(new File(path));
+        //InputStream fileInputStream;
+        try {
+            //fileInputStream = openFileInput(song.getName());
+            ContentResolver songResolver = getContentResolver();
+
+            InputStream songStream = songResolver.openInputStream(songPath);
+            songResolver.getType(songPath);
+
+        //Log.d("DEBUG",songFile.toString());
+        StorageReference store = FirebaseStorage.getInstance().getReference();
+        //Log.d("DEBUG",store.toString());
+        //StorageReference songRef = store.child("songs");
+        //Lo
+        StorageReference songRef = store.child("songs/" + song.getName());
+        UploadTask songTask = songRef.putStream(songStream);
+
+
+        songTask.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                Toast.makeText(getApplicationContext(), "Successful Upload", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+        songTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getApplicationContext(), "Unsuccessful Upload", Toast.LENGTH_SHORT).show();
+            }
+        });
+        } catch (FileNotFoundException e){
+            e.printStackTrace();
+        }
+
     }
 
     @Override
