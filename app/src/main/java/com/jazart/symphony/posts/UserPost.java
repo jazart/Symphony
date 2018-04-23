@@ -26,6 +26,9 @@ public class UserPost {
     @SerializedName("user_pic")
     private String mProfilePic;
 
+    @SerializedName("author_name")
+    private String mAuthorName;
+
 
     public UserPost() {
 
@@ -38,6 +41,7 @@ public class UserPost {
         mPostDate = builder.mPostDate;
         mTitle = builder.mTitle;
         mProfilePic = builder.mProfilePic;
+        mAuthorName = builder.mAuthorName;
     }
 
     public String getTitle() {
@@ -84,6 +88,14 @@ public class UserPost {
         mProfilePic = postUri;
     }
 
+    public String getAuthorName() {
+        return mAuthorName;
+    }
+
+    public void setAuthorName(String authorName) {
+        mAuthorName = authorName;
+    }
+
     public static class Builder {
         private String mTitle;
         private String mBody;
@@ -91,6 +103,7 @@ public class UserPost {
         private Date mPostDate = new Date();
         private Uri mImg;
         private String mProfilePic;
+        private String mAuthorName;
 
         public Builder title(String title) {
             mTitle = title;
@@ -114,6 +127,11 @@ public class UserPost {
 
         public Builder image(Uri image) {
             mImg = image;
+            return this;
+        }
+
+        public Builder authorName(String name) {
+            mAuthorName = name;
             return this;
         }
 
