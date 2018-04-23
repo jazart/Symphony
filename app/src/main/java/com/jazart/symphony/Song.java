@@ -14,6 +14,7 @@ public class Song {
 
 
     public Song(){
+        //mArtists = new List<String>();
 
     }
 

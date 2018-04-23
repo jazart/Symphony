@@ -80,8 +80,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.fab_upload).setOnClickListener(this);
         findViewById(R.id.fab_new_post).setOnClickListener(this);
         mFragmentManager = getSupportFragmentManager();
+        //mFragmentManager.
         mFragmentManager.beginTransaction().replace(R.id.frag_container, new FeaturedMusicFragment())
-                .commit();
+                .commitAllowingStateLoss();
 
         BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setSelectedItemId(R.id.navigation_home);
@@ -106,6 +107,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             mURI = data.getData();
             UploadDialog uploadDialogFragment = UploadDialog.newInstance(mURI);
             uploadDialogFragment.show(mFragmentManager, UploadDialog.TAG);
+
 
         }
     }

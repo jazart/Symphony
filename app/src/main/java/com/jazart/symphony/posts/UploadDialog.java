@@ -11,6 +11,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -30,7 +31,7 @@ public class UploadDialog extends DialogFragment  implements DialogInterface.OnC
     private TextInputLayout mNameLayout;
     private TextInputLayout mSongTitle;
     private SongPost mSongPost;
-    private Song msong;
+    private Song msong = new Song();
 
 
 
@@ -87,14 +88,14 @@ public class UploadDialog extends DialogFragment  implements DialogInterface.OnC
 
     @Override
     public void show(FragmentManager manager, String tag) {
-        super.show(manager, tag);
-        try {
+        //super.show(manager, tag);
+//        try {
             manager.beginTransaction()
                     .add(this, tag)
                     .commitAllowingStateLoss();
-        } catch (IllegalStateException e) {
-            e.printStackTrace();
-        }
+//        } catch (IllegalStateException e) {
+//            e.printStackTrace();
+//        }
     }
 
     /*
@@ -106,7 +107,16 @@ public class UploadDialog extends DialogFragment  implements DialogInterface.OnC
 
        // sendResult(Activity.RESULT_OK,mArtists.toString(),mSongTitle.toString());
         //msong.setArtists(mArtists.toString());
-        msong.setName(mSongTitle.toString());
+        Log.d("DEBUG",mSongTitle.getEditText().getText().toString());
+
+        if(mArtists.getEditText().getText().toString().contains(",")){
+            String[] artists = mArtists.getEditText().getText().toString().split(",");
+            for(int j = 0; j < artists.length;i++){
+                
+            }
+
+        }
+        msong.setName(mSongTitle.getEditText().getText().toString());
         mSongPost.onPost(msong);
     }
 
