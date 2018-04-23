@@ -18,11 +18,9 @@ import android.view.View;
 import com.jazart.symphony.R;
 import com.jazart.symphony.Song;
 
-import java.net.URI;
-
 
 public class UploadDialog extends DialogFragment  implements DialogInterface.OnClickListener {
-    public static final String TAG = "SignUpDialog";
+    public static final String TAG = "UploadDialog";
     public static final String ARG_URI = "1";
 
     private View mView;
@@ -49,8 +47,8 @@ public class UploadDialog extends DialogFragment  implements DialogInterface.OnC
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(savedInstanceState != null){
-            msong.setURI((URI) savedInstanceState.get(ARG_URI));
+        if(getArguments() != null){
+            msong.setURI((getArguments().getString(ARG_URI)));
         }
     }
 
@@ -108,16 +106,17 @@ public class UploadDialog extends DialogFragment  implements DialogInterface.OnC
        // sendResult(Activity.RESULT_OK,mArtists.toString(),mSongTitle.toString());
         //msong.setArtists(mArtists.toString());
         Log.d("DEBUG",mSongTitle.getEditText().getText().toString());
-
+        Log.d("DEBUG",msong.getURI().toString());
         if(mArtists.getEditText().getText().toString().contains(",")){
             String[] artists = mArtists.getEditText().getText().toString().split(",");
             for(int j = 0; j < artists.length;i++){
-                
+
             }
 
         }
         msong.setName(mSongTitle.getEditText().getText().toString());
         mSongPost.onPost(msong);
+
     }
 
     public interface SongPost {
