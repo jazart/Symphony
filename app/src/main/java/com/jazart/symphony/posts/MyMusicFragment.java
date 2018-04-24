@@ -35,7 +35,6 @@ public class MyMusicFragment extends Fragment implements SwipeRefreshLayout.OnRe
     SwipeRefreshLayout mRefreshPosts;
     @BindView(R.id.post_load_progress)
     ProgressBar mPostLoading;
-
     @BindView(R.id.my_songs)
     RecyclerView mRecyclerView;
 

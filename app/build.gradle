@@ -48,11 +48,17 @@ dependencies {
     //gson
     implementation 'com.google.code.gson:gson:2.8.2'
 
-    //view binding
+    //view binding butterknife
     implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 
+    //aac
     implementation 'android.arch.lifecycle:extensions:1.1.1'
+
+    //dagger
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.11'
+    implementation 'com.google.dagger:dagger:2.11'
+    compileOnly 'org.glassfish:javax.annotation:10.0-b28'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'

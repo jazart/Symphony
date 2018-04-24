@@ -3,7 +3,6 @@ package com.jazart.symphony.posts.adapters;
 import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -16,6 +15,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.jazart.symphony.R;
+import com.jazart.symphony.posts.PostDetailFragment;
 import com.jazart.symphony.posts.UserPost;
 
 import java.util.List;
@@ -52,6 +52,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
     public void setPosts(List<UserPost> posts) {
         mPosts = posts;
     }
+
     public class PostHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.post_title)
         TextView mTitleTv;
@@ -69,23 +70,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
         PostHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    FragmentManager fm = ((AppCompatActivity) mInflater.getContext())
-                            .getSupportFragmentManager();
-                    fm.beginTransaction()
-                            .addToBackStack(null)
-                            .add(R.id.frag_container, new Fragment())
-                            .commit();
-
-                }
-            });
 
         }
 
+
         //binds view widgets with post data
-        void bind(UserPost post) {
+        void bind(final UserPost post) {
             mTitleTv.setText(post.getTitle());
             mPostBodyTv.setText(post.getBody());
             if (post.getProfilePic() != null) {
@@ -95,6 +85,19 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
                                 .circleCrop())
                         .into(mProfilePic);
             }
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    FragmentManager fm = ((AppCompatActivity) mInflater.getContext())
+                            .getSupportFragmentManager();
+                    fm.beginTransaction()
+                            .addToBackStack(null)
+                            .add(R.id.frag_container, PostDetailFragment.newInstance(post))
+                            .commit();
+
+                }
+            });
         }
     }
 }
