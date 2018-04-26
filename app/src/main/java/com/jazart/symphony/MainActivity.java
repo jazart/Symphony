@@ -13,6 +13,23 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionMenu;
+import com.google.android.exoplayer2.DefaultLoadControl;
+import com.google.android.exoplayer2.DefaultRenderersFactory;
+import com.google.android.exoplayer2.ExoPlayer;
+import com.google.android.exoplayer2.ExoPlayerFactory;
+import com.google.android.exoplayer2.Player;
+import com.google.android.exoplayer2.Renderer;
+import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
+import com.google.android.exoplayer2.source.ExtractorMediaSource;
+import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
+import com.google.android.exoplayer2.trackselection.TrackSelector;
+import com.google.android.exoplayer2.ui.PlayerView;
+import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
+import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
+import com.google.android.exoplayer2.upstream.HttpDataSource;
+import com.google.android.exoplayer2.util.Util;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -32,6 +49,7 @@ import com.jazart.symphony.signup.SignUpActivity;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.net.URL;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -59,6 +77,11 @@ public class MainActivity extends AppCompatActivity implements NewPostFragment.P
     @BindView(R.id.navigation)
     BottomNavigationView mNavigation;
     private FragmentManager mFragmentManager;
+    private SimpleExoPlayer mPlayer;
+    private PlayerView playerView;
+    private long playbackPosition = 0;
+    private int currentWindow = 0;
+    private boolean playWhenReady = true;
 
 
 
@@ -94,6 +117,9 @@ public class MainActivity extends AppCompatActivity implements NewPostFragment.P
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //exoPlayer = ExoPlayerFactory.newInstance(RENDERER_COUNT, minBufferMs, minRebufferMs);
+        playerView.findViewById(R.id.video_view);
+
         ButterKnife.bind(this);
 
 
@@ -110,6 +136,25 @@ public class MainActivity extends AppCompatActivity implements NewPostFragment.P
 
         mNavigation.setSelectedItemId(R.id.navigation_home);
         mNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+    }
+
+    private void initializePlayer() {
+        mPlayer = ExoPlayerFactory.newSimpleInstance(
+                new DefaultRenderersFactory(this),
+                new DefaultTrackSelector(), new DefaultLoadControl());
+        playerView.setPlayer(mPlayer);
+        mPlayer.setPlayWhenReady(playWhenReady);
+        mPlayer.seekTo(currentWindow, playbackPosition);
+        Uri uri = Uri.parse("https://firebasestorage.googleapis.com/v0/b/symphony-jpken.appspot.com/o/users%2FcVwu2EbiJxQEYRTVt2DcMwQNNq82%2Fsongs%2FMakes%20Me%20Happy?alt=media&token=50758f83-82e0-4ecc-a261-65daaecff960");
+        MediaSource mediaSource = buildMediaSource(uri);
+        mPlayer.prepare(mediaSource, true, false);
+
+
+    }
+    private MediaSource buildMediaSource(Uri uri) {
+        return new ExtractorMediaSource.Factory(
+                new DefaultHttpDataSourceFactory("exoplayer-codelab")).
+                createMediaSource(uri);
     }
 
     @Override
