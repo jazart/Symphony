@@ -10,7 +10,7 @@ import com.jazart.symphony.R;
 public class SignUpActivity extends AppCompatActivity {
 
     /*
-    Activity to house the fragment for sigining the user in
+    Activity to house the fragment for signing the user in
      */
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -21,5 +21,11 @@ public class SignUpActivity extends AppCompatActivity {
         fm.beginTransaction()
                 .add(R.id.sign_up_container, signupFragment)
                 .commit();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
     }
 }

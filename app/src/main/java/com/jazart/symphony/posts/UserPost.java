@@ -4,6 +4,7 @@ import android.net.Uri;
 
 import com.google.firebase.firestore.Exclude;
 import com.google.firebase.firestore.IgnoreExtraProperties;
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
@@ -11,27 +12,35 @@ import java.util.Date;
 @IgnoreExtraProperties
 public class UserPost {
 
+    @Expose
     @SerializedName("title")
     private String mTitle;
 
+    @Expose
     @SerializedName("body")
     private String mBody;
 
+    @Expose
     @SerializedName("user")
     private String mAuthor;
 
+    @Expose
     @SerializedName("image_uri")
     private Uri mImageUri;
 
+    @Expose
     @SerializedName("post_date")
     private Date mPostDate = new Date();
 
+    @Expose
     @SerializedName("user_pic")
     private String mProfilePic;
 
+    @Expose
     @SerializedName("author_name")
     private String mAuthorName;
 
+    @Expose
     @SerializedName("likes")
     private int mLikes;
 

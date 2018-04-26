@@ -15,21 +15,13 @@ import android.widget.Toast;
 import com.github.clans.fab.FloatingActionMenu;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
-import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.ExoPlayerFactory;
-import com.google.android.exoplayer2.Player;
-import com.google.android.exoplayer2.Renderer;
 import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
-import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.ui.PlayerView;
-import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
-import com.google.android.exoplayer2.upstream.HttpDataSource;
-import com.google.android.exoplayer2.util.Util;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -39,17 +31,17 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.google.gson.Gson;
 import com.jazart.symphony.featured.FeaturedMusicFragment;
+import com.jazart.symphony.location.PostActivity;
 import com.jazart.symphony.model.Song;
 import com.jazart.symphony.posts.MyMusicFragment;
-import com.jazart.symphony.posts.NewPostFragment;
 import com.jazart.symphony.posts.UploadDialog;
 import com.jazart.symphony.posts.UserPost;
 import com.jazart.symphony.signup.SignUpActivity;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.net.URL;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -58,15 +50,17 @@ import butterknife.OnClick;
 import static com.jazart.symphony.Constants.POSTS;
 import static com.jazart.symphony.Constants.SONGS;
 import static com.jazart.symphony.Constants.USERS;
+import static com.jazart.symphony.location.PostActivity.EXTRA_POST;
 
 
-public class MainActivity extends AppCompatActivity implements NewPostFragment.Post, UploadDialog.SongPost {
+public class MainActivity extends AppCompatActivity implements UploadDialog.SongPost {
 
     public static final FirebaseFirestore sDb = FirebaseFirestore.getInstance();
     public static final int RC_SIGN_IN = 0;
     public static final int UPLOAD_MP3 = 2;
     public static final String TAG = "MainActivity";
     private static final int URI_REQUEST = 1;
+    public static final int RC_NEW_POST = 3;
 
     protected Uri mURI;
 
@@ -94,6 +88,7 @@ public class MainActivity extends AppCompatActivity implements NewPostFragment.P
                 case R.id.navigation_home:
                     FeaturedMusicFragment featuredFragment = new FeaturedMusicFragment();
                     mFragmentManager.beginTransaction()
+                            .addToBackStack(null)
                             .replace(R.id.frag_container, featuredFragment)
                             .commit();
 
@@ -102,6 +97,7 @@ public class MainActivity extends AppCompatActivity implements NewPostFragment.P
                     //goto music page
                     MyMusicFragment myMusicFragment = new MyMusicFragment();
                     mFragmentManager.beginTransaction()
+                            .addToBackStack(null)
                             .replace(R.id.frag_container, myMusicFragment)
                             .commit();
                     return true;
@@ -118,7 +114,7 @@ public class MainActivity extends AppCompatActivity implements NewPostFragment.P
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //exoPlayer = ExoPlayerFactory.newInstance(RENDERER_COUNT, minBufferMs, minRebufferMs);
-        playerView.findViewById(R.id.video_view);
+        playerView = findViewById(R.id.video_view);
 
         ButterKnife.bind(this);
 
@@ -127,8 +123,7 @@ public class MainActivity extends AppCompatActivity implements NewPostFragment.P
         mUser = mAuth.getCurrentUser();
 
         mFabMenu.bringToFront();
-//        mFabNewPost.setOnClickListener(this);
-//        mFabUpload.setOnClickListener(this);
+
         mFragmentManager = getSupportFragmentManager();
 
         mFragmentManager.beginTransaction().replace(R.id.frag_container, new FeaturedMusicFragment())
@@ -171,37 +166,20 @@ public class MainActivity extends AppCompatActivity implements NewPostFragment.P
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == URI_REQUEST) {
-            mURI = data.getData();
-            UploadDialog uploadDialogFragment = UploadDialog.newInstance(mURI);
-            uploadDialogFragment.show(mFragmentManager, UploadDialog.TAG);
-
+            if (data != null) {
+                mURI = data.getData();
+                UploadDialog uploadDialogFragment = UploadDialog.newInstance(mURI);
+                uploadDialogFragment.show(mFragmentManager, UploadDialog.TAG);
+            }
+        } else if (requestCode == RC_NEW_POST) {
+            Gson gson = new Gson();
+            if (data != null) {
+                UserPost post = gson.fromJson(data.getStringExtra(EXTRA_POST), UserPost.class);
+                addToDb(post);
+            }
 
         }
     }
-
-//    @Override
-//    public void onClick(View view) {
-//        switch (view.getId()) {
-//            case R.id.fab_upload:
-//                setURI();
-//                break;
-////            case R.id.fab_gototop:
-////                //scroll to top
-////                break;
-////            case R.id.fab_search:
-////                //search
-////                break;
-//            case R.id.fab_new_post:
-//                NewPostFragment fragment = new NewPostFragment();
-//                mFragmentManager.beginTransaction()
-//                        .replace(R.id.frag_container, fragment)
-//                        .addToBackStack("New Post")
-//                        .commit();
-//                //new post
-//                break;
-//        }
-//    }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -211,9 +189,7 @@ public class MainActivity extends AppCompatActivity implements NewPostFragment.P
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        if (mFragmentManager.getBackStackEntryCount() > 0) {
-            mFragmentManager.popBackStack();
-        } else {
+        if (mFragmentManager.getBackStackEntryCount() < 1) {
             finish();
         }
     }
@@ -267,14 +243,16 @@ public class MainActivity extends AppCompatActivity implements NewPostFragment.P
 
     }
 
-    @Override
-    public void onUserPost(@NonNull UserPost post) {
-        post.setAuthor(mUser.getUid());
-        post.setProfilePic(mUser.getPhotoUrl().toString());
-        sDb.collection(POSTS)
-                .add(post);
-        Toast.makeText(this, "Post Created!", Toast.LENGTH_SHORT)
-                .show();
+
+    public void addToDb(@NonNull UserPost post) {
+        if (mUser != null) {
+            post.setAuthor(mUser.getUid());
+            post.setProfilePic(mUser.getPhotoUrl().toString());
+            sDb.collection(POSTS)
+                    .add(post);
+            Toast.makeText(this, "Post Created!", Toast.LENGTH_SHORT)
+                    .show();
+        }
     }
 
     @OnClick({R.id.fab_upload, R.id.fab_new_post, R.id.fab_menu})
@@ -284,11 +262,7 @@ public class MainActivity extends AppCompatActivity implements NewPostFragment.P
                 setURI();
                 break;
             case R.id.fab_new_post:
-                NewPostFragment fragment = new NewPostFragment();
-                mFragmentManager.beginTransaction()
-                        .replace(R.id.frag_container, fragment)
-                        .addToBackStack("New Post")
-                        .commit();
+                startActivityForResult(new Intent(MainActivity.this, PostActivity.class), RC_NEW_POST);
                 break;
             case R.id.fab_menu:
                 break;

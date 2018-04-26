@@ -10,13 +10,11 @@ import android.support.design.widget.TextInputLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import com.jazart.symphony.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 public class NewPostFragment extends android.support.v4.app.Fragment {
     @BindView(R.id.new_post_title_til)
@@ -31,16 +29,37 @@ public class NewPostFragment extends android.support.v4.app.Fragment {
     @BindView(R.id.new_post_body)
     TextInputEditText mBody;
 
-    @BindView(R.id.button)
-    Button send;
+//    @BindView(R.id.button)
+//    Button send;
 
     private Post mPost;
+
+//    @OnClick(R.id.button)
+//    public void submit() {
+//        UserPost post = new UserPost.Builder()
+//                .title(mTitle.getText().toString())
+//                .body(mBody.getText().toString())
+//                .build();
+//        mPost.onUserPost(post);
+//        getFragmentManager().popBackStack();
+//    }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_new_post, container, false);
         ButterKnife.bind(this, v);
+        v.findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UserPost post = new UserPost.Builder()
+                        .title(mTitle.getText().toString())
+                        .body(mBody.getText().toString())
+                        .build();
+                mPost.onUserPost(post);
+
+            }
+        });
         return v;
     }
 
@@ -64,18 +83,11 @@ public class NewPostFragment extends android.support.v4.app.Fragment {
     @Override
     public void onStop() {
         super.onStop();
-        getActivity().setTheme(R.style.AppTheme);
+        if (getActivity() != null) {
+            getActivity().setTheme(R.style.AppTheme);
+        }
     }
 
-    @OnClick(R.id.button)
-    public void submit() {
-        UserPost post = new UserPost.Builder()
-                .title(mTitle.getText().toString())
-                .body(mBody.getText().toString())
-                .build();
-        mPost.onUserPost(post);
-        getFragmentManager().popBackStack();
-    }
 
     public interface Post {
         void onUserPost(@NonNull UserPost post);
