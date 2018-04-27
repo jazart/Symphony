@@ -58,12 +58,17 @@
 
     <Button
         android:id="@+id/button"
+        style="@android:style/Widget.Material.Light.Button.Borderless"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="8dp"
         android:layout_weight="1"
+        android:background="@color/colorPrimary"
         android:text="submit"
+        android:textColor="@android:color/white"
+        android:theme="@style/Base.Widget.AppCompat.Button.Borderless.Colored"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.205" />
 </android.support.constraint.ConstraintLayout>

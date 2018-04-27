@@ -21,7 +21,6 @@ public class PostActivity extends AppCompatActivity implements NewPostFragment.P
         NewPostFragment fragment = new NewPostFragment();
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.post_fragment_container, fragment)
-                .addToBackStack(null)
                 .commit();
     }
 

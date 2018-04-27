@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity implements UploadDialog.Song
                     //goto music page
                     MyMusicFragment myMusicFragment = new MyMusicFragment();
                     mFragmentManager.beginTransaction()
-                            .addToBackStack(null)
+//                            .addToBackStack(null)
                             .replace(R.id.frag_container, myMusicFragment)
                             .commit();
                     return true;
@@ -186,13 +186,6 @@ public class MainActivity extends AppCompatActivity implements UploadDialog.Song
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        if (mFragmentManager.getBackStackEntryCount() < 1) {
-            finish();
-        }
-    }
 
     private void setURI() {
         Intent musicIntent = new Intent();
