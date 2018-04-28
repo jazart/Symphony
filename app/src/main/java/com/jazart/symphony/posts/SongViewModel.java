@@ -42,7 +42,7 @@ public class SongViewModel extends AndroidViewModel {
     public Task<List<Song>> getUserSongs() {
 
 
-        Query query = sDb.collection(SONGS).whereEqualTo("author", mUser.getUid());
+        Query query = sDb.collection(SONGS).whereGreaterThan("author", "");
         Log.d("DEBUG",query.toString());
         return query.get()
                 .continueWith(new Continuation<QuerySnapshot, List<Song>>() {

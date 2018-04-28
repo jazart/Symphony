@@ -70,7 +70,7 @@ public class FeaturedMusicFragment extends BaseFragment implements SwipeRefreshL
     @Override
     public void onResume() {
         super.onResume();
-        loadPosts();
+        loadSongs();
     }
 
     @Override
@@ -78,7 +78,7 @@ public class FeaturedMusicFragment extends BaseFragment implements SwipeRefreshL
         super.onDestroy();
     }
 
-    private void loadPosts() {
+    private void loadSongs() {
         mSongsViewModel.getUserSongs().addOnCompleteListener(new OnCompleteListener<List<Song>>() {
             @Override
             public void onComplete(@NonNull Task<List<Song>> task) {
@@ -102,7 +102,7 @@ public class FeaturedMusicFragment extends BaseFragment implements SwipeRefreshL
 
     @Override
     public void onRefresh() {
-        loadPosts();
+        loadSongs();
     }
 }
 
