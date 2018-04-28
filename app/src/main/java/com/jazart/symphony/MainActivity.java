@@ -24,6 +24,7 @@ import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -194,7 +195,8 @@ public class MainActivity extends AppCompatActivity implements UploadDialog.Song
     }
 
     @Override
-    public void onPost(Song song) {
+    public void onPost(final Song song) {
+        song.setAuthor(mUser.getUid());
         sDb.collection("songs").add(song);
         Uri songPath = Uri.parse(song.getURI());
 
@@ -206,7 +208,7 @@ public class MainActivity extends AppCompatActivity implements UploadDialog.Song
 
             StorageReference store = FirebaseStorage.getInstance().getReference();
 
-            StorageReference songRef = store.child(USERS +
+            final StorageReference songRef = store.child(USERS +
                     "/" +
                     mUser.getUid() +
                     "/" +
@@ -220,7 +222,15 @@ public class MainActivity extends AppCompatActivity implements UploadDialog.Song
                 @Override
                 public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
                     Toast.makeText(getApplicationContext(), "Successful Upload", Toast.LENGTH_SHORT).show();
-
+//                    songRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>()
+//                    {
+//                        @Override
+//                        public void onSuccess(Uri downloadUrl)
+//                        {
+//                            String link = downloadUrl.toString();
+//                            sDb.collection("songs").whereEqualTo("name",song.getName()).get().continueWith()
+//                        }
+//                    });
                 }
             });
             songTask.addOnFailureListener(new OnFailureListener() {
