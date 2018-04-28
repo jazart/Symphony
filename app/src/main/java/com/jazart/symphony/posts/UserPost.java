@@ -8,6 +8,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
+import java.util.List;
 
 @IgnoreExtraProperties
 public class UserPost {
@@ -44,8 +45,12 @@ public class UserPost {
     @SerializedName("likes")
     private int mLikes;
 
+    @Expose
+    @SerializedName("comments")
+    private List<Comment> mComments;
     @Exclude
     private String mId;
+
 
 
     public UserPost() {
@@ -121,6 +126,18 @@ public class UserPost {
 
     public void setLikes(int likes) {
         mLikes = likes;
+    }
+
+    public List<Comment> getComments() {
+        return mComments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        mComments = comments;
+    }
+
+    public void addComment(Comment comment) {
+        mComments.add(comment);
     }
 
     public static class Builder {

@@ -35,7 +35,10 @@ public class PostsViewModel extends AndroidViewModel {
     public Task<List<UserPost>> getUserPosts() {
 
 
-        Query query = sDb.collection(POSTS).whereEqualTo("author", mUser.getUid());
+        Query query = sDb.collection(POSTS)
+                .whereEqualTo("author", mUser.getUid())
+                .orderBy("postDate");
+
         return query.get()
                 .continueWith(new Continuation<QuerySnapshot, List<UserPost>>() {
                     @Override
@@ -46,6 +49,7 @@ public class PostsViewModel extends AndroidViewModel {
                 });
 
     }
+
 
     public Uri getUserProfilePic() {
         return mUser.getPhotoUrl();

@@ -37,7 +37,7 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicHolder>
 
     @Override
     public int getItemCount() {
-        return mSongs.size();
+        return mSongs == null ? 0 : mSongs.size();
     }
 
     public void setSongs(List<Song> songs) {

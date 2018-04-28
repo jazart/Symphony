@@ -9,21 +9,20 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 
 import com.jazart.symphony.BaseFragment;
 import com.jazart.symphony.MusicAdapter;
 import com.jazart.symphony.R;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class FeaturedMusicFragment extends BaseFragment {
     private MusicAdapter mMusicAdapter;
     @BindView(R.id.swipeRefreshLayout)
     SwipeRefreshLayout mRefreshPosts;
-    @BindView(R.id.post_load_progress)
-    ProgressBar mPostLoading;
-    @BindView(R.id.my_songs)
+
+    @BindView(R.id.featured_songs)
     RecyclerView mRecyclerView;
 
 
@@ -36,7 +35,10 @@ public class FeaturedMusicFragment extends BaseFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = LayoutInflater.from(getContext()).inflate(R.layout.feature_music_fragment, container, false);
-         mRecyclerView = v.findViewById(R.id.featured_songs);
+        ButterKnife.bind(this, v);
+
+        mMusicAdapter = new MusicAdapter(getContext());
+        mRecyclerView = v.findViewById(R.id.featured_songs);
         mRecyclerView.setAdapter(mMusicAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
