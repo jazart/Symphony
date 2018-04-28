@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements UploadDialog.Song
     @BindView(R.id.navigation)
     BottomNavigationView mNavigation;
     private FragmentManager mFragmentManager;
-    private SimpleExoPlayer mPlayer;
+    private static SimpleExoPlayer mPlayer;
     private PlayerView playerView;
     private long playbackPosition = 0;
     private int currentWindow = 0;
@@ -114,10 +114,8 @@ public class MainActivity extends AppCompatActivity implements UploadDialog.Song
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //exoPlayer = ExoPlayerFactory.newInstance(RENDERER_COUNT, minBufferMs, minRebufferMs);
-        playerView = findViewById(R.id.video_view);
-
         ButterKnife.bind(this);
-
+        playerView = findViewById(R.id.video_view);
 
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
@@ -207,6 +205,7 @@ public class MainActivity extends AppCompatActivity implements UploadDialog.Song
             songResolver.getType(songPath);
 
             StorageReference store = FirebaseStorage.getInstance().getReference();
+
             StorageReference songRef = store.child(USERS +
                     "/" +
                     mUser.getUid() +

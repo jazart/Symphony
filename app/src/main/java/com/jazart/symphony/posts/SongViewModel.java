@@ -5,6 +5,7 @@ import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.Task;
@@ -17,6 +18,7 @@ import com.jazart.symphony.model.Song;
 import java.util.List;
 
 import static com.jazart.symphony.Constants.POSTS;
+import static com.jazart.symphony.Constants.SONGS;
 import static com.jazart.symphony.MainActivity.sDb;
 
 /**
@@ -40,12 +42,14 @@ public class SongViewModel extends AndroidViewModel {
     public Task<List<Song>> getUserSongs() {
 
 
-        Query query = sDb.collection(POSTS).whereEqualTo("author", mUser.getUid());
+        Query query = sDb.collection(SONGS).whereEqualTo("author", mUser.getUid());
+        Log.d("DEBUG",query.toString());
         return query.get()
                 .continueWith(new Continuation<QuerySnapshot, List<Song>>() {
                     @Override
                     public List<Song> then(@NonNull Task<QuerySnapshot> task) {
                         QuerySnapshot snapshot = task.getResult();
+                        List<Song> ex = snapshot.toObjects(Song.class);
                         return snapshot.toObjects(Song.class);
                     }
                 });
