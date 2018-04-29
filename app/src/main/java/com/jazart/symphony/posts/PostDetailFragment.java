@@ -14,13 +14,15 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.jazart.symphony.R;
-//import com.jazart.symphony.posts.adapters.CommentAdapter;
+import com.jazart.symphony.posts.adapters.CommentAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+//import com.jazart.symphony.posts.adapters.CommentAdapter;
 
 
 public class PostDetailFragment extends Fragment {
@@ -38,7 +40,7 @@ public class PostDetailFragment extends Fragment {
     @BindView(R.id.post_detail_title)
     TextView mPostTitle;
 
-    //CommentAdapter mCommentAdapter;
+    CommentAdapter mCommentAdapter;
 
     public PostDetailFragment() {
 
@@ -79,7 +81,7 @@ public class PostDetailFragment extends Fragment {
                 post.addComment(comment);
             }
 
-            //mCommentAdapter = new CommentAdapter(getContext());
+            mCommentAdapter = new CommentAdapter(getContext());
             buildUi(post);
         }
 
@@ -106,8 +108,8 @@ public class PostDetailFragment extends Fragment {
         mPostBodyTv.setText(post.getBody());
         mPostTitle.setText(post.getTitle());
 
-        //mCommentAdapter.setComments(post.getComments());
-        //mCommentsRecyclerview.setAdapter(mCommentAdapter);
+        mCommentAdapter.setComments(post.getComments());
+        mCommentsRecyclerview.setAdapter(mCommentAdapter);
         mCommentsRecyclerview.setNestedScrollingEnabled(false);
         mCommentsRecyclerview.setLayoutManager(new LinearLayoutManager(getContext()));
     }

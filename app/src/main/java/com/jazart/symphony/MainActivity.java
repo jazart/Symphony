@@ -1,11 +1,14 @@
 package com.jazart.symphony;
 
+import android.Manifest;
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
@@ -34,9 +37,9 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.google.gson.Gson;
 import com.jazart.symphony.featured.FeaturedMusicFragment;
-import com.jazart.symphony.location.PostActivity;
 import com.jazart.symphony.model.Song;
 import com.jazart.symphony.posts.MyMusicFragment;
+import com.jazart.symphony.posts.PostActivity;
 import com.jazart.symphony.posts.UploadDialog;
 import com.jazart.symphony.posts.UserPost;
 import com.jazart.symphony.signup.SignUpActivity;
@@ -51,7 +54,7 @@ import butterknife.OnClick;
 import static com.jazart.symphony.Constants.POSTS;
 import static com.jazart.symphony.Constants.SONGS;
 import static com.jazart.symphony.Constants.USERS;
-import static com.jazart.symphony.location.PostActivity.EXTRA_POST;
+import static com.jazart.symphony.posts.PostActivity.EXTRA_POST;
 
 
 public class MainActivity extends AppCompatActivity implements UploadDialog.SongPost {
@@ -62,6 +65,7 @@ public class MainActivity extends AppCompatActivity implements UploadDialog.Song
     public static final String TAG = "MainActivity";
     private static final int URI_REQUEST = 1;
     public static final int RC_NEW_POST = 3;
+    public static final int RC_LOCATION = 100;
 
     protected Uri mURI;
 
@@ -130,6 +134,12 @@ public class MainActivity extends AppCompatActivity implements UploadDialog.Song
 
         mNavigation.setSelectedItemId(R.id.navigation_home);
         mNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        if (!checkPermissions()) {
+            requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION},
+                    RC_LOCATION);
+        }
+
     }
 
     private void initializePlayer(String path) {
@@ -162,6 +172,7 @@ public class MainActivity extends AppCompatActivity implements UploadDialog.Song
     }
 
 
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == URI_REQUEST) {
@@ -177,6 +188,25 @@ public class MainActivity extends AppCompatActivity implements UploadDialog.Song
                 addToDb(post);
             }
 
+        }
+    }
+
+    private boolean checkPermissions() {
+        return ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) ==
+                PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) ==
+                        PackageManager.PERMISSION_GRANTED;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == RC_LOCATION) {
+            for (int i = 0; i < grantResults.length; i++) {
+                if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(this, "We need location permissions", Toast.LENGTH_SHORT).show();
+                }
+            }
         }
     }
 
@@ -226,10 +256,7 @@ public class MainActivity extends AppCompatActivity implements UploadDialog.Song
                         @Override
                         public void onSuccess(Uri downloadUrl)
                         {
-                            String link = downloadUrl.toString();
-                            song.setURI(link);
-                            song.setAuthor(mUser.getUid());
-                            sDb.collection("songs").add(song);
+                            addSongToDb(downloadUrl, song);
                         }
                     });
                 }
@@ -244,6 +271,13 @@ public class MainActivity extends AppCompatActivity implements UploadDialog.Song
             e.printStackTrace();
         }
 
+    }
+
+    private void addSongToDb(Uri downloadUrl, Song song) {
+        String link = downloadUrl.toString();
+        song.setURI(link);
+        song.setAuthor(mUser.getUid());
+        sDb.collection(SONGS).add(song);
     }
 
 

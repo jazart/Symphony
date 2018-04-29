@@ -51,14 +51,30 @@ public class Song {
         mAuthor = author;
 
     }
+
+    public String getName() {
+        return mName;
+    }
+
     public void setName(String name) {
         mName = name;
+    }
+
+    public List<String> getArtists() {
+        return mArtists;
     }
 
     public void setArtists(List<String> artists) {
         mArtists = artists;
     }
 
+    public Date getDate() {
+        return mDate;
+    }
+
+    public void setDate(Date date) {
+        mDate = date;
+    }
 
     public String getURI() {
         return mURI;
@@ -66,18 +82,6 @@ public class Song {
 
     public void setURI(String URI) {
         mURI = URI;
-    }
-
-    public String getName() {
-        return mName;
-    }
-
-    public List<String> getArtists() {
-        return mArtists;
-    }
-
-    public Date getDate() {
-        return mDate;
     }
 
     public int getLikes() {
@@ -88,14 +92,11 @@ public class Song {
         mLikes = likes;
     }
 
-    public void setAuthor(String author){
-        mAuthor = author;
-    }
-    public String setAuthor(){
+    public String getAuthor() {
         return mAuthor;
     }
-    public void setDate (Date date){
-        mDate = date;
-    }
 
+    public void setAuthor(String author) {
+        mAuthor = author;
+    }
 }

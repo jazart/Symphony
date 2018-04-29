@@ -53,11 +53,6 @@ public class FeaturedMusicFragment extends BaseFragment implements SwipeRefreshL
         View v = LayoutInflater.from(getContext()).inflate(R.layout.feature_music_fragment, container, false);
         ButterKnife.bind(this, v);
         mRefreshSongs.setOnRefreshListener(this);
-        mMusicAdapter = new MusicAdapter(getContext());
-        mRecyclerView = v.findViewById(R.id.featured_songs);
-        mRecyclerView.setAdapter(mMusicAdapter);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
         return v;
     }
 
@@ -84,9 +79,9 @@ public class FeaturedMusicFragment extends BaseFragment implements SwipeRefreshL
             public void onComplete(@NonNull Task<List<Song>> task) {
                 mMusicAdapter = new MusicAdapter(getContext());
                 showProgressBar(true);
+                mMusicAdapter.setSongs(task.getResult());
                 mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
                 mRecyclerView.setAdapter(mMusicAdapter);
-                mMusicAdapter.setSongs(task.getResult());
                 mRefreshSongs.setRefreshing(false);
             }
         });
