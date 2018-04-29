@@ -132,14 +132,14 @@ public class MainActivity extends AppCompatActivity implements UploadDialog.Song
         mNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
 
-    private void initializePlayer() {
+    private void initializePlayer(String path) {
         mPlayer = ExoPlayerFactory.newSimpleInstance(
                 new DefaultRenderersFactory(this),
                 new DefaultTrackSelector(), new DefaultLoadControl());
         playerView.setPlayer(mPlayer);
         mPlayer.setPlayWhenReady(playWhenReady);
         mPlayer.seekTo(currentWindow, playbackPosition);
-        Uri uri = Uri.parse("https://firebasestorage.googleapis.com/v0/b/symphony-jpken.appspot.com/o/users%2FcVwu2EbiJxQEYRTVt2DcMwQNNq82%2Fsongs%2FMakes%20Me%20Happy?alt=media&token=50758f83-82e0-4ecc-a261-65daaecff960");
+        Uri uri = Uri.parse(path);
         MediaSource mediaSource = buildMediaSource(uri);
         mPlayer.prepare(mediaSource, true, false);
 
@@ -196,8 +196,7 @@ public class MainActivity extends AppCompatActivity implements UploadDialog.Song
 
     @Override
     public void onPost(final Song song) {
-        song.setAuthor(mUser.getUid());
-        sDb.collection("songs").add(song);
+
         Uri songPath = Uri.parse(song.getURI());
 
         try {
@@ -222,15 +221,17 @@ public class MainActivity extends AppCompatActivity implements UploadDialog.Song
                 @Override
                 public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
                     Toast.makeText(getApplicationContext(), "Successful Upload", Toast.LENGTH_SHORT).show();
-//                    songRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>()
-//                    {
-//                        @Override
-//                        public void onSuccess(Uri downloadUrl)
-//                        {
-//                            String link = downloadUrl.toString();
-//                            sDb.collection("songs").whereEqualTo("name",song.getName()).get().continueWith()
-//                        }
-//                    });
+                    songRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>()
+                    {
+                        @Override
+                        public void onSuccess(Uri downloadUrl)
+                        {
+                            String link = downloadUrl.toString();
+                            song.setURI(link);
+                            song.setAuthor(mUser.getUid());
+                            sDb.collection("songs").add(song);
+                        }
+                    });
                 }
             });
             songTask.addOnFailureListener(new OnFailureListener() {

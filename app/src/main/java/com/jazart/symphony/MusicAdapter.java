@@ -15,6 +15,7 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 
+
 public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicHolder> {
     private List<Song> mSongs;
     private LayoutInflater mInflater;
@@ -50,7 +51,6 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicHolder>
 
         public MusicHolder(View itemView) {
             super(itemView);
-            //super(itemView);
             ButterKnife.bind(this, itemView);
             mSongTV = itemView.findViewById(R.id.songtitle);
             mPlayButton = itemView.findViewById(R.id.playbutton);
@@ -61,6 +61,7 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicHolder>
             mPlayButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    
                     // TODO: 4/9/2018 get song url and steam music
                 }
             });
