@@ -27,7 +27,11 @@
         <activity
             android:name=".signup.SignUpActivity"
             android:launchMode="standard" />
-        <activity android:name=".posts.PostActivity"></activity>
+        <activity android:name=".posts.PostActivity" />
+
+        <service
+            android:name="com.jazart.symphony.location.LocationIntentService"
+            android:enabled="true" />
     </application>
 
 </manifest>

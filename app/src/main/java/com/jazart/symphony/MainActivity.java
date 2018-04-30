@@ -37,6 +37,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.google.gson.Gson;
 import com.jazart.symphony.featured.FeaturedMusicFragment;
+import com.jazart.symphony.location.LocationIntentService;
 import com.jazart.symphony.model.Song;
 import com.jazart.symphony.posts.MyMusicFragment;
 import com.jazart.symphony.posts.PostActivity;
@@ -66,6 +67,7 @@ public class MainActivity extends AppCompatActivity implements UploadDialog.Song
     private static final int URI_REQUEST = 1;
     public static final int RC_NEW_POST = 3;
     public static final int RC_LOCATION = 100;
+    public static final String EXTRA_USER = "com.jazart.symphony.EXTRA_USER";
 
     protected Uri mURI;
 
@@ -168,6 +170,8 @@ public class MainActivity extends AppCompatActivity implements UploadDialog.Song
         if (mUser == null) {
             Intent intent = new Intent(this, SignUpActivity.class);
             startActivity(intent);
+        } else {
+            startLocationService();
         }
     }
 
@@ -205,9 +209,16 @@ public class MainActivity extends AppCompatActivity implements UploadDialog.Song
             for (int i = 0; i < grantResults.length; i++) {
                 if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
                     Toast.makeText(this, "We need location permissions", Toast.LENGTH_SHORT).show();
+                    break;
                 }
             }
         }
+    }
+
+    private void startLocationService() {
+        Intent intent = new Intent(this, LocationIntentService.class);
+        intent.putExtra(EXTRA_USER, mUser.getUid());
+        startService(intent);
     }
 
     @Override

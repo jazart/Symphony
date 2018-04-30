@@ -1,7 +1,10 @@
 package com.jazart.symphony.model;
 
 
+import android.location.Location;
+
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.GeoPoint;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
@@ -26,6 +29,9 @@ public class User {
 
     @SerializedName("num_plays")
     private int mNumPlays;
+
+    @SerializedName("location")
+    private GeoPoint mGeoPoint;
 
     public User() {
 
@@ -82,6 +88,14 @@ public class User {
 
     public void setNumPlays(int numPlays) {
         mNumPlays = numPlays;
+    }
+
+    public GeoPoint getGeoPoint() {
+        return mGeoPoint;
+    }
+
+    public void setGeoPoint(Location location) {
+        mGeoPoint = new GeoPoint(location.getLatitude(), location.getLongitude());
     }
 
 }
