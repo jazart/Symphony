@@ -30,8 +30,11 @@
         <activity android:name=".posts.PostActivity" />
 
         <service
-            android:name="com.jazart.symphony.location.LocationIntentService"
+            android:name=".location.LocationIntentService"
             android:enabled="true" />
+        <service
+            android:name=".MusicService"
+            android:exported="false"></service>
     </application>
 
 </manifest>

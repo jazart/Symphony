@@ -10,8 +10,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
+import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.jazart.symphony.BaseFragment;
@@ -25,15 +27,18 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+
 public class FeaturedMusicFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
     private MusicAdapter mMusicAdapter;
     private SongViewModel mSongsViewModel;
+    private LinearLayoutManager recMan;
     @BindView(R.id.swipeRefreshLayout)
     SwipeRefreshLayout mRefreshSongs;
     @BindView(R.id.music_load_progress)
     ProgressBar mSongLoading;
     @BindView(R.id.featured_songs)
     RecyclerView mRecyclerView;
+
 
 
     public FeaturedMusicFragment() {
@@ -53,6 +58,8 @@ public class FeaturedMusicFragment extends BaseFragment implements SwipeRefreshL
         View v = LayoutInflater.from(getContext()).inflate(R.layout.feature_music_fragment, container, false);
         ButterKnife.bind(this, v);
         mRefreshSongs.setOnRefreshListener(this);
+        recMan = new LinearLayoutManager(getContext());
+        //recMan.onScrollStateChanged();
         return v;
     }
 

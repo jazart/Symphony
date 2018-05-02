@@ -2,29 +2,50 @@ package com.jazart.symphony;
 
 import android.Manifest;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionMenu;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
+import com.google.android.exoplayer2.ExoPlaybackException;
+import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.ExoPlayerFactory;
+import com.google.android.exoplayer2.LoadControl;
+import com.google.android.exoplayer2.PlaybackParameters;
+import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.Timeline;
+import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
+import com.google.android.exoplayer2.extractor.ExtractorsFactory;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
+import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
+import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.ui.PlayerView;
+import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
+import com.google.android.exoplayer2.util.Util;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -47,6 +68,8 @@ import com.jazart.symphony.signup.SignUpActivity;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.Formatter;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -56,6 +79,7 @@ import static com.jazart.symphony.Constants.POSTS;
 import static com.jazart.symphony.Constants.SONGS;
 import static com.jazart.symphony.Constants.USERS;
 import static com.jazart.symphony.posts.PostActivity.EXTRA_POST;
+import static java.security.AccessController.getContext;
 
 
 public class MainActivity extends AppCompatActivity implements UploadDialog.SongPost {
@@ -78,12 +102,71 @@ public class MainActivity extends AppCompatActivity implements UploadDialog.Song
     @BindView(R.id.navigation)
     BottomNavigationView mNavigation;
     private FragmentManager mFragmentManager;
-    private static SimpleExoPlayer mPlayer;
-    private PlayerView playerView;
-    private long playbackPosition = 0;
-    private int currentWindow = 0;
-    private boolean playWhenReady = true;
+//    public static SimpleExoPlayer mPlayer;
+//    public static PlayerView playerView;
+//    public static long playbackPosition = 0;
+//    public static int currentWindow = 0;
+//    public static boolean playWhenReady = true;
+    public static LinearLayout playerL;
+    public static LinearLayout playerCL;
 
+//    public static SimpleExoPlayer exoPlayer;
+//    public static Player.EventListener eventListener = new Player.DefaultEventListener() {
+//        @Override
+//        public void onTimelineChanged(Timeline timeline, Object manifest, int reason) {
+//            super.onTimelineChanged(timeline, manifest, reason);
+//        }
+//
+//        @Override
+//        public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
+//            super.onTracksChanged(trackGroups, trackSelections);
+//        }
+//
+//        @Override
+//        public void onLoadingChanged(boolean isLoading) {
+//            super.onLoadingChanged(isLoading);
+//        }
+//
+//        @Override
+//        public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+//            super.onPlayerStateChanged(playWhenReady, playbackState);
+//        }
+//
+//        @Override
+//        public void onRepeatModeChanged(int repeatMode) {
+//            super.onRepeatModeChanged(repeatMode);
+//        }
+//
+//        @Override
+//        public void onShuffleModeEnabledChanged(boolean shuffleModeEnabled) {
+//            super.onShuffleModeEnabledChanged(shuffleModeEnabled);
+//        }
+//
+//        @Override
+//        public void onPlayerError(ExoPlaybackException error) {
+//            super.onPlayerError(error);
+//        }
+//
+//        @Override
+//        public void onPositionDiscontinuity(int reason) {
+//            super.onPositionDiscontinuity(reason);
+//        }
+//
+//        @Override
+//        public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
+//            super.onPlaybackParametersChanged(playbackParameters);
+//        }
+//
+//        @Override
+//        public void onSeekProcessed() {
+//            super.onSeekProcessed();
+//        }
+//    };
+//    public static SeekBar seekPlayerProgress;
+//    public static Handler handler;
+//    public static ImageButton btnPlay;
+//    public static TextView txtCurrentTime, txtEndTime;
+//    public static boolean isPlaying = false;
 
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -120,12 +203,19 @@ public class MainActivity extends AppCompatActivity implements UploadDialog.Song
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+//        playerView = findViewById(R.id.music_view);
         //exoPlayer = ExoPlayerFactory.newInstance(RENDERER_COUNT, minBufferMs, minRebufferMs);
         ButterKnife.bind(this);
-        playerView = findViewById(R.id.video_view);
 
+//        playerL = (LinearLayout) findViewById(R.id.media_controller);
+//        playerCL = (LinearLayout) findViewById(R.id.controls);
+//        FrameLayout frag = (FrameLayout) findViewById(R.id.frag_container);
+//        frag.setBottom(playerCL.getBottom());
+//        playerCL.setVisibility(View.GONE);
+//        playerL.setVisibility(View.GONE);
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
+
 
         mFabMenu.bringToFront();
 
@@ -144,24 +234,26 @@ public class MainActivity extends AppCompatActivity implements UploadDialog.Song
 
     }
 
-    private void initializePlayer(String path) {
-        mPlayer = ExoPlayerFactory.newSimpleInstance(
-                new DefaultRenderersFactory(this),
-                new DefaultTrackSelector(), new DefaultLoadControl());
-        playerView.setPlayer(mPlayer);
-        mPlayer.setPlayWhenReady(playWhenReady);
-        mPlayer.seekTo(currentWindow, playbackPosition);
-        Uri uri = Uri.parse(path);
-        MediaSource mediaSource = buildMediaSource(uri);
-        mPlayer.prepare(mediaSource, true, false);
-
-
-    }
-    private MediaSource buildMediaSource(Uri uri) {
-        return new ExtractorMediaSource.Factory(
-                new DefaultHttpDataSourceFactory("exoplayer-codelab")).
-                createMediaSource(uri);
-    }
+//    public static void initializePlayer(String path, Context context) {
+//
+//        mPlayer = ExoPlayerFactory.newSimpleInstance(
+//                new DefaultRenderersFactory(context),
+//                new DefaultTrackSelector(), new DefaultLoadControl());
+//        Log.d("DEBUG", mPlayer.toString());
+//        playerView.setPlayer(mPlayer);
+//        mPlayer.setPlayWhenReady(playWhenReady);
+//        mPlayer.seekTo(currentWindow, playbackPosition);
+//        Uri uri = Uri.parse(path);
+//        MediaSource mediaSource = buildMediaSource(uri);
+//        mPlayer.prepare(mediaSource, true, false);
+//
+//
+//    }
+//    public static MediaSource buildMediaSource(Uri uri) {
+//        return new ExtractorMediaSource.Factory(
+//                new DefaultHttpDataSourceFactory("exoplayer-codelab")).
+//                createMediaSource(uri);
+//    }
 
     @Override
     protected void onStart() {
@@ -316,4 +408,129 @@ public class MainActivity extends AppCompatActivity implements UploadDialog.Song
                 break;
         }
     }
+
+//    private static void prepareExoPlayerFromURL(Uri uri, Context context){
+//
+//        contextP = context;
+//        TrackSelector trackSelector = new DefaultTrackSelector();
+//
+//        LoadControl loadControl = new DefaultLoadControl();
+//
+//        exoPlayer = ExoPlayerFactory.newSimpleInstance(context, trackSelector);
+//
+//        DefaultDataSourceFactory dataSourceFactory = new DefaultDataSourceFactory(this, Util.getUserAgent(this, "exoplayer2example"), null);
+//        ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
+//        MediaSource audioSource = new ExtractorMediaSource(uri, dataSourceFactory, extractorsFactory, null, null);
+//        exoPlayer.addListener(eventListener);
+//
+//        exoPlayer.prepare(audioSource);
+//        initMediaControls();
+//    }
+//    public static void initMediaControls() {
+//        initPlayButton();
+//        initSeekBar();
+//        initTxtTime();
+//    }
+//
+//    public static void initPlayButton() {
+//        btnPlay = (ImageButton) findViewById(R.id.btnPlay);
+//        btnPlay.requestFocus();
+//        btnPlay.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                setPlayPause(!isPlaying);
+//            }
+//        });
+//    }
+//
+//    public static void setPlayPause(boolean play){
+//        isPlaying = play;
+//        exoPlayer.setPlayWhenReady(play);
+//        if(!isPlaying){
+//            btnPlay.setImageResource(android.R.drawable.ic_media_play);
+//        }else{
+//            setProgress();
+//            btnPlay.setImageResource(android.R.drawable.ic_media_pause);
+//        }
+//    }
+//
+//    public static void initTxtTime() {
+//        txtCurrentTime = (TextView) findViewById(R.id.time_current);
+//        txtEndTime = (TextView) findViewById(R.id.player_end_time);
+//    }
+//
+//    public static String stringForTime(int timeMs) {
+//        StringBuilder mFormatBuilder;
+//        Formatter mFormatter;
+//        mFormatBuilder = new StringBuilder();
+//        mFormatter = new Formatter(mFormatBuilder, Locale.getDefault());
+//        int totalSeconds =  timeMs / 1000;
+//
+//        int seconds = totalSeconds % 60;
+//        int minutes = (totalSeconds / 60) % 60;
+//        int hours   = totalSeconds / 3600;
+//
+//        mFormatBuilder.setLength(0);
+//        if (hours > 0) {
+//            return mFormatter.format("%d:%02d:%02d", hours, minutes, seconds).toString();
+//        } else {
+//            return mFormatter.format("%02d:%02d", minutes, seconds).toString();
+//        }
+//    }
+//
+//    public static void setProgress() {
+//        seekPlayerProgress.setProgress(0);
+//        seekPlayerProgress.setMax((int) exoPlayer.getDuration()/1000);
+//        txtCurrentTime.setText(stringForTime((int)exoPlayer.getCurrentPosition()));
+//        txtEndTime.setText(stringForTime((int)exoPlayer.getDuration()));
+//
+//        if(handler == null)handler = new Handler();
+//        //Make sure you update Seekbar on UI thread
+//        handler.post(new Runnable() {
+//            @Override
+//            public void run() {
+//                if (exoPlayer != null && isPlaying) {
+//                    seekPlayerProgress.setMax((int) exoPlayer.getDuration()/1000);
+//                    int mCurrentPosition = (int) exoPlayer.getCurrentPosition() / 1000;
+//                    seekPlayerProgress.setProgress(mCurrentPosition);
+//                    txtCurrentTime.setText(stringForTime((int)exoPlayer.getCurrentPosition()));
+//                    txtEndTime.setText(stringForTime((int)exoPlayer.getDuration()));
+//
+//                    handler.postDelayed(this, 1000);
+//                }
+//            }
+//        });
+//    }
+//
+//    public static void initSeekBar() {
+//        seekPlayerProgress = (SeekBar) findViewById(R.id.mediacontroller_progress);
+//        seekPlayerProgress.requestFocus();
+//
+//        seekPlayerProgress.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+//            @Override
+//            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+//                if (!fromUser) {
+//                    // We're not interested in programmatically generated changes to
+//                    // the progress bar's position.
+//                    return;
+//                }
+//
+//                exoPlayer.seekTo(progress*1000);
+//            }
+//
+//            @Override
+//            public void onStartTrackingTouch(SeekBar seekBar) {
+//
+//            }
+//
+//            @Override
+//            public void onStopTrackingTouch(SeekBar seekBar) {
+//
+//            }
+//        });
+//
+//        seekPlayerProgress.setMax(0);
+//        seekPlayerProgress.setMax((int) exoPlayer.getDuration()/1000);
+//
+//    }
 }
