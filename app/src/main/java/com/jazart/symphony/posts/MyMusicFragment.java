@@ -82,7 +82,7 @@ public class MyMusicFragment extends Fragment implements SwipeRefreshLayout.OnRe
         mPostsViewModel.getUserPosts().addOnCompleteListener(new OnCompleteListener<List<UserPost>>() {
             @Override
             public void onComplete(@NonNull Task<List<UserPost>> task) {
-                mPostAdapter = new PostAdapter(getContext());
+                mPostAdapter = new PostAdapter(getActivity());
                 showProgressBar(true);
                 mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
                 mRecyclerView.setAdapter(mPostAdapter);

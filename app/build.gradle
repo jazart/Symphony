@@ -24,9 +24,11 @@ dependencies {
     implementation 'com.android.support:design:27.1.1'
     implementation 'com.android.support.constraint:constraint-layout:1.1.0'
     implementation 'com.android.support:support-v4:27.1.1'
+
+    //fab library
     implementation 'com.github.clans:fab:1.6.4'
 
-    //google
+    //google play services
     implementation 'com.google.android.gms:play-services-auth:15.0.0'
 
     //firebase
@@ -60,9 +62,13 @@ dependencies {
     implementation 'com.google.dagger:dagger:2.11'
     compileOnly 'org.glassfish:javax.annotation:10.0-b28'
 
-
+    //google location
     implementation 'com.google.android.gms:play-services-maps:15.0.0'
     implementation 'com.google.android.gms:play-services-location:15.0.0'
+
+    //retrofit networking
+    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'

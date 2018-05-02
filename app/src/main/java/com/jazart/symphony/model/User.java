@@ -33,6 +33,9 @@ public class User {
     @SerializedName("location")
     private GeoPoint mGeoPoint;
 
+    @SerializedName("city")
+    private String mCity;
+
     public User() {
 
     }
@@ -96,6 +99,14 @@ public class User {
 
     public void setGeoPoint(Location location) {
         mGeoPoint = new GeoPoint(location.getLatitude(), location.getLongitude());
+    }
+
+    public String getCity() {
+        return mCity;
+    }
+
+    public void setCity(String city) {
+        mCity = city;
     }
 
 }

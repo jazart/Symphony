@@ -100,6 +100,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:background="@color/colorPrimary"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             tools:showIn="@layout/list_item_post">
@@ -127,6 +128,7 @@
                 android:layout_weight="1"
                 android:background="@color/colorPrimary"
                 app:srcCompat="@drawable/ic_share_white_24dp" />
+
         </LinearLayout>
 
     </android.support.constraint.ConstraintLayout>

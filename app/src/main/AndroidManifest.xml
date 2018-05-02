@@ -24,17 +24,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".signup.SignUpActivity"
-            android:launchMode="standard" />
+        <activity android:name=".signup.SignUpActivity" />
         <activity android:name=".posts.PostActivity" />
 
         <service
             android:name=".location.LocationIntentService"
             android:enabled="true" />
-        <service
-            android:name=".MusicService"
-            android:exported="false"></service>
+        <!--<service-->
+        <!--android:name=".MusicService"-->
+        <!--android:exported="false" />-->
     </application>
 
 </manifest>

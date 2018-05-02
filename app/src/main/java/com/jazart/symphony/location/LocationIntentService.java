@@ -77,7 +77,7 @@ public class LocationIntentService extends IntentService {
     private void addToDb(Location location, String city, String userId) {
         DocumentReference reference = sDb.collection(USERS).document(userId);
         reference
-                .update("location", new GeoPoint(location.getLatitude(), location.getLatitude()))
+                .update("location", new GeoPoint(location.getLatitude(), location.getLongitude()))
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
@@ -103,7 +103,7 @@ public class LocationIntentService extends IntentService {
             Log.e(TAG, e.getMessage());
         }
 
-        if (addresses == null || addresses.size() > 1) {
+        if (addresses == null || addresses.size() < 1) {
             return null;
         }
 

@@ -23,9 +23,5 @@ public class SignUpActivity extends AppCompatActivity {
                 .commit();
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
 
-    }
 }
