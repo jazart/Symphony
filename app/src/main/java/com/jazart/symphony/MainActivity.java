@@ -94,7 +94,10 @@ public class MainActivity extends AppCompatActivity implements UploadDialog.Song
                             .commit();
                     return true;
                 case R.id.nav_events:
-                    //goto events pagejj
+                    LocalEventsFragment localEventsFragment = new LocalEventsFragment();
+                    mFragmentManager.beginTransaction()
+                            .replace(R.id.frag_container, localEventsFragment)
+                            .commit();
                     return true;
             }
             return false;

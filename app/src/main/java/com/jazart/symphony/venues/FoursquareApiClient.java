@@ -22,5 +22,5 @@ public interface FoursquareApiClient {
     );
 
     @GET("{venue_id}/pics")
-    Call<VenuPicsResponse> getVenuepics(@Path("venue_id") int venueId);
+    Call<VenuePicsResponse> getVenuepics(@Path("venue_id") int venueId);
 }

@@ -4,7 +4,7 @@ package com.jazart.symphony.venues;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class VenuPicsResponse {
+public class VenuePicsResponse {
 
     @SerializedName("meta")
     @Expose

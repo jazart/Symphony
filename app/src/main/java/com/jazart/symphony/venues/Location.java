@@ -44,7 +44,7 @@ public class Location {
     private String country;
     @SerializedName("formattedAddress")
     @Expose
-    private List<String> formattedAddress = new ArrayList<String>();
+    private List<String> formattedAddress = new ArrayList<>();
 
     public String getAddress() {
         return address;
@@ -141,5 +141,6 @@ public class Location {
     public void setFormattedAddress(List<String> formattedAddress) {
         this.formattedAddress = formattedAddress;
     }
+
 
 }
