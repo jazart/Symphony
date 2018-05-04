@@ -1,5 +1,7 @@
 package com.jazart.symphony;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,20 +13,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
-import com.jazart.symphony.venues.FoursquareApiClient;
-import com.jazart.symphony.venues.FoursquareConstants;
-import com.jazart.symphony.venues.NetworkService;
-import com.jazart.symphony.venues.VenueResponse;
+import com.jazart.symphony.model.venues.Venue;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
 
 public class LocalEventsFragment extends Fragment {
     @BindView(R.id.my_songs)
@@ -33,7 +27,9 @@ public class LocalEventsFragment extends Fragment {
     ProgressBar mPostLoadProgress;
 
 
+
     private VenueAdapter mAdapter;
+    private VenueViewModel mVenueViewModel;
 
     public LocalEventsFragment() {
 
@@ -51,34 +47,18 @@ public class LocalEventsFragment extends Fragment {
         View view = inflater.inflate(R.layout.my_music_fragment, container, false);
 
         ButterKnife.bind(this, view);
-        Retrofit client = NetworkService.get().getService();
 
-        FoursquareApiClient apiClient = client.create(FoursquareApiClient.class);
-        Map<String, String> options = new HashMap<>();
-        options.put("client_id", FoursquareConstants.client_id);
-        options.put("client_secret", FoursquareConstants.CLIENT_SECRET);
-        options.put("ll", "32.5,-84.9");
-        options.put("intent", "checkin");
-        options.put("radius", "10000");
-        options.put("limit", "10");
-        options.put("categoryId", "4bf58dd8d48988d1ac941735,4bf58dd8d48988d1e5931735");
-        options.put("v", "20180502");
-        apiClient.getVenues(options).enqueue(new Callback<VenueResponse>() {
-            @Override
-            public void onResponse(Call<VenueResponse> call, Response<VenueResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    mPostLoadProgress.setVisibility(View.GONE);
-                    mAdapter = new VenueAdapter();
-                    mAdapter.setVenueList(response.body().getResponse().getVenues());
-                    mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-                    mRecyclerView.setAdapter(mAdapter);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<VenueResponse> call, Throwable t) {
-            }
-        });
+        ViewModelProviders.of(this).get(VenueViewModel.class)
+                .getVenues().observe(this, new Observer<List<Venue>>() {
+                    @Override
+                    public void onChanged(@Nullable List<Venue> venues) {
+                        mPostLoadProgress.setVisibility(View.GONE);
+                        mAdapter = new VenueAdapter();
+                        mAdapter.setVenueList(venues);
+                        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                        mRecyclerView.setAdapter(mAdapter);
+                    }
+                });
         return view;
     }
 

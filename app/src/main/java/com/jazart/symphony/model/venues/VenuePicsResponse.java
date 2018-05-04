@@ -1,5 +1,5 @@
 
-package com.jazart.symphony.venues;
+package com.jazart.symphony.model.venues;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -11,7 +11,7 @@ public class VenuePicsResponse {
     private Meta meta;
     @SerializedName("response")
     @Expose
-    private Response response;
+    private PicResponse response;
 
     public Meta getMeta() {
         return meta;
@@ -21,11 +21,11 @@ public class VenuePicsResponse {
         this.meta = meta;
     }
 
-    public Response getResponse() {
+    public PicResponse getResponse() {
         return response;
     }
 
-    public void setResponse(Response response) {
+    public void setResponse(PicResponse response) {
         this.response = response;
     }
 

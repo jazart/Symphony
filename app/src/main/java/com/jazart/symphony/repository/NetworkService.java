@@ -1,4 +1,7 @@
-package com.jazart.symphony.venues;
+package com.jazart.symphony.repository;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
@@ -26,9 +29,12 @@ public class NetworkService {
     }
 
     private Retrofit buildClient() {
+        Gson gson = new GsonBuilder()
+                .excludeFieldsWithoutExposeAnnotation()
+                .create();
         return new Retrofit.Builder()
                 .baseUrl(FoursquareConstants.BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
     }
 

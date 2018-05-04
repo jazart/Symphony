@@ -1,5 +1,7 @@
 
-package com.jazart.symphony.venues;
+package com.jazart.symphony.model.venues;
+
+import android.net.Uri;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -24,6 +26,8 @@ public class Venue {
     @SerializedName("venuePage")
     @Expose
     private VenuePage venuePage;
+
+    private Uri mImageUri;
 
     public String getId() {
         return id;
@@ -65,4 +69,11 @@ public class Venue {
         this.venuePage = venuePage;
     }
 
+    public void setImageUri(Uri uri) {
+        mImageUri = uri;
+    }
+
+    public Uri getImageUri() {
+        return mImageUri;
+    }
 }

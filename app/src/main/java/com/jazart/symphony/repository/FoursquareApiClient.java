@@ -1,4 +1,7 @@
-package com.jazart.symphony.venues;
+package com.jazart.symphony.repository;
+
+import com.jazart.symphony.model.venues.VenuePicsResponse;
+import com.jazart.symphony.model.venues.VenueResponse;
 
 import java.util.Map;
 
@@ -21,6 +24,8 @@ public interface FoursquareApiClient {
             @QueryMap Map<String, String> options
     );
 
-    @GET("{venue_id}/pics")
-    Call<VenuePicsResponse> getVenuepics(@Path("venue_id") int venueId);
+    @GET("{venue_id}/photos")
+    Call<VenuePicsResponse> getVenuePics(@Path("venue_id") String venueId,
+                                         @QueryMap Map<String, String> options
+                                         );
 }

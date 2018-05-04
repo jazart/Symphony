@@ -1,5 +1,5 @@
 
-package com.jazart.symphony.venues;
+package com.jazart.symphony.model.venues;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

@@ -1,4 +1,4 @@
-package com.jazart.symphony;
+package com.jazart.symphony.model;
 
 import android.location.Location;
 

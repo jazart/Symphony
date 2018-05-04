@@ -8,16 +8,19 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.jazart.symphony.venues.Venue;
+import com.bumptech.glide.Glide;
+import com.jazart.symphony.model.venues.Venue;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Retrofit;
 
 public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.VenueHolder> {
 
     private List<Venue> mVenueList;
+
 
     @NonNull
     @Override
@@ -43,6 +46,7 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.VenueHolder>
 
     class VenueHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
+        public static final String TAG = "VenueHolder";
         @BindView(R.id.venue_pic_iv)
         ImageView mVenuePicIv;
         @BindView(R.id.venue_name_tv)
@@ -53,6 +57,8 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.VenueHolder>
         TextView mVenueAddressTv;
         @BindView(R.id.venue_event_tv)
         TextView mVenueEventTv;
+        private Retrofit mNetworkService;
+
 
         VenueHolder(View itemView) {
             super(itemView);
@@ -60,7 +66,9 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.VenueHolder>
             ButterKnife.bind(this, itemView);
         }
 
-        void bind(Venue venue) {
+        void bind(final Venue venue) {
+            Glide.with(itemView).load(venue.getImageUri())
+                    .into(mVenuePicIv);
             mVenueNameTv.setText(venue.getName());
             mVenueAddressTv.setText(venue.getLocation().getAddress());
         }
@@ -69,5 +77,6 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.VenueHolder>
         public void onClick(View v) {
 
         }
+
     }
 }
