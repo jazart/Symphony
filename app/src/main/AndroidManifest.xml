@@ -30,9 +30,13 @@
         <service
             android:name=".location.LocationIntentService"
             android:enabled="true" />
-        <!--<service-->
-        <!--android:name=".MusicService"-->
-        <!--android:exported="false" />-->
+        <!-- <service -->
+        <!-- android:name=".MusicService" -->
+        <!-- android:exported="false" /> -->
+        <service
+            android:name=".MusicService"
+            android:enabled="true"
+            android:exported="true"></service>
     </application>
 
 </manifest>

@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionMenu;
+import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -59,6 +60,7 @@ public class MainActivity extends AppCompatActivity implements UploadDialog.Song
     public static final int RC_NEW_POST = 3;
     public static final int RC_LOCATION = 100;
     public static final String EXTRA_USER = "com.jazart.symphony.EXTRA_USER";
+    public static  SimpleExoPlayer exoPlayerC;
 
     protected Uri mURI;
 
