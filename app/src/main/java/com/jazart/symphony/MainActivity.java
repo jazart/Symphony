@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -123,6 +124,7 @@ public class MainActivity extends AppCompatActivity implements UploadDialog.Song
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+        setVolumeControlStream(AudioManager.STREAM_MUSIC);
         setContentView(R.layout.activity_main);
         //exoPlayer = ExoPlayerFactory.newInstance(RENDERER_COUNT, minBufferMs, minRebufferMs);
         ButterKnife.bind(this);

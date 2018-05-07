@@ -2,6 +2,7 @@ package com.jazart.symphony.posts;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -15,6 +16,7 @@ public class PostActivity extends AppCompatActivity implements NewPostFragment.P
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setVolumeControlStream(AudioManager.STREAM_MUSIC);
         setContentView(R.layout.activity_post);
         NewPostFragment fragment = new NewPostFragment();
         getSupportFragmentManager().beginTransaction()
