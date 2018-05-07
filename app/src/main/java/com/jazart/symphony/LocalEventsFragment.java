@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
+import com.bumptech.glide.Glide;
 import com.jazart.symphony.model.venues.Venue;
 
 import java.util.List;
@@ -44,16 +45,16 @@ public class LocalEventsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.my_music_fragment, container, false);
+        final View view = inflater.inflate(R.layout.my_music_fragment, container, false);
 
         ButterKnife.bind(this, view);
+        mAdapter = new VenueAdapter(Glide.with(this));
 
         ViewModelProviders.of(this).get(VenueViewModel.class)
                 .getVenues().observe(this, new Observer<List<Venue>>() {
                     @Override
                     public void onChanged(@Nullable List<Venue> venues) {
                         mPostLoadProgress.setVisibility(View.GONE);
-                        mAdapter = new VenueAdapter();
                         mAdapter.setVenueList(venues);
                         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
                         mRecyclerView.setAdapter(mAdapter);

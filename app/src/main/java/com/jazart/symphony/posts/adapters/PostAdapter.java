@@ -80,9 +80,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
                     FragmentManager fm = ((AppCompatActivity) mInflater.getContext())
                             .getSupportFragmentManager();
                     fm.beginTransaction()
-                            .addToBackStack(null)
-                            .add(R.id.frag_container, PostDetailFragment.newInstance(mPost))
-                            .commit();
+                            .replace(R.id.frag_container, PostDetailFragment.newInstance(mPost))
+                            .commitNow();
                 }
             });
 

@@ -7,13 +7,13 @@ import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.jazart.symphony.repository.FoursquareApiClient;
-import com.jazart.symphony.repository.FoursquareConstants;
 import com.jazart.symphony.model.venues.Item;
-import com.jazart.symphony.repository.NetworkService;
 import com.jazart.symphony.model.venues.Venue;
 import com.jazart.symphony.model.venues.VenuePicsResponse;
 import com.jazart.symphony.model.venues.VenueResponse;
+import com.jazart.symphony.repository.FoursquareApiClient;
+import com.jazart.symphony.repository.FoursquareConstants;
+import com.jazart.symphony.repository.NetworkService;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -36,7 +36,7 @@ public class VenueViewModel extends ViewModel {
         mService = NetworkService.get().getService();
     }
 
-    void loadImages() {
+    private void loadImages() {
         if(mVenueLiveData.getValue() != null) {
             for (int i = 0; i < mVenueLiveData.getValue().size(); i++) {
                 Venue venue = mVenueLiveData.getValue().get(i);

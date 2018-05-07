@@ -1,8 +1,6 @@
 package com.jazart.symphony.model;
 
 
-import android.location.Location;
-
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.GeoPoint;
 import com.google.gson.annotations.SerializedName;
@@ -97,8 +95,8 @@ public class User {
         return mGeoPoint;
     }
 
-    public void setGeoPoint(Location location) {
-        mGeoPoint = new GeoPoint(location.getLatitude(), location.getLongitude());
+    public void setGeoPoint(GeoPoint point) {
+        mGeoPoint = point;
     }
 
     public String getCity() {

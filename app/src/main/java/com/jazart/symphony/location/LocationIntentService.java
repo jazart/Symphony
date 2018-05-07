@@ -31,6 +31,7 @@ import static com.jazart.symphony.MainActivity.sDb;
 public class LocationIntentService extends IntentService {
     public static final String TAG = "LocationIntentService";
     FusedLocationProviderClient mProviderClient;
+    private LocationHelper mHelper;
 
     public LocationIntentService() {
         super("LocationIntentService");

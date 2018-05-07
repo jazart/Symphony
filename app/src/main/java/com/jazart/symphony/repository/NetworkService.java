@@ -8,7 +8,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class NetworkService {
-    private static NetworkService INSTANCE;
+    private static NetworkService sINSTANCE;
     private Retrofit mService;
     private OkHttpClient mClient;
 
@@ -17,11 +17,11 @@ public class NetworkService {
     }
 
     public static NetworkService get() {
-        if (INSTANCE == null) {
+        if (sINSTANCE == null) {
             return new NetworkService();
         }
 
-        return INSTANCE;
+        return sINSTANCE;
     }
 
     public Retrofit getService() {

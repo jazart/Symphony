@@ -22,6 +22,7 @@ public class PostsViewModel extends AndroidViewModel {
     private FirebaseAuth mAuth;
     private FirebaseUser mUser;
     private LiveData<List<UserPost>> mUserPostsLiveData;
+
     public PostsViewModel(@NonNull Application application) {
         super(application);
         mAuth = FirebaseAuth.getInstance();
@@ -48,6 +49,9 @@ public class PostsViewModel extends AndroidViewModel {
                     }
                 });
 
+    }
+
+    public void deletePost(String postId) {
     }
 
 

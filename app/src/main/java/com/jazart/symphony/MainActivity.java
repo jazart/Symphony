@@ -62,17 +62,18 @@ public class MainActivity extends AppCompatActivity implements UploadDialog.Song
     public static final String EXTRA_USER = "com.jazart.symphony.EXTRA_USER";
     public static  SimpleExoPlayer exoPlayerC;
 
-    protected Uri mURI;
+    @BindView(R.id.navigation)
 
+    BottomNavigationView mNavigation;
     @BindView(R.id.fab_menu)
     FloatingActionMenu mFabMenu;
+
     private FirebaseAuth mAuth;
     private FirebaseUser mUser;
-    @BindView(R.id.navigation)
-    BottomNavigationView mNavigation;
+    @BindView(R.id.frag_pager)
+    BottomNavViewPager mNavViewPager;
     private FragmentManager mFragmentManager;
-
-
+    private Uri mURI;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -80,26 +81,38 @@ public class MainActivity extends AppCompatActivity implements UploadDialog.Song
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    FeaturedMusicFragment featuredFragment = new FeaturedMusicFragment();
-                    mFragmentManager.beginTransaction()
-                            .addToBackStack(null)
-                            .replace(R.id.frag_container, featuredFragment)
-                            .commit();
+//                    FeaturedMusicFragment fragment = (FeaturedMusicFragment) mFragmentManager.findFragmentByTag("featuredFragment");
+//                    if(fragment == null) {
+//                        fragment = new FeaturedMusicFragment();
+//                    }
+//                    mFragmentManager.beginTransaction()
+//                            .addToBackStack(null)
+//                            .add(R.id.frag_container, fragment, "featuredFragment")
+//                            .commit();
+                    mNavViewPager.setCurrentItem(0);
 
                     return true;
                 case R.id.nav_my_music:
-                    //goto music page
-                    MyMusicFragment myMusicFragment = new MyMusicFragment();
-                    mFragmentManager.beginTransaction()
-//                            .addToBackStack(null)
-                            .replace(R.id.frag_container, myMusicFragment)
-                            .commit();
+//                    MyMusicFragment myMusicFragment = (MyMusicFragment) mFragmentManager.findFragmentByTag("musicFragment");
+//                    if(myMusicFragment == null) {
+//                        myMusicFragment = new MyMusicFragment();
+//                    }
+//                    mFragmentManager.beginTransaction()
+//                            .addToBackStack(null )
+//                            .add(R.id.frag_container, myMusicFragment, "musicFragment")
+//                            .commit();
+                    mNavViewPager.setCurrentItem(1);
                     return true;
                 case R.id.nav_events:
-                    LocalEventsFragment localEventsFragment = new LocalEventsFragment();
-                    mFragmentManager.beginTransaction()
-                            .replace(R.id.frag_container, localEventsFragment)
-                            .commit();
+//                    LocalEventsFragment localEventsFragment = (LocalEventsFragment) mFragmentManager.findFragmentByTag("localFragment");
+//                    if(localEventsFragment == null) {
+//                        localEventsFragment = new LocalEventsFragment();
+//                    }
+//                    mFragmentManager.beginTransaction()
+//                            .add(R.id.frag_container, localEventsFragment,"localFragment")
+//                            .addToBackStack(null)
+//                            .commit();
+                    mNavViewPager.setCurrentItem(2);
                     return true;
             }
             return false;
@@ -116,13 +129,21 @@ public class MainActivity extends AppCompatActivity implements UploadDialog.Song
 
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
+        mFragmentManager = getSupportFragmentManager();
+
+
+        BottomNavAdapter adapter = new BottomNavAdapter(mFragmentManager);
+        adapter.addFragment(new FeaturedMusicFragment());
+        adapter.addFragment(new MyMusicFragment());
+        adapter.addFragment(new LocalEventsFragment());
+        mNavViewPager.setAdapter(adapter);
+
 
         mFabMenu.bringToFront();
 
-        mFragmentManager = getSupportFragmentManager();
 
-        mFragmentManager.beginTransaction().replace(R.id.frag_container, new FeaturedMusicFragment())
-                .commitAllowingStateLoss();
+//        mFragmentManager.beginTransaction().replace(R.id.frag_container, new FeaturedMusicFragment())
+//                .commitAllowingStateLoss();
 
         mNavigation.setSelectedItemId(R.id.navigation_home);
         mNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);

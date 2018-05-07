@@ -12,13 +12,6 @@ import retrofit2.http.QueryMap;
 
 public interface FoursquareApiClient {
 
-
-//    @Headers({
-//            "client_id: " + client_id,
-//            "client_secret: " + CLIENT_SECRET
-//
-//    })
-
     @GET("search")
     Call<VenueResponse> getVenues(
             @QueryMap Map<String, String> options

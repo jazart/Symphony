@@ -8,7 +8,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestManager;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.jazart.symphony.model.venues.Venue;
 
 import java.util.List;
@@ -20,7 +22,11 @@ import retrofit2.Retrofit;
 public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.VenueHolder> {
 
     private List<Venue> mVenueList;
+    private RequestManager mGlide;
 
+    public VenueAdapter(RequestManager glide) {
+        mGlide = glide;
+    }
 
     @NonNull
     @Override
@@ -67,7 +73,11 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.VenueHolder>
         }
 
         void bind(final Venue venue) {
-            Glide.with(itemView).load(venue.getImageUri())
+            //Glide.with(itemView).load(venue.getImageUri())
+            mGlide.load(venue.getImageUri())
+                    .apply(new RequestOptions()
+                            .centerCrop()
+                            .diskCacheStrategy(DiskCacheStrategy.ALL))
                     .into(mVenuePicIv);
             mVenueNameTv.setText(venue.getName());
             mVenueAddressTv.setText(venue.getLocation().getAddress());

@@ -42,6 +42,7 @@ public class PostDetailFragment extends Fragment {
 
     CommentAdapter mCommentAdapter;
 
+
     public PostDetailFragment() {
 
     }

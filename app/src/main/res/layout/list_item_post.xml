@@ -38,8 +38,7 @@
                 android:paddingEnd="16dp"
                 android:paddingStart="16dp"
 
-                android:textAppearance="@android:style/TextAppearance.Material.Title"
-                android:textSize="36sp" />
+                android:textAppearance="@android:style/TextAppearance.Material.Title" />
 
             <TextView
                 android:id="@+id/post_author"
@@ -87,8 +86,7 @@
             android:layout_marginTop="8dp"
             android:paddingEnd="16dp"
             android:paddingStart="16dp"
-            android:textAppearance="@android:style/TextAppearance.Material.Body1"
-            android:textSize="12sp"
+            android:textAppearance="@android:style/TextAppearance.Material.Body2"
             app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -111,7 +109,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@color/colorPrimary"
-                app:srcCompat="@drawable/ic_heart1_white" />
+                app:srcCompat="@drawable/ic_heart_liked_24" />
 
             <ImageButton
                 android:id="@+id/btn_post_comment"

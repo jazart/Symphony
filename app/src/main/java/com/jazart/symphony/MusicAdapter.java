@@ -1,13 +1,10 @@
 package com.jazart.symphony;
 
-import android.app.Service;
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,13 +23,13 @@ import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
-
 import com.jazart.symphony.model.Song;
-import static com.jazart.symphony.MainActivity.exoPlayerC;
 
 import java.util.List;
 
 import butterknife.ButterKnife;
+
+import static com.jazart.symphony.MainActivity.exoPlayerC;
 
 
 
@@ -92,8 +89,8 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicHolder>
                     //Log.d("DEBUG",song.getURI() + " " +itemView.getContext().toString());
                     prepareExoPlayerFromURL(Uri.parse(song.getURI()));
                     exoPlayer.setPlayWhenReady(true);
-                    Intent musicStart = new Intent(itemView.getContext(),MusicService.class);
-                    musicStart.putExtra("URL", song.getURI());
+//                    Intent musicStart = new Intent(itemView.getContext(),MusicService.class);
+//                    musicStart.putExtra("URL", song.getURI());
 //                    playerCL.setVisibility(View.VISIBLE);
 //                    playerL.setVisibility(View.VISIBLE);
                     //initializePlayer(song.getURI(),itemView.getContext());
