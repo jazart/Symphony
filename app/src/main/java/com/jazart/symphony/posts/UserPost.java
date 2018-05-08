@@ -140,6 +140,14 @@ public class UserPost {
         mComments.add(comment);
     }
 
+    public String getId() {
+        return mId;
+    }
+
+    public void setId(String id) {
+        mId = id;
+    }
+
     public static class Builder {
         private String mTitle;
         private String mBody;

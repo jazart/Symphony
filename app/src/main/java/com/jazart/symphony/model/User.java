@@ -9,7 +9,7 @@ import java.util.Date;
 
 public class User {
 
-    @SerializedName("uId")
+    @SerializedName("id")
     private String mId;
 
     @SerializedName("name")
@@ -21,11 +21,11 @@ public class User {
     @SerializedName("friends")
     private User[] mFriends;
 
-    @SerializedName("num_songs")
+    @SerializedName("numSongs")
     private int mNumSongs;
 
 
-    @SerializedName("num_plays")
+    @SerializedName("numPlays")
     private int mNumPlays;
 
     @SerializedName("location")

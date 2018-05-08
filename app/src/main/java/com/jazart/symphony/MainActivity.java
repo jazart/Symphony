@@ -80,7 +80,11 @@ public class MainActivity extends AppCompatActivity implements UploadDialog.Song
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            if (mFragmentManager.getBackStackEntryCount() > 0) {
+                mFragmentManager.popBackStack();
+            }
             switch (item.getItemId()) {
+
                 case R.id.navigation_home:
 //                    FeaturedMusicFragment fragment = (FeaturedMusicFragment) mFragmentManager.findFragmentByTag("featuredFragment");
 //                    if(fragment == null) {
@@ -168,7 +172,6 @@ public class MainActivity extends AppCompatActivity implements UploadDialog.Song
             startLocationService();
         }
     }
-
 
 
     @Override

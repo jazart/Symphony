@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -80,8 +81,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
                     FragmentManager fm = ((AppCompatActivity) mInflater.getContext())
                             .getSupportFragmentManager();
                     fm.beginTransaction()
+                            .addToBackStack(null)
+                            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                             .replace(R.id.frag_container, PostDetailFragment.newInstance(mPost))
-                            .commitNow();
+                            .commit();
                 }
             });
 

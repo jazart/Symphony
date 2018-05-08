@@ -2,9 +2,11 @@
 
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/background_light"
+    android:background="?android:windowBackground"
+    android:theme="@style/AppTheme"
     android:fitsSystemWindows="true">
 
     <android.support.design.widget.AppBarLayout
@@ -36,9 +38,64 @@
             <android.support.v7.widget.Toolbar
                 android:id="@+id/main.toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
+                android:layout_height="66dp"
                 app:layout_collapseMode="pin"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Dark"></android.support.v7.widget.Toolbar>
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Dark">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:padding="8dp">
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/comment_til"
+                        android:layout_width="280dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/cardview_dark_background"
+                        android:visibility="gone">
+
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/comment_et"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
+                    </android.support.design.widget.TextInputLayout>
+
+                    <ImageButton
+                        android:id="@+id/post_detail_edit_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_alignEnd="@id/main.appbar"
+                        android:adjustViewBounds="true"
+                        android:backgroundTint="@android:color/transparent"
+                        android:cropToPadding="true"
+                        android:src="@drawable/ic_edit_white_24dp"
+                        tools:ignore="NotSibling" />
+
+                    <ImageButton
+                        android:id="@+id/comment_send_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="45dp"
+                        android:backgroundTint="@android:color/transparent"
+                        android:src="@drawable/ic_send_white_24dp"
+                        android:visibility="gone"
+                        tools:ignore="NotSibling" />
+
+                    <ImageButton
+                        android:id="@+id/post_detail_comment_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="25dp"
+                        android:layout_weight="1"
+                        android:backgroundTint="@android:color/transparent"
+                        android:src="@drawable/ic_insert_comment_white_24dp" />
+                </RelativeLayout>
+            </android.support.v7.widget.Toolbar>
 
 
         </android.support.design.widget.CollapsingToolbarLayout>

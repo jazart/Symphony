@@ -1,25 +1,27 @@
 package com.jazart.symphony.posts;
 
+import android.net.Uri;
+
 import com.google.gson.annotations.SerializedName;
 
 public class Comment {
     @SerializedName("content")
     private String mContent;
 
-    @SerializedName("author_name")
+    @SerializedName("authorName")
     private String mAuthorName;
 
-    @SerializedName("author_id")
+    @SerializedName("authorId")
     private String mAuthorId;
 
     @SerializedName("likes")
     private int mLikes;
 
-    @SerializedName("post_id")
+    @SerializedName("postId")
     private String mPostId;
 
     @SerializedName("profile_pic")
-    private String mProfilePic;
+    private Uri mProfilePic;
 
     public String getContent() {
         return mContent;
@@ -51,5 +53,13 @@ public class Comment {
 
     public void setLikes(int likes) {
         mLikes = likes;
+    }
+
+    public void profilePic(Uri profilePic) {
+        mProfilePic = profilePic;
+    }
+
+    public Uri getProfilePic() {
+        return mProfilePic;
     }
 }

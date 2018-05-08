@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.jazart.symphony.R;
 import com.jazart.symphony.posts.Comment;
 
@@ -50,6 +52,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentH
     public class CommentHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.list_item_comment_body)
         TextView mCommentTv;
+        @BindView(R.id.list_item_commet_profile_pic)
         ImageView mProfilePic;
 
         public CommentHolder(View itemView) {
@@ -59,6 +62,10 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentH
 
         public void bind(Comment comment) {
             mCommentTv.setText(comment.getContent());
+            Glide.with(itemView)
+                    .load(comment.getProfilePic())
+                    .apply(new RequestOptions().centerCrop())
+                    .into(mProfilePic);
         }
     }
 }
