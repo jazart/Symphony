@@ -94,7 +94,6 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicHolder>
 //                    playerCL.setVisibility(View.VISIBLE);
 //                    playerL.setVisibility(View.VISIBLE);
                     //initializePlayer(song.getURI(),itemView.getContext());
-                    // TODO: 4/9/2018 get song url and steam music
                 }
             });
         }
@@ -102,7 +101,6 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicHolder>
 
             TrackSelector trackSelector = new DefaultTrackSelector();
 
-//            LoadControl loadControl = new DefaultLoadControl();
             DefaultRenderersFactory renderersFactory = new DefaultRenderersFactory(itemView.getContext());
 
 

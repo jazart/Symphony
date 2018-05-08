@@ -1,5 +1,6 @@
 package com.jazart.symphony.featured;
 
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,12 +11,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
-import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.jazart.symphony.BaseFragment;
 import com.jazart.symphony.MusicAdapter;
 import com.jazart.symphony.R;
@@ -60,6 +57,18 @@ public class FeaturedMusicFragment extends BaseFragment implements SwipeRefreshL
         mRefreshSongs.setOnRefreshListener(this);
         recMan = new LinearLayoutManager(getContext());
         //recMan.onScrollStateChanged();
+
+        mSongsViewModel.getSongs().observe(this, new Observer<List<Song>>() {
+            @Override
+            public void onChanged(@Nullable List<Song> songs) {
+                mMusicAdapter = new MusicAdapter(getContext());
+                showProgressBar(true);
+                mMusicAdapter.setSongs(songs);
+                mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                mRecyclerView.setAdapter(mMusicAdapter);
+                mRefreshSongs.setRefreshing(false);
+            }
+        });
         return v;
     }
 
@@ -81,17 +90,17 @@ public class FeaturedMusicFragment extends BaseFragment implements SwipeRefreshL
     }
 
     private void loadSongs() {
-        mSongsViewModel.getUserSongs().addOnCompleteListener(new OnCompleteListener<List<Song>>() {
-            @Override
-            public void onComplete(@NonNull Task<List<Song>> task) {
-                mMusicAdapter = new MusicAdapter(getContext());
-                showProgressBar(true);
-                mMusicAdapter.setSongs(task.getResult());
-                mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-                mRecyclerView.setAdapter(mMusicAdapter);
-                mRefreshSongs.setRefreshing(false);
-            }
-        });
+////        mSongsViewModel.getUserSongs().addOnCompleteListener(new OnCompleteListener<List<Song>>() {
+//            @Override
+//            public void onComplete(@NonNull Task<List<Song>> task) {
+////                mMusicAdapter = new MusicAdapter(getContext());
+////                showProgressBar(true);
+////                mMusicAdapter.setSongs(task.getResult());
+////                mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+////                mRecyclerView.setAdapter(mMusicAdapter);
+////                mRefreshSongs.setRefreshing(false);
+//            }
+//        });
     }
 
     private void showProgressBar(boolean isLoaded) {
