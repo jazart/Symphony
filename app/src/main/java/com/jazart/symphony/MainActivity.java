@@ -102,37 +102,16 @@ public class MainActivity extends AppCompatActivity implements UploadDialog.Song
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-//                    FeaturedMusicFragment fragment = (FeaturedMusicFragment) mFragmentManager.findFragmentByTag("featuredFragment");
-//                    if(fragment == null) {
-//                        fragment = new FeaturedMusicFragment();
-//                    }
-//                    mFragmentManager.beginTransaction()
-//                            .addToBackStack(null)
-//                            .add(R.id.frag_container, fragment, "featuredFragment")
-//                            .commit();
+
                     mNavViewPager.setCurrentItem(0);
 
                     return true;
                 case R.id.nav_my_music:
-//                    MyMusicFragment myMusicFragment = (MyMusicFragment) mFragmentManager.findFragmentByTag("musicFragment");
-//                    if(myMusicFragment == null) {
-//                        myMusicFragment = new MyMusicFragment();
-//                    }
-//                    mFragmentManager.beginTransaction()
-//                            .addToBackStack(null )
-//                            .add(R.id.frag_container, myMusicFragment, "musicFragment")
-//                            .commit();
+
                     mNavViewPager.setCurrentItem(1);
                     return true;
                 case R.id.nav_events:
-//                    LocalEventsFragment localEventsFragment = (LocalEventsFragment) mFragmentManager.findFragmentByTag("localFragment");
-//                    if(localEventsFragment == null) {
-//                        localEventsFragment = new LocalEventsFragment();
-//                    }
-//                    mFragmentManager.beginTransaction()
-//                            .add(R.id.frag_container, localEventsFragment,"localFragment")
-//                            .addToBackStack(null)
-//                            .commit();
+
                     mNavViewPager.setCurrentItem(2);
                     return true;
             }
@@ -147,7 +126,6 @@ public class MainActivity extends AppCompatActivity implements UploadDialog.Song
         super.onCreate(savedInstanceState);
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
         setContentView(R.layout.activity_main);
-        //exoPlayer = ExoPlayerFactory.newInstance(RENDERER_COUNT, minBufferMs, minRebufferMs);
         ButterKnife.bind(this);
 
         playerView = findViewById(R.id.media_controller);
@@ -171,8 +149,7 @@ public class MainActivity extends AppCompatActivity implements UploadDialog.Song
         playB.setImageResource(android.R.drawable.ic_media_pause);
 
 
-//        mFragmentManager.beginTransaction().replace(R.id.frag_container, new FeaturedMusicFragment())
-//                .commitAllowingStateLoss();
+
 
         mNavigation.setSelectedItemId(R.id.navigation_home);
         mNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -214,7 +191,7 @@ public class MainActivity extends AppCompatActivity implements UploadDialog.Song
 
                     songPlaying = true;
                     playB.setImageResource(android.R.drawable.ic_media_pause);
-                    //playB.setBackgroundResource(R.style.;
+
 
                 }
             }
@@ -284,8 +261,7 @@ public class MainActivity extends AppCompatActivity implements UploadDialog.Song
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if (!fromUser) {
-                    // We're not interested in programmatically generated changes to
-                    // the progress bar's position.
+
                     return;
                 }
 
