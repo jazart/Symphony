@@ -32,9 +32,9 @@ import com.jazart.symphony.model.User;
 import static com.jazart.symphony.MainActivity.RC_SIGN_IN;
 import static com.jazart.symphony.MainActivity.sDb;
 
-/*
-This fragment class displays the sign-in/up screen for the user. Once the user has been authenticated
-they are taken back to the main activity to use the app.
+/**
+ * This fragment class displays the sign-in/up screen for the user. Once the user has been authenticated
+ * they are taken back to the main activity to use the app.
  */
 
 public class SignupFragment extends Fragment implements View.OnClickListener{
@@ -193,12 +193,7 @@ public class SignupFragment extends Fragment implements View.OnClickListener{
                             Snackbar.make(getView().findViewById(R.id.activ_main_root), "Authentication Failed.", Snackbar.LENGTH_SHORT)
                                     .show();
 
-                            //updateUI(null);
                         }
-
-                        // [START_EXCLUDE]
-                        // hideProgressDialog();
-                        // [END_EXCLUDE]
                     }
                 });
     }

@@ -28,10 +28,15 @@ import static com.jazart.symphony.Constants.USERS;
 import static com.jazart.symphony.MainActivity.EXTRA_USER;
 import static com.jazart.symphony.MainActivity.sDb;
 
+/*
+service that runs when the app first starts up. This service gets the user's current location
+and stores the exact coordinates and city name in the database.
+ */
+
 public class LocationIntentService extends IntentService {
+
     public static final String TAG = "LocationIntentService";
     FusedLocationProviderClient mProviderClient;
-    private LocationHelper mHelper;
 
     public LocationIntentService() {
         super("LocationIntentService");

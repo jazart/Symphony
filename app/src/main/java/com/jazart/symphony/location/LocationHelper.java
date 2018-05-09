@@ -27,6 +27,11 @@ import static com.jazart.symphony.Constants.USERS;
 import static com.jazart.symphony.MainActivity.TAG;
 import static com.jazart.symphony.MainActivity.sDb;
 
+/*
+singleton class that serves as a hub for querying and propagating localized data to our other fragment classes
+to render them in the ui
+Here we make several calls to find users in the same city and expose their posts and data to other users
+ */
 public class LocationHelper {
     private static LocationHelper INSTANCE;
     private User mUser;
@@ -50,6 +55,12 @@ public class LocationHelper {
 
         return INSTANCE;
 
+    }
+
+    public void update() {
+        findNearbyUsers();
+        findNearbyPosts();
+        findNearbySongs();
     }
 
     public LiveData<List<Song>> getNearbySongs() {

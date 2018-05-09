@@ -10,6 +10,11 @@ import android.support.v7.app.AppCompatActivity;
 import com.google.gson.Gson;
 import com.jazart.symphony.R;
 
+/*
+Container activity for the post fragment. Implemets the callback interface
+and then send the information back to the main activity so the post can
+be added to the database.
+ */
 public class PostActivity extends AppCompatActivity implements NewPostFragment.Post {
     public static final String EXTRA_POST = "com.jazart.symphony.extraPost";
 

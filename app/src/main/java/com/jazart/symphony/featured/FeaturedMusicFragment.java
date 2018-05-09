@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
-import com.jazart.symphony.BaseFragment;
 import com.jazart.symphony.MusicAdapter;
 import com.jazart.symphony.R;
 import com.jazart.symphony.model.Song;
@@ -25,7 +25,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class FeaturedMusicFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
+public class FeaturedMusicFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     private MusicAdapter mMusicAdapter;
     private SongViewModel mSongsViewModel;
     private LinearLayoutManager recMan;

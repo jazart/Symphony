@@ -22,6 +22,7 @@ import static com.jazart.symphony.MainActivity.sDb;
 
 /**
  * Created by kendrickgholston on 4/27/18.
+ * Used for helping the user
  */
 
 public class SongViewModel extends AndroidViewModel {

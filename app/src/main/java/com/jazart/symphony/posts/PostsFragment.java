@@ -28,7 +28,12 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MyMusicFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+/**
+ * Class displays a list of posts from the current user as well as local users in the area
+ * Pulls information from the location helper class to display the data
+ */
+
+public class PostsFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     private PostAdapter mPostAdapter;
     private PostsViewModel mPostsViewModel;
 
@@ -40,7 +45,8 @@ public class MyMusicFragment extends Fragment implements SwipeRefreshLayout.OnRe
     RecyclerView mRecyclerView;
 
     private LiveData<List<UserPost>> mNearby;
-    public MyMusicFragment() {
+
+    public PostsFragment() {
 
     }
 
@@ -79,7 +85,7 @@ public class MyMusicFragment extends Fragment implements SwipeRefreshLayout.OnRe
     @Override
     public void onResume() {
         super.onResume();
-        loadPosts();
+        //loadPosts();
     }
 
     @Override
@@ -101,6 +107,9 @@ public class MyMusicFragment extends Fragment implements SwipeRefreshLayout.OnRe
 //
 //            }
 //        });
+        mPostsViewModel.update();
+        mPostAdapter.notifyDataSetChanged();
+        mRefreshPosts.setRefreshing(false);
     }
 
     private void showProgressBar(boolean isLoaded) {

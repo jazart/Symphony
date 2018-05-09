@@ -23,11 +23,16 @@ import java.util.List;
 import static com.jazart.symphony.Constants.POSTS;
 import static com.jazart.symphony.MainActivity.sDb;
 
+/**
+ * This class serves as a data manager for the Post List and Post Detail screens.
+ * Here we get data from the database and have them wrapped in livedata objects for a more reactive interface
+ */
 public class PostsViewModel extends AndroidViewModel {
     private FirebaseAuth mAuth;
     private FirebaseUser mUser;
     private LiveData<List<UserPost>> mUserPostsLiveData;
     private MutableLiveData<List<Comment>> mComments;
+    private PostsLiveData mPostsLiveData;
 
     public PostsViewModel(@NonNull Application application) {
         super(application);
@@ -43,6 +48,10 @@ public class PostsViewModel extends AndroidViewModel {
 
     public LiveData<List<Comment>> getComments() {
         return mComments;
+    }
+
+    public void update() {
+        LocationHelper.getInstance().update();
     }
 
     public Task<List<UserPost>> getUserPosts() {

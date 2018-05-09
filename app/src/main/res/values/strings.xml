@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Symphony</string>
     <string name="title_home">Featured Music</string>
-    <string name="title_music">My Music</string>
+    <string name="title_music">Posts</string>
     <string name="title_collabs">Collabs</string>
     <string name="title_posts">Posts</string>
     <string name="title_events">Events</string>

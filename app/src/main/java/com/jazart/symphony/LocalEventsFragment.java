@@ -21,12 +21,15 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+/**
+ * Displays local music and art events for the user to see whats going on in
+ * their area. Gets its information fromt he venue viewmodel class
+ */
 public class LocalEventsFragment extends Fragment {
     @BindView(R.id.my_songs)
     RecyclerView mRecyclerView;
     @BindView(R.id.post_load_progress)
     ProgressBar mPostLoadProgress;
-
 
 
     private VenueAdapter mAdapter;
@@ -52,14 +55,14 @@ public class LocalEventsFragment extends Fragment {
 
         ViewModelProviders.of(this).get(VenueViewModel.class)
                 .getVenues().observe(this, new Observer<List<Venue>>() {
-                    @Override
-                    public void onChanged(@Nullable List<Venue> venues) {
-                        mPostLoadProgress.setVisibility(View.GONE);
-                        mAdapter.setVenueList(venues);
-                        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-                        mRecyclerView.setAdapter(mAdapter);
-                    }
-                });
+            @Override
+            public void onChanged(@Nullable List<Venue> venues) {
+                mPostLoadProgress.setVisibility(View.GONE);
+                mAdapter.setVenueList(venues);
+                mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                mRecyclerView.setAdapter(mAdapter);
+            }
+        });
         return view;
     }
 

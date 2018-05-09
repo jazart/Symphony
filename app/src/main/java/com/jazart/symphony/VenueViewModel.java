@@ -25,6 +25,10 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
+/**
+ * Viewmodel class used for loading information from the foursquare api and
+ * wrappinng the data in livedata objects for a more reactive interface.
+ */
 public class VenueViewModel extends ViewModel {
 
     private static final String TAG = "VenueViewModel";

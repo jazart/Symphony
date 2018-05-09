@@ -2,7 +2,6 @@ package com.jazart.symphony;
 
 import android.Manifest;
 import android.content.ContentResolver;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.AudioManager;
@@ -38,8 +37,8 @@ import com.google.gson.Gson;
 import com.jazart.symphony.featured.FeaturedMusicFragment;
 import com.jazart.symphony.location.LocationIntentService;
 import com.jazart.symphony.model.Song;
-import com.jazart.symphony.posts.MyMusicFragment;
 import com.jazart.symphony.posts.PostActivity;
+import com.jazart.symphony.posts.PostsFragment;
 import com.jazart.symphony.posts.UploadDialog;
 import com.jazart.symphony.posts.UserPost;
 import com.jazart.symphony.signup.SignUpActivity;
@@ -48,7 +47,6 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Formatter;
 import java.util.Locale;
-import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -57,9 +55,18 @@ import butterknife.OnClick;
 import static com.jazart.symphony.Constants.POSTS;
 import static com.jazart.symphony.Constants.SONGS;
 import static com.jazart.symphony.Constants.USERS;
-import static com.jazart.symphony.posts.PostActivity.EXTRA_POST;
 import static com.jazart.symphony.MusicAdapter.exoPlayer;
+import static com.jazart.symphony.posts.PostActivity.EXTRA_POST;
 
+/**
+ * Main entry point into the application. Here we create a custom view holder to house our fragments
+ * which are shown using bottom navigation tabs. Each tab corresponds to a different fragement in the activity.
+ * We also use this class to check if a user is signed in and send them to the sign in / sign up activity.
+ * Permissions are checked and intents are built out for requesting data.
+ * <p>
+ * Biggest issue is this class does way too much.
+ * TODO: Refactor this class into a more passive view and break into manager classes to distribute it's responsibilities.
+ */
 
 public class MainActivity extends AppCompatActivity implements UploadDialog.SongPost{
 
@@ -106,7 +113,6 @@ public class MainActivity extends AppCompatActivity implements UploadDialog.Song
             switch (item.getItemId()) {
 
                 case R.id.navigation_home:
-
                     mNavViewPager.setCurrentItem(0);
 
                     return true;
@@ -141,18 +147,8 @@ public class MainActivity extends AppCompatActivity implements UploadDialog.Song
         mUser = mAuth.getCurrentUser();
         mFragmentManager = getSupportFragmentManager();
 
-
-        BottomNavAdapter adapter = new BottomNavAdapter(mFragmentManager);
-        adapter.addFragment(new FeaturedMusicFragment());
-        adapter.addFragment(new MyMusicFragment());
-        adapter.addFragment(new LocalEventsFragment());
-        mNavViewPager.setAdapter(adapter);
-
-
         mFabMenu.bringToFront();
         playB.setImageResource(android.R.drawable.ic_media_pause);
-
-
 
 
         mNavigation.setSelectedItemId(R.id.navigation_home);
@@ -180,18 +176,17 @@ public class MainActivity extends AppCompatActivity implements UploadDialog.Song
                     exoPlayer.setPlayWhenReady(false);
                     songPlaying = false;
                     playB.setImageResource(android.R.drawable.ic_media_play);
-                }
-                else{
+                } else{
 
                     exoPlayer.setPlayWhenReady(true);
 
-                        finalTime = exoPlayer.getDuration();
-                        initTxtTime();
-                        if(songAlreadystarted == false) {
-                            initSeekBar();
-                        }
-                        setProgress();
-                        songAlreadystarted = true;
+                    finalTime = exoPlayer.getDuration();
+                    initTxtTime();
+                    if(songAlreadystarted == false) {
+                        initSeekBar();
+                    }
+                    setProgress();
+                    songAlreadystarted = true;
 
                     songPlaying = true;
                     playB.setImageResource(android.R.drawable.ic_media_pause);
@@ -202,16 +197,13 @@ public class MainActivity extends AppCompatActivity implements UploadDialog.Song
         });
 
 
-
-
-
-
     }
 
     private void initTxtTime() {
-        txtCurrentTime = (TextView) findViewById(R.id.time_current);
-        txtEndTime = (TextView) findViewById(R.id.player_end_time);
+        txtCurrentTime = findViewById(R.id.time_current);
+        txtEndTime = findViewById(R.id.player_end_time);
     }
+
     private String stringForTime(int timeMs) {
         StringBuilder mFormatBuilder;
         Formatter mFormatter;
@@ -256,9 +248,8 @@ public class MainActivity extends AppCompatActivity implements UploadDialog.Song
     }
 
 
-
     private void initSeekBar() {
-        playerSeek = (SeekBar) findViewById(R.id.mediacontroller_progress);
+        playerSeek = findViewById(R.id.mediacontroller_progress);
         playerSeek.requestFocus();
 
         playerSeek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -288,16 +279,19 @@ public class MainActivity extends AppCompatActivity implements UploadDialog.Song
 
     }
 
-
-
     @Override
     protected void onStart() {
         super.onStart();
         //checks to see if the user is signed in or not, if not we send them to SignUpActivity
         if (mUser == null) {
             Intent intent = new Intent(this, SignUpActivity.class);
-            startActivity(intent);
+            startActivityForResult(intent, RC_SIGN_IN);
         } else {
+            BottomNavAdapter adapter = new BottomNavAdapter(mFragmentManager);
+            adapter.addFragment(new FeaturedMusicFragment());
+            adapter.addFragment(new PostsFragment());
+            adapter.addFragment(new LocalEventsFragment());
+            mNavViewPager.setAdapter(adapter);
             startLocationService();
         }
     }
@@ -388,11 +382,9 @@ public class MainActivity extends AppCompatActivity implements UploadDialog.Song
                 @Override
                 public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
                     Toast.makeText(getApplicationContext(), "Successful Upload", Toast.LENGTH_SHORT).show();
-                    songRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>()
-                    {
+                    songRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
-                        public void onSuccess(Uri downloadUrl)
-                        {
+                        public void onSuccess(Uri downloadUrl) {
                             addSongToDb(downloadUrl, song);
                         }
                     });
@@ -409,8 +401,6 @@ public class MainActivity extends AppCompatActivity implements UploadDialog.Song
         }
 
     }
-
-
 
     private void addSongToDb(Uri downloadUrl, Song song) {
         String link = downloadUrl.toString();
@@ -444,8 +434,4 @@ public class MainActivity extends AppCompatActivity implements UploadDialog.Song
                 break;
         }
     }
-
-
 }
-
-

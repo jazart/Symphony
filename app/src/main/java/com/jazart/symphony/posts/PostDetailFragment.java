@@ -28,6 +28,10 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 //import com.jazart.symphony.posts.adapters.CommentAdapter;
+/*
+This class loads a detail view of a post with the post title and a list of comments.
+Viewmodel used to pull and push data to the PostViewmodel class
+ */
 
 
 public class PostDetailFragment extends Fragment {
@@ -101,15 +105,6 @@ public class PostDetailFragment extends Fragment {
             Gson gson = new Gson();
             mPost = gson.fromJson(getArguments().getString(ARG_POST),
                     UserPost.class);
-//            List<Comment> comments = new ArrayList<>();
-//
-//            post.setComments(comments);
-//            for (int i = 0; i < 15; i++) {
-//                Comment comment = new Comment();
-//                comment.setAuthorName("Fan" + i);
-//                comment.setContent("Ayeeeee" + i);
-//                post.addComment(comment);
-//            }
 
             mViewModel.loadComments(mPost.getId());
             mViewModel.getComments().observe(this, new Observer<List<Comment>>() {

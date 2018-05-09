@@ -21,6 +21,8 @@ import android.widget.ImageButton;
 import com.bumptech.glide.Glide;
 import com.jazart.symphony.R;
 
+import static com.jazart.symphony.signup.SignupFragment.RC_SIGN_UP;
+
 public class SignUpDialog extends DialogFragment implements DialogInterface.OnClickListener, View.OnClickListener, TextWatcher {
 
     public static final String TAG = "SignUpDialog";
@@ -83,13 +85,13 @@ then sends result back to to the fragment to sign up via firebase
  */
     @Override
     public void onClick(DialogInterface dialogInterface, int i) {
-    //    String email = emailLayout.getEditText().getText().toString();
+        String email = mEmailLayout.getEditText().getText().toString();
 
 
-  //      passwordLayout.setError(getString(R.string.sign_up_pass_error));
-   //     String password = passwordLayout.getEditText().getText().toString();
-  //      if(isValidEmail(email) && isValidPassword(password)) {
-  //          sendResult(RC_SIGN_UP, email, password);
+        String password = mPasswordLayout.getEditText().getText().toString();
+        if (isValidPassword(password)) {
+            sendResult(RC_SIGN_UP, email, password);
+        }
 
     }
 
