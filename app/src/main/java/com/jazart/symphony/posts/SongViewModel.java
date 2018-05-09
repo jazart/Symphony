@@ -12,6 +12,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.jazart.symphony.location.LocationHelper;
 import com.jazart.symphony.model.Song;
 
 import java.util.List;
@@ -31,6 +32,7 @@ public class SongViewModel extends AndroidViewModel {
         super(application);
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
+        mSongsLiveData = LocationHelper.getInstance().getNearbySongs();
     }
 
     public LiveData<List<Song>> getSongs() {
@@ -52,9 +54,7 @@ public class SongViewModel extends AndroidViewModel {
 
                     }
                 });
-
     }
-
 
 
 }

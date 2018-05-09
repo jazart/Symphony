@@ -23,7 +23,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.jazart.symphony.R;
 import com.jazart.symphony.location.LocationHelper;
-import com.jazart.symphony.model.User;
 import com.jazart.symphony.posts.adapters.PostAdapter;
 
 import java.util.List;
@@ -42,7 +41,7 @@ public class MyMusicFragment extends Fragment implements SwipeRefreshLayout.OnRe
     @BindView(R.id.my_songs)
     RecyclerView mRecyclerView;
 
-    private LiveData<List<User>> mNearby;
+    private LiveData<List<UserPost>> mNearby;
     public MyMusicFragment() {
 
     }
@@ -51,7 +50,7 @@ public class MyMusicFragment extends Fragment implements SwipeRefreshLayout.OnRe
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mPostsViewModel = ViewModelProviders.of(this).get(PostsViewModel.class);
-        mNearby = LocationHelper.getInstance().getNearbyUsers();
+        mNearby = LocationHelper.getInstance().getNearbyPosts();
     }
 
     @Nullable
@@ -60,10 +59,15 @@ public class MyMusicFragment extends Fragment implements SwipeRefreshLayout.OnRe
         View v = LayoutInflater.from(getContext()).inflate(R.layout.my_music_fragment, container, false);
         ButterKnife.bind(this, v);
         mRefreshPosts.setOnRefreshListener(this);
-        mNearby.observe(this, new Observer<List<User>>() {
+        mNearby.observe(this, new Observer<List<UserPost>>() {
             @Override
-            public void onChanged(@Nullable List<User> users) {
-
+            public void onChanged(@Nullable List<UserPost> posts) {
+                mPostAdapter = new PostAdapter(getActivity());
+                showProgressBar(true);
+                mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                mRecyclerView.setAdapter(mPostAdapter);
+                mPostAdapter.setPosts(posts);
+                mRefreshPosts.setRefreshing(false);
             }
         });
         return v;
@@ -90,12 +94,12 @@ public class MyMusicFragment extends Fragment implements SwipeRefreshLayout.OnRe
         mPostsViewModel.getUserPosts().addOnCompleteListener(new OnCompleteListener<List<UserPost>>() {
             @Override
             public void onComplete(@NonNull Task<List<UserPost>> task) {
-                mPostAdapter = new PostAdapter(getActivity());
-                showProgressBar(true);
-                mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-                mRecyclerView.setAdapter(mPostAdapter);
-                mPostAdapter.setPosts(task.getResult());
-                mRefreshPosts.setRefreshing(false);
+//                mPostAdapter = new PostAdapter(getActivity());
+//                showProgressBar(true);
+//                mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+//                mRecyclerView.setAdapter(mPostAdapter);
+//                mPostAdapter.setPosts(task.getResult());
+//                mRefreshPosts.setRefreshing(false);
 
             }
         });
