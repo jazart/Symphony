@@ -108,8 +108,7 @@ public class UploadDialog extends DialogFragment  implements DialogInterface.OnC
     @Override
     public void onClick(DialogInterface dialogInterface, int i) {
 
-       // sendResult(Activity.RESULT_OK,mArtists.toString(),mSongTitle.toString());
-        //msong.setArtists(mArtists.toString());
+
         Log.d("DEBUG",mSongTitle.getEditText().getText().toString());
         Log.d("DEBUG",msong.getURI().toString());
         List<String> result = new List<String>() {

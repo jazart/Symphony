@@ -56,7 +56,7 @@ public class FeaturedMusicFragment extends BaseFragment implements SwipeRefreshL
         ButterKnife.bind(this, v);
         mRefreshSongs.setOnRefreshListener(this);
         recMan = new LinearLayoutManager(getContext());
-        //recMan.onScrollStateChanged();
+
 
         mSongsViewModel.getSongs().observe(this, new Observer<List<Song>>() {
             @Override
@@ -90,17 +90,7 @@ public class FeaturedMusicFragment extends BaseFragment implements SwipeRefreshL
     }
 
     private void loadSongs() {
-////        mSongsViewModel.getUserSongs().addOnCompleteListener(new OnCompleteListener<List<Song>>() {
-//            @Override
-//            public void onComplete(@NonNull Task<List<Song>> task) {
-////                mMusicAdapter = new MusicAdapter(getContext());
-////                showProgressBar(true);
-////                mMusicAdapter.setSongs(task.getResult());
-////                mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-////                mRecyclerView.setAdapter(mMusicAdapter);
-////                mRefreshSongs.setRefreshing(false);
-//            }
-//        });
+
     }
 
     private void showProgressBar(boolean isLoaded) {
