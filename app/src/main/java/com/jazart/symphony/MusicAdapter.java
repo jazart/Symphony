@@ -4,6 +4,8 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,14 +32,31 @@ import java.util.List;
 import butterknife.ButterKnife;
 
 import static com.jazart.symphony.MainActivity.exoPlayerC;
+import static com.jazart.symphony.MainActivity.playerView;
+import static com.jazart.symphony.MainActivity.songPlaying;
+import static com.jazart.symphony.MainActivity.playerCreated;
 
 
 
 public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicHolder> {
     private List<Song> mSongs;
     private LayoutInflater mInflater;
-    public SimpleExoPlayer exoPlayer;
-    public Player.EventListener eventListener = new PlayerListener();
+    public static SimpleExoPlayer exoPlayer;
+
+    public Player.EventListener eventListener = new PlayerListener(){
+        @Override
+        public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+            if (playWhenReady && playbackState == Player.STATE_READY) {
+                // media actually playing
+            } else if (playWhenReady) {
+                // might be idle (plays after prepare()),
+                // buffering (plays when data available)
+                // or ended (plays when seek away from end)
+            } else {
+                // player paused in any state
+            }
+        }
+    };
     public static SeekBar seekPlayerProgress;
     public static Handler handler;
     public static ImageButton btnPlay;
@@ -118,8 +137,20 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicHolder>
                     .setExtractorsFactory(new DefaultExtractorsFactory())
                     .createMediaSource(uri);
             exoPlayer.addListener(eventListener);
-
             exoPlayer.prepare(audioSource);
+            playerView.setVisibility(View.VISIBLE);
+            playerCreated.setPlayerBool(true);
+            songPlaying = true;
+            //playerView
+
+//            PlayerFragment fragment = new PlayerFragment();
+//            FragmentManager fm = ((AppCompatActivity) mInflater.getContext())
+//                    .getSupportFragmentManager();
+//            fm.beginTransaction()
+//                            .addToBackStack(null)
+//                            .replace(R.id.frag_pager,fragment)
+//                            .commit();
+
 //            initMediaControls();
         }
 //        public  void initMediaControls() {

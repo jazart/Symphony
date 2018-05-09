@@ -2,11 +2,13 @@ package com.jazart.symphony;
 
 import android.Manifest;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
@@ -14,6 +16,10 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionMenu;
@@ -40,6 +46,9 @@ import com.jazart.symphony.signup.SignUpActivity;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.Formatter;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -49,9 +58,10 @@ import static com.jazart.symphony.Constants.POSTS;
 import static com.jazart.symphony.Constants.SONGS;
 import static com.jazart.symphony.Constants.USERS;
 import static com.jazart.symphony.posts.PostActivity.EXTRA_POST;
+import static com.jazart.symphony.MusicAdapter.exoPlayer;
 
 
-public class MainActivity extends AppCompatActivity implements UploadDialog.SongPost {
+public class MainActivity extends AppCompatActivity implements UploadDialog.SongPost{
 
     public static final FirebaseFirestore sDb = FirebaseFirestore.getInstance();
     public static final int RC_SIGN_IN = 0;
@@ -62,6 +72,7 @@ public class MainActivity extends AppCompatActivity implements UploadDialog.Song
     public static final int RC_LOCATION = 100;
     public static final String EXTRA_USER = "com.jazart.symphony.EXTRA_USER";
     public static  SimpleExoPlayer exoPlayerC;
+    public static boolean songPlaying = false;
 
     @BindView(R.id.navigation)
 
@@ -69,11 +80,20 @@ public class MainActivity extends AppCompatActivity implements UploadDialog.Song
     @BindView(R.id.fab_menu)
     FloatingActionMenu mFabMenu;
 
+    public static PlayerBoolean playerCreated = new PlayerBoolean();
+    private boolean songAlreadystarted = false;
+    private long finalTime;
     private FirebaseAuth mAuth;
     private FirebaseUser mUser;
+    public  TextView txtCurrentTime, txtEndTime;
+    public static LinearLayout playerView;
+    public static SeekBar playerSeek;
+    private Handler handler;
+    @BindView(R.id.btnPlay)
+    public ImageButton playB;
     @BindView(R.id.frag_pager)
     BottomNavViewPager mNavViewPager;
-    private FragmentManager mFragmentManager;
+    public static FragmentManager mFragmentManager;
     private Uri mURI;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -120,6 +140,7 @@ public class MainActivity extends AppCompatActivity implements UploadDialog.Song
         }
     };
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -128,6 +149,11 @@ public class MainActivity extends AppCompatActivity implements UploadDialog.Song
         setContentView(R.layout.activity_main);
         //exoPlayer = ExoPlayerFactory.newInstance(RENDERER_COUNT, minBufferMs, minRebufferMs);
         ButterKnife.bind(this);
+
+        playerView = findViewById(R.id.media_controller);
+        playerView.setVisibility(View.GONE);
+
+        playerSeek = findViewById(R.id.mediacontroller_progress);
 
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
@@ -142,6 +168,7 @@ public class MainActivity extends AppCompatActivity implements UploadDialog.Song
 
 
         mFabMenu.bringToFront();
+        playB.setImageResource(android.R.drawable.ic_media_pause);
 
 
 //        mFragmentManager.beginTransaction().replace(R.id.frag_container, new FeaturedMusicFragment())
@@ -154,8 +181,134 @@ public class MainActivity extends AppCompatActivity implements UploadDialog.Song
             requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION},
                     RC_LOCATION);
         }
+        playerCreated.setListener(new PlayerBoolean.ChangeListener() {
+            @Override
+            public void onChange() {
+                if(playerCreated.isPlayerBool() == true) {
+                    initTxtTime();
+                    initSeekBar();
+                    setProgress();
+                }
+            }
+        });
+        playB.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick (View v) {
+                if (songPlaying == true){
+                    exoPlayer.setPlayWhenReady(false);
+                    songPlaying = false;
+                    playB.setImageResource(android.R.drawable.ic_media_play);
+                }
+                else{
+
+                    exoPlayer.setPlayWhenReady(true);
+
+                        finalTime = exoPlayer.getDuration();
+                        initTxtTime();
+                        if(songAlreadystarted == false) {
+                            initSeekBar();
+                        }
+                        setProgress();
+                        songAlreadystarted = true;
+
+                    songPlaying = true;
+                    playB.setImageResource(android.R.drawable.ic_media_pause);
+                    //playB.setBackgroundResource(R.style.;
+
+                }
+            }
+        });
+
+
+
+
+
 
     }
+
+    private void initTxtTime() {
+        txtCurrentTime = (TextView) findViewById(R.id.time_current);
+        txtEndTime = (TextView) findViewById(R.id.player_end_time);
+    }
+    private String stringForTime(int timeMs) {
+        StringBuilder mFormatBuilder;
+        Formatter mFormatter;
+        mFormatBuilder = new StringBuilder();
+        mFormatter = new Formatter(mFormatBuilder, Locale.getDefault());
+        int totalSeconds =  timeMs / 1000;
+
+        int seconds = totalSeconds % 60;
+        int minutes = (totalSeconds / 60) % 60;
+        int hours   = totalSeconds / 3600;
+
+        mFormatBuilder.setLength(0);
+        if (hours > 0) {
+            return mFormatter.format("%d:%02d:%02d", hours, minutes, seconds).toString();
+        } else {
+            return mFormatter.format("%02d:%02d", minutes, seconds).toString();
+        }
+    }
+
+    private void setProgress() {
+        playerSeek.setProgress(0);
+        playerSeek.setMax((int) exoPlayer.getDuration()/1000);
+        txtCurrentTime.setText(stringForTime((int)exoPlayer.getCurrentPosition()));
+        txtEndTime.setText(stringForTime((int)exoPlayer.getDuration()));
+
+        if(handler == null)handler = new Handler();
+        //Make sure you update Seekbar on UI thread
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                if (exoPlayer != null && songPlaying) {
+                    playerSeek.setMax((int) exoPlayer.getDuration()/1000);
+                    int mCurrentPosition = (int) exoPlayer.getCurrentPosition() / 1000;
+                    playerSeek.setProgress(mCurrentPosition);
+                    txtCurrentTime.setText(stringForTime((int)exoPlayer.getCurrentPosition()));
+                    txtEndTime.setText(stringForTime((int)exoPlayer.getDuration()));
+
+                    handler.postDelayed(this, 1000);
+                }
+            }
+        });
+    }
+
+
+
+    private void initSeekBar() {
+        playerSeek = (SeekBar) findViewById(R.id.mediacontroller_progress);
+        playerSeek.requestFocus();
+
+        playerSeek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if (!fromUser) {
+                    // We're not interested in programmatically generated changes to
+                    // the progress bar's position.
+                    return;
+                }
+
+                exoPlayer.seekTo(progress*1000);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
+        playerSeek.setMax(0);
+        playerSeek.setMax((int) exoPlayer.getDuration()/1000);
+
+    }
+
+
 
     @Override
     protected void onStart() {
@@ -278,6 +431,8 @@ public class MainActivity extends AppCompatActivity implements UploadDialog.Song
 
     }
 
+
+
     private void addSongToDb(Uri downloadUrl, Song song) {
         String link = downloadUrl.toString();
         song.setURI(link);
@@ -310,4 +465,8 @@ public class MainActivity extends AppCompatActivity implements UploadDialog.Song
                 break;
         }
     }
+
+
 }
+
+
