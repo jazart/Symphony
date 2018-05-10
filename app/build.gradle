@@ -6,7 +6,7 @@ android {
         applicationId "com.jazart.symphony"
         minSdkVersion 23
         targetSdkVersion 27
-        versionCode 7
+        versionCode 8
         versionName "0.002"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
