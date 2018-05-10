@@ -81,6 +81,9 @@ public class SignupFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onStart() {
         super.onStart();
+        TermsFragment termsFragment = new TermsFragment();
+        termsFragment.setTargetFragment(this, RC_TERMS);
+        termsFragment.show(getFragmentManager(), null);
 
     }
 
