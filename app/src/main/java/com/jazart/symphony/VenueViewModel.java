@@ -4,9 +4,11 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.net.Uri;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.jazart.symphony.location.LocationHelper;
 import com.jazart.symphony.model.venues.Item;
 import com.jazart.symphony.model.venues.Venue;
 import com.jazart.symphony.model.venues.VenuePicsResponse;
@@ -29,7 +31,7 @@ import retrofit2.Retrofit;
  * Viewmodel class used for loading information from the foursquare api and
  * wrappinng the data in livedata objects for a more reactive interface.
  */
-public class VenueViewModel extends ViewModel {
+public class VenueViewModel extends ViewModel implements SwipeRefreshLayout.OnRefreshListener {
 
     private static final String TAG = "VenueViewModel";
     private Retrofit mService;
@@ -96,7 +98,7 @@ public class VenueViewModel extends ViewModel {
         Map<String, String> options = new HashMap<>();
         options.put("client_id", FoursquareConstants.client_id);
         options.put("client_secret", FoursquareConstants.CLIENT_SECRET);
-        options.put("ll", "32.5,-84.9");
+        options.put("ll", LocationHelper.getInstance().getUserLocation());
         options.put("intent", "checkin");
         options.put("radius", "10000");
         options.put("limit", "10");
@@ -133,5 +135,10 @@ public class VenueViewModel extends ViewModel {
         options.put("limit", "1");
         options.put("v", "20180502");
         return options;
+    }
+
+    @Override
+    public void onRefresh() {
+
     }
 }

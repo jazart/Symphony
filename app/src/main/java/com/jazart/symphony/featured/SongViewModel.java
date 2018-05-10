@@ -1,4 +1,4 @@
-package com.jazart.symphony.posts;
+package com.jazart.symphony.featured;
 
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
@@ -38,6 +38,10 @@ public class SongViewModel extends AndroidViewModel {
 
     public LiveData<List<Song>> getSongs() {
         return mSongsLiveData;
+    }
+
+    public void update() {
+        mSongsLiveData = LocationHelper.getInstance().getNearbySongs();
     }
 
     public Task<List<Song>> getUserSongs() {

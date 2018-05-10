@@ -12,6 +12,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.jazart.symphony.model.Song;
@@ -63,6 +64,12 @@ public class LocationHelper {
         findNearbySongs();
     }
 
+    public String getUserLocation() {
+        GeoPoint geoPoint = mUser.getLocation();
+        String latitude = String.valueOf(geoPoint.getLatitude());
+        String longitude = String.valueOf(geoPoint.getLongitude());
+        return latitude + "," + longitude;
+    }
     public LiveData<List<Song>> getNearbySongs() {
         return mSongs;
     }

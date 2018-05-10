@@ -29,6 +29,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -55,7 +56,7 @@ import butterknife.OnClick;
 import static com.jazart.symphony.Constants.POSTS;
 import static com.jazart.symphony.Constants.SONGS;
 import static com.jazart.symphony.Constants.USERS;
-import static com.jazart.symphony.MusicAdapter.exoPlayer;
+import static com.jazart.symphony.featured.MusicAdapter.exoPlayer;
 import static com.jazart.symphony.posts.PostActivity.EXTRA_POST;
 
 /**
@@ -285,17 +286,23 @@ public class MainActivity extends AppCompatActivity implements UploadDialog.Song
         //checks to see if the user is signed in or not, if not we send them to SignUpActivity
         if (mUser == null) {
             Intent intent = new Intent(this, SignUpActivity.class);
-            startActivityForResult(intent, RC_SIGN_IN);
+            startActivity(intent);
+            finish();
         } else {
+            //startLocationService();
             BottomNavAdapter adapter = new BottomNavAdapter(mFragmentManager);
             adapter.addFragment(new FeaturedMusicFragment());
             adapter.addFragment(new PostsFragment());
             adapter.addFragment(new LocalEventsFragment());
             mNavViewPager.setAdapter(adapter);
-            startLocationService();
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        startLocationService();
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -414,10 +421,26 @@ public class MainActivity extends AppCompatActivity implements UploadDialog.Song
         if (mUser != null) {
             post.setAuthor(mUser.getUid());
             post.setProfilePic(mUser.getPhotoUrl().toString());
-            sDb.collection(POSTS)
-                    .add(post);
-            Toast.makeText(this, "Post Created!", Toast.LENGTH_SHORT)
-                    .show();
+            try {
+                sDb.collection(POSTS)
+                        .add(post).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentReference> task) {
+                        Toast.makeText(MainActivity.this, "Post Created!", Toast.LENGTH_SHORT)
+                                .show();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(MainActivity.this, "Post Failed, have you verified your email?", Toast.LENGTH_SHORT)
+                                .show();
+                    }
+                });
+            } catch (Exception e) {
+                Toast.makeText(MainActivity.this, "Post Failed, have you verified your email?", Toast.LENGTH_SHORT)
+                        .show();
+            }
+
         }
     }
 

@@ -1,5 +1,6 @@
 package com.jazart.symphony.signup;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,6 +20,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
@@ -40,12 +42,14 @@ import static com.jazart.symphony.MainActivity.sDb;
 public class SignupFragment extends Fragment implements View.OnClickListener{
     private static final String TAG = "SignupFragment" ;
     public static final int RC_SIGN_UP = 1;
+    public static final int RC_TERMS = 5;
     private FirebaseAuth mAuth;
     private FirebaseUser mUser;
     private GoogleSignInClient mSignInClient;
     private String mEmail;
     private String mPassword;
     private Uri mPhoto;
+    private String mName;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -69,11 +73,16 @@ public class SignupFragment extends Fragment implements View.OnClickListener{
         //setting on click listener for buttons
         view.findViewById(R.id.google_sign_in_button).setOnClickListener(this);
         view.findViewById(R.id.goog_sign_up_button).setOnClickListener(this);
-        view.findViewById(R.id.email_sign_in_button).setOnClickListener(this);
-        view.findViewById(R.id.email_sign_in_button2).setOnClickListener(this);
+        //view.findViewById(R.id.email_sign_in_button).setOnClickListener(this);
+        // view.findViewById(R.id.email_sign_in_button2).setOnClickListener(this);
         return view;
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+
+    }
 
     @Override
     public void onClick(View view) {
@@ -121,7 +130,13 @@ public class SignupFragment extends Fragment implements View.OnClickListener{
                             getActivity().finish();
                         }
                     }
-                });
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getContext(), "Issue signing in:" + e.getMessage(), Toast.LENGTH_LONG)
+                        .show();
+            }
+        });
     }
 
     private void signUpEmail() {
@@ -135,8 +150,7 @@ public class SignupFragment extends Fragment implements View.OnClickListener{
                             //new user successfully added
                             mUser = mAuth.getCurrentUser();
                             mUser.sendEmailVerification();
-                            setUpUser(mUser, "bob", mPhoto);
-                            getActivity().finish();
+                            setUpUser(mUser, mName, mPhoto);
                         } else {
                             Toast.makeText(getActivity(), "Authentication Failed", Toast.LENGTH_SHORT)
                                     .show();
@@ -149,6 +163,12 @@ public class SignupFragment extends Fragment implements View.OnClickListener{
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        if (requestCode == RC_TERMS && resultCode != Activity.RESULT_OK) {
+            Toast.makeText(getContext(), "You cannot use the app without agreeing to terms",
+                    Toast.LENGTH_LONG)
+                    .show();
+            getActivity().finish();
+        }
         if(requestCode == RC_SIGN_IN && data != null) {
             Task<GoogleSignInAccount> task =
                     GoogleSignIn.getSignedInAccountFromIntent(data);
@@ -163,6 +183,7 @@ public class SignupFragment extends Fragment implements View.OnClickListener{
             mEmail = data.getStringExtra(SignUpDialog.EXTRA_EMAIL);
             mPassword = data.getStringExtra(SignUpDialog.EXTRA_PASSWORD);
             mPhoto = data.getData();
+            mName = data.getStringExtra(SignUpDialog.EXTRA_NAME);
             signUpEmail();
         }
     }
@@ -171,7 +192,6 @@ public class SignupFragment extends Fragment implements View.OnClickListener{
         if(!isAdded()) {
             return;
         }
-        Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
         // [START_EXCLUDE silent]
         //   showProgressDialog();
         // [END_EXCLUDE]
@@ -218,6 +238,7 @@ public class SignupFragment extends Fragment implements View.OnClickListener{
                             Toast.makeText(getContext(), "Successful Sign-Up!", Toast.LENGTH_SHORT)
                                     .show();
                         }
+                        getActivity().finish();
                     }
                 });
     }

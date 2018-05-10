@@ -24,12 +24,11 @@ public class User {
     @SerializedName("numSongs")
     private int mNumSongs;
 
-
     @SerializedName("numPlays")
     private int mNumPlays;
 
     @SerializedName("location")
-    private GeoPoint mGeoPoint;
+    private GeoPoint mLocation;
 
     @SerializedName("city")
     private String mCity;
@@ -91,12 +90,12 @@ public class User {
         mNumPlays = numPlays;
     }
 
-    public GeoPoint getGeoPoint() {
-        return mGeoPoint;
+    public GeoPoint getLocation() {
+        return mLocation;
     }
 
-    public void setGeoPoint(GeoPoint point) {
-        mGeoPoint = point;
+    public void setLocation(GeoPoint point) {
+        mLocation = point;
     }
 
     public String getCity() {

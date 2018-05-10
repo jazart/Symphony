@@ -14,10 +14,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
-import com.jazart.symphony.MusicAdapter;
 import com.jazart.symphony.R;
 import com.jazart.symphony.model.Song;
-import com.jazart.symphony.posts.SongViewModel;
 
 import java.util.List;
 
@@ -90,7 +88,8 @@ public class FeaturedMusicFragment extends Fragment implements SwipeRefreshLayou
     }
 
     private void loadSongs() {
-
+        mRefreshSongs.setRefreshing(false);
+        mSongsViewModel.update();
     }
 
     private void showProgressBar(boolean isLoaded) {

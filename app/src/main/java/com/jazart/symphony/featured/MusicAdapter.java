@@ -1,17 +1,13 @@
-package com.jazart.symphony;
+package com.jazart.symphony.featured;
 
 import android.content.Context;
 import android.net.Uri;
-import android.os.Handler;
 import android.support.annotation.NonNull;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.google.android.exoplayer2.DefaultLoadControl;
@@ -25,6 +21,8 @@ import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
+import com.jazart.symphony.PlayerListener;
+import com.jazart.symphony.R;
 import com.jazart.symphony.model.Song;
 
 import java.util.List;
@@ -32,9 +30,9 @@ import java.util.List;
 import butterknife.ButterKnife;
 
 import static com.jazart.symphony.MainActivity.exoPlayerC;
+import static com.jazart.symphony.MainActivity.playerCreated;
 import static com.jazart.symphony.MainActivity.playerView;
 import static com.jazart.symphony.MainActivity.songPlaying;
-import static com.jazart.symphony.MainActivity.playerCreated;
 
 
 

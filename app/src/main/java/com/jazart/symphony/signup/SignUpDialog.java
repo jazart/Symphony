@@ -29,6 +29,7 @@ public class SignUpDialog extends DialogFragment implements DialogInterface.OnCl
     public static final String EXTRA_EMAIL = "com.jazart.symphony.extra_email";
     public static final String EXTRA_PASSWORD = "com.jazart.symphony.extra_password";
     public static final String EXTRA_PHOTO = "com.jazart.symphony.extra_photo";
+    public static final String EXTRA_NAME = "com.jazart.symphony.extra_name";
     private static final int MIN_PASS_LENGTH = 8;
 
     private View mView;
@@ -43,10 +44,7 @@ public class SignUpDialog extends DialogFragment implements DialogInterface.OnCl
     private TextInputEditText mVerifyPassEt;
 
 
-
-
-
-    private void sendResult(int resultCode, String email, String password) {
+    private void sendResult(int resultCode, String email, String password, String name) {
         if(getTargetFragment() == null) {
             return;
         }
@@ -54,6 +52,7 @@ public class SignUpDialog extends DialogFragment implements DialogInterface.OnCl
         intent.putExtra(EXTRA_EMAIL, email);
         intent.putExtra(EXTRA_PASSWORD, password);
         intent.putExtra(EXTRA_PHOTO, selectedImg);
+        intent.putExtra(EXTRA_NAME, name);
         getTargetFragment().onActivityResult(getTargetRequestCode(), resultCode, intent);
     }
 
@@ -66,6 +65,7 @@ public class SignUpDialog extends DialogFragment implements DialogInterface.OnCl
         mEmailLayout = mView.findViewById(R.id.sign_up_email);
         mPasswordLayout = mView.findViewById(R.id.sign_up_password);
         mVerifyPassLayout = mView.findViewById(R.id.sign_up_reenter_password);
+        mNameLayout = mView.findViewById(R.id.sign_up_name_til);
         mVerifyPassEt = (TextInputEditText) mVerifyPassLayout.getEditText();
         mVerifyPassEt.addTextChangedListener(this);
         mPassEt = (TextInputEditText) mPasswordLayout.getEditText();
@@ -89,8 +89,9 @@ then sends result back to to the fragment to sign up via firebase
 
 
         String password = mPasswordLayout.getEditText().getText().toString();
-        if (isValidPassword(password)) {
-            sendResult(RC_SIGN_UP, email, password);
+        if (isValidPassword(password) && mNameLayout.getEditText().getText() != null) {
+            String name = mNameLayout.getEditText().getText().toString();
+            sendResult(RC_SIGN_UP, email, password, name);
         }
 
     }
