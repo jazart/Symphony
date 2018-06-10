@@ -35,7 +35,6 @@ public class NewPostFragment extends android.support.v4.app.Fragment {
     @BindView(R.id.new_post_body)
     TextInputEditText mBody;
 
-    //    private Post mPost;
     private PostsViewModel mPostsViewModel;
 
     @Override
