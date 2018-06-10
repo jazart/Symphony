@@ -7,19 +7,27 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.TextView;
 
 import com.jazart.symphony.R;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class TermsFragment extends DialogFragment {
 
+    @BindView(R.id.terms)
+    TextView mTerms;
 
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         View v = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_terms, null);
-
+        ButterKnife.bind(this, v);
+        mTerms.setMovementMethod(new ScrollingMovementMethod());
         return new AlertDialog.Builder(getContext())
                 .setView(v)
                 .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {

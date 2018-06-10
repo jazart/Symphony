@@ -6,9 +6,11 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -54,9 +56,35 @@ public class PostsViewModel extends AndroidViewModel {
         LocationHelper.getInstance().update();
     }
 
+    public void addToDb(@NonNull UserPost post) {
+        if (mUser != null) {
+            post.setAuthor(mUser.getUid());
+            post.setProfilePic(mUser.getPhotoUrl().toString());
+            try {
+                sDb.collection(POSTS)
+                        .add(post).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentReference> task) {
+                        Toast.makeText(getApplication(), "Post Created!", Toast.LENGTH_SHORT)
+                                .show();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+//                        Toast.makeText(MainActivity.this, "Post Failed, have you verified your email?", Toast.LENGTH_SHORT)
+//                                .show();
+                    }
+                });
+            } catch (Exception e) {
+//                Toast.makeText(MainActivity.this, "Post Failed, have you verified your email?", Toast.LENGTH_SHORT)
+//                        .show();
+            }
+
+        }
+    }
+
+
     public Task<List<UserPost>> getUserPosts() {
-
-
         Query query = sDb.collection(POSTS)
                 .whereEqualTo("author", mUser.getUid())
                 .orderBy("postDate");
@@ -69,7 +97,6 @@ public class PostsViewModel extends AndroidViewModel {
                         return snapshot.toObjects(UserPost.class);
                     }
                 });
-
     }
 
     public void deletePost(String postId) {

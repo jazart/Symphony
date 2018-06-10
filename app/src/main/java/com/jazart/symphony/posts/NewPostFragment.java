@@ -1,7 +1,7 @@
 package com.jazart.symphony.posts;
 
 
-import android.content.Context;
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -35,15 +35,13 @@ public class NewPostFragment extends android.support.v4.app.Fragment {
     @BindView(R.id.new_post_body)
     TextInputEditText mBody;
 
-    private Post mPost;
+    //    private Post mPost;
+    private PostsViewModel mPostsViewModel;
 
-    @OnClick(R.id.button)
-    public void submit() {
-        UserPost post = new UserPost.Builder()
-                .title(mTitle.getText().toString())
-                .body(mBody.getText().toString())
-                .build();
-        mPost.onUserPost(post);
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mPostsViewModel = ViewModelProviders.of(this).get(PostsViewModel.class);
     }
 
     @Nullable
@@ -55,33 +53,13 @@ public class NewPostFragment extends android.support.v4.app.Fragment {
         return v;
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        try {
-            mPost = (Post) context;
-        } catch (ClassCastException e) {
-            e.printStackTrace();
-        }
+    @OnClick(R.id.button)
+    public void submit() {
+        UserPost post = new UserPost.Builder()
+                .title(mTitle.getText().toString())
+                .body(mBody.getText().toString())
+                .build();
+        mPostsViewModel.addToDb(post);
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-//        getActivity().setTheme(R.style.Theme_AppCompat_NoActionBar);
-
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (getActivity() != null) {
-//            getActivity().setTheme(R.style.AppTheme);
-        }
-    }
-
-
-    public interface Post {
-        void onUserPost(@NonNull UserPost post);
-    }
 }
