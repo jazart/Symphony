@@ -17,10 +17,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-/*
-Fragment for creating a new post for the user. Uses a callback to the post activity to
-send the resulting post object back to
- */
 
 public class NewPostFragment extends android.support.v4.app.Fragment {
     @BindView(R.id.new_post_title_til)

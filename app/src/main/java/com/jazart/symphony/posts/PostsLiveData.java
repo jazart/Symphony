@@ -1,11 +1,11 @@
 package com.jazart.symphony.posts;
 
 import android.arch.lifecycle.LiveData;
-import android.support.annotation.Nullable;
+import android.support.annotation.NonNull;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -22,14 +22,14 @@ public class PostsLiveData extends LiveData {
 
     @Override
     protected void onActive() {
-        mQuery.addSnapshotListener(new EventListener<QuerySnapshot>() {
+        super.onActive();
+        mQuery.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
-            public void onEvent(@Nullable QuerySnapshot snapshots, @Nullable FirebaseFirestoreException e) {
-                if (snapshots != null) {
-                    setValue(snapshots.toObjects(UserPost.class));
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    setValue(task.getResult().toObjects(UserPost.class));
                 }
             }
         });
     }
-
 }

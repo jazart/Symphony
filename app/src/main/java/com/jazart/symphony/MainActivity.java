@@ -143,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
         playerCreated.setListener(new PlayerBoolean.ChangeListener() {
             @Override
             public void onChange() {
-                if(playerCreated.isPlayerBool() == true) {
+                if (playerCreated.isPlayerBool()) {
                     initTxtTime();
                     initSeekBar();
                     setProgress();
@@ -154,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onClick (View v) {
-                if (songPlaying == true){
+                if (songPlaying) {
                     exoPlayer.setPlayWhenReady(false);
                     songPlaying = false;
                     playB.setImageResource(android.R.drawable.ic_media_play);
@@ -164,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
 
                     finalTime = exoPlayer.getDuration();
                     initTxtTime();
-                    if(songAlreadystarted == false) {
+                    if (!songAlreadystarted) {
                         initSeekBar();
                     }
                     setProgress();

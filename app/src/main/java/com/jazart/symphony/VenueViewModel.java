@@ -8,7 +8,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.jazart.symphony.location.LocationHelper;
+import com.jazart.symphony.location.LocationHelperRepo;
 import com.jazart.symphony.model.venues.Item;
 import com.jazart.symphony.model.venues.Venue;
 import com.jazart.symphony.model.venues.VenuePicsResponse;
@@ -98,7 +98,7 @@ public class VenueViewModel extends ViewModel implements SwipeRefreshLayout.OnRe
         Map<String, String> options = new HashMap<>();
         options.put("client_id", FoursquareConstants.client_id);
         options.put("client_secret", FoursquareConstants.CLIENT_SECRET);
-        options.put("ll", LocationHelper.getInstance().getUserLocation());
+        options.put("ll", LocationHelperRepo.getInstance().getUserLocation());
         options.put("intent", "checkin");
         options.put("radius", "10000");
         options.put("limit", "10");

@@ -21,7 +21,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.jazart.symphony.location.LocationHelper;
+import com.jazart.symphony.location.LocationHelperRepo;
 import com.jazart.symphony.model.Song;
 
 import java.io.FileNotFoundException;
@@ -45,7 +45,7 @@ public class SongViewModel extends AndroidViewModel {
         super(application);
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
-        mSongsLiveData = LocationHelper.getInstance().getNearbySongs();
+        mSongsLiveData = LocationHelperRepo.getInstance().getNearbySongs();
     }
 
     public LiveData<List<Song>> getSongs() {
@@ -53,7 +53,7 @@ public class SongViewModel extends AndroidViewModel {
     }
 
     public void update() {
-        mSongsLiveData = LocationHelper.getInstance().getNearbySongs();
+        mSongsLiveData = LocationHelperRepo.getInstance().getNearbySongs();
     }
 
     public Task<List<Song>> getUserSongs() {

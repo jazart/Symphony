@@ -18,7 +18,7 @@ public class NetworkService {
 
     public static NetworkService get() {
         if (sINSTANCE == null) {
-            return new NetworkService();
+            sINSTANCE = new NetworkService();
         }
 
         return sINSTANCE;

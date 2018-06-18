@@ -3,7 +3,6 @@ package com.jazart.symphony.location;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -25,23 +24,23 @@ import java.util.List;
 import static com.jazart.symphony.Constants.POSTS;
 import static com.jazart.symphony.Constants.SONGS;
 import static com.jazart.symphony.Constants.USERS;
-import static com.jazart.symphony.MainActivity.TAG;
 import static com.jazart.symphony.MainActivity.sDb;
 
-/*
+/**
 singleton class that serves as a hub for querying and propagating localized data to our other fragment classes
 to render them in the ui
 Here we make several calls to find users in the same city and expose their posts and data to other users
  */
-public class LocationHelper {
-    private static LocationHelper INSTANCE;
+
+public class LocationHelperRepo {
+    private static LocationHelperRepo INSTANCE;
     private User mUser;
     private DocumentReference mReference;
     private MutableLiveData<List<User>> mNearbyUsers;
     private MutableLiveData<List<UserPost>> mPosts;
     private MutableLiveData<List<Song>> mSongs;
 
-    private LocationHelper(String uId) {
+    private LocationHelperRepo(String uId) {
         mReference = sDb.collection(USERS).document(uId);
         mNearbyUsers = new MutableLiveData<>();
         mSongs = new MutableLiveData<>();
@@ -49,9 +48,9 @@ public class LocationHelper {
         getUserById();
     }
 
-    public static LocationHelper getInstance() {
+    public static LocationHelperRepo getInstance() {
         if (INSTANCE == null) {
-            INSTANCE = new LocationHelper(FirebaseAuth.getInstance().getUid());
+            INSTANCE = new LocationHelperRepo(FirebaseAuth.getInstance().getUid());
         }
 
         return INSTANCE;
@@ -65,16 +64,19 @@ public class LocationHelper {
     }
 
     public String getUserLocation() {
-        GeoPoint geoPoint = mUser.getLocation();
-        String latitude = String.valueOf(geoPoint.getLatitude());
-        String longitude = String.valueOf(geoPoint.getLongitude());
-        return latitude + "," + longitude;
+        if (mUser.getLocation() != null) {
+            GeoPoint geoPoint = mUser.getLocation();
+            String latitude = String.valueOf(geoPoint.getLatitude());
+            String longitude = String.valueOf(geoPoint.getLongitude());
+            return latitude + "," + longitude;
+        }
+        return "Unknown";
     }
     public LiveData<List<Song>> getNearbySongs() {
         return mSongs;
     }
 
-    public LiveData<List<User>> getNearbyUsers() {
+    private LiveData<List<User>> getNearbyUsers() {
         return mNearbyUsers;
     }
 
@@ -145,10 +147,9 @@ public class LocationHelper {
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Log.wtf(TAG, "WHY THE FUKC WONT YOU LOADDDD");
+
                         }
                     });
-
         }
     }
 

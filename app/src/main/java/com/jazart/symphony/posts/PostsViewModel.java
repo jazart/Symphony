@@ -1,24 +1,17 @@
 package com.jazart.symphony.posts;
 
-import android.app.Application;
-import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.net.Uri;
 import android.support.annotation.NonNull;
-import android.widget.Toast;
 
-import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.jazart.symphony.location.LocationHelper;
 
 import java.util.List;
 
@@ -29,23 +22,24 @@ import static com.jazart.symphony.MainActivity.sDb;
  * This class serves as a data manager for the Post List and Post Detail screens.
  * Here we get data from the database and have them wrapped in livedata objects for a more reactive interface
  */
-public class PostsViewModel extends AndroidViewModel {
+public class PostsViewModel extends BaseViewModel {
     private FirebaseAuth mAuth;
     private FirebaseUser mUser;
     private LiveData<List<UserPost>> mUserPostsLiveData;
     private MutableLiveData<List<Comment>> mComments;
     private PostsLiveData mPostsLiveData;
 
-    public PostsViewModel(@NonNull Application application) {
-        super(application);
+    public PostsViewModel() {
+        super();
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
-        mUserPostsLiveData = LocationHelper.getInstance().getNearbyPosts();
+        mUserPostsLiveData = getLocationRepo().getNearbyPosts();
         mComments = new MutableLiveData<>();
+        mPostsLiveData = getFirebaseRepo().getUserPosts();
     }
 
-    public LiveData<List<UserPost>> getPosts() {
-        return mUserPostsLiveData;
+    public LiveData<List<UserPost>> getUserPostsLiveData() {
+        return getLocationRepo().getNearbyPosts();
     }
 
     public LiveData<List<Comment>> getComments() {
@@ -53,53 +47,15 @@ public class PostsViewModel extends AndroidViewModel {
     }
 
     public void update() {
-        LocationHelper.getInstance().update();
+        refreshContent();
     }
 
     public void addToDb(@NonNull UserPost post) {
-        if (mUser != null) {
-            post.setAuthor(mUser.getUid());
-            post.setProfilePic(mUser.getPhotoUrl().toString());
-            try {
-                sDb.collection(POSTS)
-                        .add(post).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentReference> task) {
-                        Toast.makeText(getApplication(), "Post Created!", Toast.LENGTH_SHORT)
-                                .show();
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-//                        Toast.makeText(MainActivity.this, "Post Failed, have you verified your email?", Toast.LENGTH_SHORT)
-//                                .show();
-                    }
-                });
-            } catch (Exception e) {
-//                Toast.makeText(MainActivity.this, "Post Failed, have you verified your email?", Toast.LENGTH_SHORT)
-//                        .show();
-            }
-
-        }
-    }
-
-
-    public Task<List<UserPost>> getUserPosts() {
-        Query query = sDb.collection(POSTS)
-                .whereEqualTo("author", mUser.getUid())
-                .orderBy("postDate");
-
-        return query.get()
-                .continueWith(new Continuation<QuerySnapshot, List<UserPost>>() {
-                    @Override
-                    public List<UserPost> then(@NonNull Task<QuerySnapshot> task) {
-                        QuerySnapshot snapshot = task.getResult();
-                        return snapshot.toObjects(UserPost.class);
-                    }
-                });
+        getFirebaseRepo().addPostToDb(post);
     }
 
     public void deletePost(String postId) {
+
     }
 
     public void addComment(Comment comment, String id) {

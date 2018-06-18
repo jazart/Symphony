@@ -12,7 +12,6 @@ and then send the information back to the main activity so the post can
 be added to the database.
  */
 public class PostActivity extends AppCompatActivity {
-    public static final String EXTRA_POST = "com.jazart.symphony.extraPost";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
