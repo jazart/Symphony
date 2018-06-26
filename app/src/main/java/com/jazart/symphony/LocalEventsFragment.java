@@ -26,7 +26,7 @@ import butterknife.ButterKnife;
  * their area. Gets its information fromt he venue viewmodel class
  */
 public class LocalEventsFragment extends Fragment {
-    @BindView(R.id.my_songs)
+    @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
     @BindView(R.id.post_load_progress)
     ProgressBar mPostLoadProgress;

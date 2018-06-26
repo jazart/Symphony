@@ -2,14 +2,16 @@ package com.jazart.symphony.location
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.jazart.symphony.Constants.POSTS
+import com.jazart.symphony.posts.Comment
 import com.jazart.symphony.posts.PostsLiveData
 import com.jazart.symphony.posts.UserPost
 
-class FirebaseRepo(val currentUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser,
-                   val auth: FirebaseAuth = FirebaseAuth.getInstance(),
-                   val db: FirebaseFirestore = FirebaseFirestore.getInstance()) {
+class FirebaseRepo(private val currentUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser,
+                   private val auth: FirebaseAuth = FirebaseAuth.getInstance(),
+                   private val db: FirebaseFirestore = FirebaseFirestore.getInstance()) {
 
 
     val firebaseRepoInstance by lazy {
@@ -20,10 +22,9 @@ class FirebaseRepo(val currentUser: FirebaseUser? = FirebaseAuth.getInstance().c
         post.author = currentUser?.uid
         post.profilePic = currentUser?.photoUrl.toString()
         db.collection(POSTS)
-                .add(post).addOnCompleteListener {
-                    //success msg
-                }
+                .add(post).addOnCompleteListener {}
                 .addOnFailureListener {}
+        db.collection(POSTS)
     }
 
     fun getUserPosts(): PostsLiveData {
@@ -37,6 +38,17 @@ class FirebaseRepo(val currentUser: FirebaseUser? = FirebaseAuth.getInstance().c
         db.collection(POSTS)
                 .document(postId)
                 .delete()
+
+    }
+
+    fun addPostComment(comment: Comment?, id: String?) {
+        var reference: CollectionReference
+        id?.let { postId ->
+            reference = db.collection(POSTS).document(postId).collection("comments")
+            comment?.let { postComment ->
+                reference.add(postComment).addOnCompleteListener { }
+            }
+        }
     }
 
 }

@@ -33,7 +33,7 @@ public class CollabMusicFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = LayoutInflater.from(getContext()).inflate(R.layout.collab_music_fragment, container, false);
-        RecyclerView recyclerView = v.findViewById(R.id.my_songs);
+        RecyclerView recyclerView = v.findViewById(R.id.recycler_view);
         recyclerView.setAdapter(mMusicAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 

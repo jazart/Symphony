@@ -10,7 +10,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.List;
@@ -55,17 +54,12 @@ public class PostsViewModel extends BaseViewModel {
     }
 
     public void deletePost(String postId) {
-
+        getFirebaseRepo().deletePost(postId);
+        refreshContent();
     }
 
     public void addComment(Comment comment, String id) {
-        CollectionReference reference = sDb.collection(POSTS).document(id).collection("comments");
-        reference.add(comment).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentReference> task) {
-
-            }
-        });
+        addComment(comment, id);
     }
 
     public void loadComments(String id) {

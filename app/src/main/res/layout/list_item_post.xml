@@ -30,11 +30,18 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
+            <ImageView
+                android:id="@+id/delete_post_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:srcCompat="@android:drawable/ic_delete" />
+
             <TextView
                 android:id="@+id/post_title"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="4"
+                android:layout_weight="6"
                 android:paddingEnd="16dp"
                 android:paddingStart="16dp"
 
@@ -44,7 +51,7 @@
                 android:id="@+id/post_author"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:paddingEnd="16dp"
                 android:paddingStart="16dp" />
 
@@ -55,7 +62,7 @@
 
                 android:layout_marginBottom="8dp"
                 android:layout_marginTop="8dp"
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/linearLayout"
