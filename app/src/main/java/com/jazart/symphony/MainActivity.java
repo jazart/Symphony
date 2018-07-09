@@ -77,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
     public  TextView txtCurrentTime, txtEndTime;
     public static LinearLayout playerView;
     public static SeekBar playerSeek;
+    public static MusicControls playerControls;
     private Handler handler;
     @BindView(R.id.btnPlay)
     public ImageButton playB;
@@ -146,9 +147,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onChange() {
                 if (playerCreated.isPlayerBool()) {
-                    initTxtTime();
-                    initSeekBar();
-                    setProgress();
+                    playerControls = new MusicControls(MainActivity.this);
+                    playerControls.initTxtTime();
+                    playerControls.initSeekBar();
+                    playerControls.setProgress();
                 }
             }
         });
@@ -165,11 +167,11 @@ public class MainActivity extends AppCompatActivity {
                     exoPlayer.setPlayWhenReady(true);
 
                     finalTime = exoPlayer.getDuration();
-                    initTxtTime();
+                    playerControls.initTxtTime();
                     if (!songAlreadystarted) {
-                        initSeekBar();
+                        playerControls.initSeekBar();
                     }
-                    setProgress();
+                    playerControls.setProgress();
                     songAlreadystarted = true;
 
                     songPlaying = true;
@@ -183,85 +185,85 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void initTxtTime() {
-        txtCurrentTime = findViewById(R.id.time_current);
-        txtEndTime = findViewById(R.id.player_end_time);
-    }
-
-    private String stringForTime(int timeMs) {
-        StringBuilder mFormatBuilder;
-        Formatter mFormatter;
-        mFormatBuilder = new StringBuilder();
-        mFormatter = new Formatter(mFormatBuilder, Locale.getDefault());
-        int totalSeconds =  timeMs / 1000;
-
-        int seconds = totalSeconds % 60;
-        int minutes = (totalSeconds / 60) % 60;
-        int hours   = totalSeconds / 3600;
-
-        mFormatBuilder.setLength(0);
-        if (hours > 0) {
-            return mFormatter.format("%d:%02d:%02d", hours, minutes, seconds).toString();
-        } else {
-            return mFormatter.format("%02d:%02d", minutes, seconds).toString();
-        }
-    }
-
-    private void setProgress() {
-        playerSeek.setProgress(0);
-        playerSeek.setMax((int) exoPlayer.getDuration()/1000);
-        txtCurrentTime.setText(stringForTime((int)exoPlayer.getCurrentPosition()));
-        txtEndTime.setText(stringForTime((int)exoPlayer.getDuration()));
-
-        if(handler == null)handler = new Handler();
-        //Make sure you update Seekbar on UI thread
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
-                if (exoPlayer != null && songPlaying) {
-                    playerSeek.setMax((int) exoPlayer.getDuration()/1000);
-                    int mCurrentPosition = (int) exoPlayer.getCurrentPosition() / 1000;
-                    playerSeek.setProgress(mCurrentPosition);
-                    txtCurrentTime.setText(stringForTime((int)exoPlayer.getCurrentPosition()));
-                    txtEndTime.setText(stringForTime((int)exoPlayer.getDuration()));
-
-                    handler.postDelayed(this, 1000);
-                }
-            }
-        });
-    }
-
-
-    private void initSeekBar() {
-        playerSeek = findViewById(R.id.mediacontroller_progress);
-        playerSeek.requestFocus();
-
-        playerSeek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if (!fromUser) {
-
-                    return;
-                }
-
-                exoPlayer.seekTo(progress*1000);
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
-
-        playerSeek.setMax(0);
-        playerSeek.setMax((int) exoPlayer.getDuration()/1000);
-
-    }
+//    private void initTxtTime() {
+//        txtCurrentTime = findViewById(R.id.time_current);
+//        txtEndTime = findViewById(R.id.player_end_time);
+//    }
+//
+//    private String stringForTime(int timeMs) {
+//        StringBuilder mFormatBuilder;
+//        Formatter mFormatter;
+//        mFormatBuilder = new StringBuilder();
+//        mFormatter = new Formatter(mFormatBuilder, Locale.getDefault());
+//        int totalSeconds =  timeMs / 1000;
+//
+//        int seconds = totalSeconds % 60;
+//        int minutes = (totalSeconds / 60) % 60;
+//        int hours   = totalSeconds / 3600;
+//
+//        mFormatBuilder.setLength(0);
+//        if (hours > 0) {
+//            return mFormatter.format("%d:%02d:%02d", hours, minutes, seconds).toString();
+//        } else {
+//            return mFormatter.format("%02d:%02d", minutes, seconds).toString();
+//        }
+//    }
+//
+//    private void setProgress() {
+//        playerSeek.setProgress(0);
+//        playerSeek.setMax((int) exoPlayer.getDuration()/1000);
+//        txtCurrentTime.setText(stringForTime((int)exoPlayer.getCurrentPosition()));
+//        txtEndTime.setText(stringForTime((int)exoPlayer.getDuration()));
+//
+//        if(handler == null)handler = new Handler();
+//        //Make sure you update Seekbar on UI thread
+//        handler.post(new Runnable() {
+//            @Override
+//            public void run() {
+//                if (exoPlayer != null && songPlaying) {
+//                    playerSeek.setMax((int) exoPlayer.getDuration()/1000);
+//                    int mCurrentPosition = (int) exoPlayer.getCurrentPosition() / 1000;
+//                    playerSeek.setProgress(mCurrentPosition);
+//                    txtCurrentTime.setText(stringForTime((int)exoPlayer.getCurrentPosition()));
+//                    txtEndTime.setText(stringForTime((int)exoPlayer.getDuration()));
+//
+//                    handler.postDelayed(this, 1000);
+//                }
+//            }
+//        });
+//    }
+//
+//
+//    private void initSeekBar() {
+//        playerSeek = findViewById(R.id.mediacontroller_progress);
+//        playerSeek.requestFocus();
+//
+//        playerSeek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+//            @Override
+//            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+//                if (!fromUser) {
+//
+//                    return;
+//                }
+//
+//                exoPlayer.seekTo(progress*1000);
+//            }
+//
+//            @Override
+//            public void onStartTrackingTouch(SeekBar seekBar) {
+//
+//            }
+//
+//            @Override
+//            public void onStopTrackingTouch(SeekBar seekBar) {
+//
+//            }
+//        });
+//
+//        playerSeek.setMax(0);
+//        playerSeek.setMax((int) exoPlayer.getDuration()/1000);
+//
+//    }
 
     @Override
     protected void onStart() {
