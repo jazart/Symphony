@@ -118,6 +118,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
         setContentView(R.layout.activity_main);
+        ButterKnife.setDebug(true);
+
         ButterKnife.bind(this);
 
         playerView = findViewById(R.id.media_controller);
@@ -129,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
         mUser = mAuth.getCurrentUser();
         mFragmentManager = getSupportFragmentManager();
 
-        mFabMenu.bringToFront();
+        //  mFabMenu.bringToFront();
         playB.setImageResource(android.R.drawable.ic_media_pause);
 
 

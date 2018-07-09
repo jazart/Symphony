@@ -15,9 +15,13 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
 import com.jazart.symphony.R;
+import com.jazart.symphony.di.App;
+import com.jazart.symphony.di.SimpleViewModelFactory;
 import com.jazart.symphony.model.Song;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -26,6 +30,8 @@ import butterknife.ButterKnife;
 public class FeaturedMusicFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     private MusicAdapter mMusicAdapter;
     private SongViewModel mSongsViewModel;
+    @Inject
+    SimpleViewModelFactory mViewModelFactory;
     private LinearLayoutManager recMan;
     @BindView(R.id.swipeRefreshLayout)
     SwipeRefreshLayout mRefreshSongs;
@@ -43,8 +49,6 @@ public class FeaturedMusicFragment extends Fragment implements SwipeRefreshLayou
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mSongsViewModel = ViewModelProviders.of(this).get(SongViewModel.class);
-
     }
 
     @Nullable
@@ -52,6 +56,10 @@ public class FeaturedMusicFragment extends Fragment implements SwipeRefreshLayou
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = LayoutInflater.from(getContext()).inflate(R.layout.feature_music_fragment, container, false);
         ButterKnife.bind(this, v);
+        App app = (App) requireActivity().getApplication();
+        app.component.inject(this);
+        mSongsViewModel = ViewModelProviders.of(this, mViewModelFactory)
+                .get(SongViewModel.class);
         mRefreshSongs.setOnRefreshListener(this);
         recMan = new LinearLayoutManager(getContext());
 
