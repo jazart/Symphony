@@ -65,7 +65,7 @@ dependencies {
 
     //view binding butterknife
     implementation 'com.jakewharton:butterknife:8.8.1'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+    kapt 'com.jakewharton:butterknife-compiler:8.8.1'
 
     //aac
     implementation 'android.arch.lifecycle:extensions:1.1.1'
