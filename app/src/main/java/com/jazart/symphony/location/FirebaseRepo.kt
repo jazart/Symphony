@@ -5,6 +5,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.jazart.symphony.Constants.POSTS
+import com.jazart.symphony.model.Song
 import com.jazart.symphony.posts.Comment
 import com.jazart.symphony.posts.PostsLiveData
 import com.jazart.symphony.posts.UserPost
@@ -49,6 +50,10 @@ class FirebaseRepo(private val currentUser: FirebaseUser? = FirebaseAuth.getInst
                 reference.add(postComment).addOnCompleteListener { }
             }
         }
+    }
+
+    fun addSongToStorage(song: Song) {
+
     }
 
 }
