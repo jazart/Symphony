@@ -17,8 +17,6 @@ public class PlayerBoolean {
         if (listener != null) listener.onChange();
     }
 
-
-
     public ChangeListener getListener() {
         return listener;
     }

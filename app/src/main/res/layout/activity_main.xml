@@ -34,21 +34,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:menu_colorNormal="@color/colorAccent">
 
-        <!--<com.github.clans.fab.FloatingActionButton-->
-        <!--android:id="@+id/fab_gototop"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content" />-->
-
-        <!--<com.github.clans.fab.FloatingActionButton-->
-        <!--android:id="@+id/fab_search"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content" />-->
-
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/fab_upload"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_file_upload_black_24dp"
+            android:src="@drawable/ic_file_upload_white_24dp"
             app:fab_colorNormal="@color/colorAccent" />
 
         <com.github.clans.fab.FloatingActionButton
@@ -80,9 +70,9 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="#CC000000"
+        android:background="@android:color/transparent"
         android:orientation="vertical"
-
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/frag_container"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -96,6 +86,7 @@
 
             <ImageButton
                 android:id="@+id/btnPlay"
+                android:src="@drawable/exo_controls_play"
                 style="@android:style/MediaButton.Play" />
 
         </LinearLayout>

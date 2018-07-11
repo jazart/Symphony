@@ -1,10 +1,17 @@
 package com.jazart.symphony.di
 
-import android.app.Activity
 import android.app.Application
 import android.content.Context
 import android.content.res.Resources
+import com.google.android.exoplayer2.DefaultLoadControl
+import com.google.android.exoplayer2.DefaultRenderersFactory
+import com.google.android.exoplayer2.ExoPlayerFactory
+import com.google.android.exoplayer2.SimpleExoPlayer
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
+import com.jazart.symphony.MainActivity
 import com.jazart.symphony.featured.FeaturedMusicFragment
+import com.jazart.symphony.featured.MusicAdapter
+import com.jazart.symphony.posts.UploadDialog
 import dagger.Component
 import dagger.Module
 import dagger.Provides
@@ -24,7 +31,6 @@ class App : Application() {
     }
 
 }
-
 
 @Module
 class AppModule(private val app: App) {
@@ -49,12 +55,20 @@ class AppModule(private val app: App) {
     @Provides
     fun provideMusicFragment(): FeaturedMusicFragment = FeaturedMusicFragment()
 
+    @Singleton
+    @Provides
+    fun provideSimpleExoPlayer(): SimpleExoPlayer = ExoPlayerFactory.newSimpleInstance(
+            DefaultRenderersFactory(app.applicationContext),
+            DefaultTrackSelector(),
+            DefaultLoadControl())
 }
 
 @Singleton
 @Component(modules = [(AppModule::class)])
 interface AppComponent {
     fun inject(app: App)
-    fun inject(activity: Activity)
+    fun inject(activity: MainActivity)
     fun inject(fragment: FeaturedMusicFragment)
+    fun inject(fragment: UploadDialog)
+    fun inject(adapter: MusicAdapter)
 }

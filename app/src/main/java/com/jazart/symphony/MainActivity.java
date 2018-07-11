@@ -25,6 +25,7 @@ import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.jazart.symphony.di.App;
 import com.jazart.symphony.featured.FeaturedMusicFragment;
 import com.jazart.symphony.location.LocationIntentService;
 import com.jazart.symphony.posts.PostActivity;
@@ -34,12 +35,13 @@ import com.jazart.symphony.signup.SignUpActivity;
 
 import java.util.Formatter;
 import java.util.Locale;
+import java.util.Objects;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-
-import static com.jazart.symphony.featured.MusicAdapter.exoPlayer;
 
 /**
  * Main entry point into the application. Here we create a custom view holder to house our fragments
@@ -60,30 +62,30 @@ public class MainActivity extends AppCompatActivity {
     private static final int URI_REQUEST = 1;
     public static final int RC_LOCATION = 100;
     public static final String EXTRA_USER = "com.jazart.symphony.EXTRA_USER";
-    public static  SimpleExoPlayer exoPlayerC;
     public static boolean songPlaying = false;
 
     @BindView(R.id.navigation)
-
     BottomNavigationView mNavigation;
+
     @BindView(R.id.fab_menu)
     FloatingActionMenu mFabMenu;
 
-    public static PlayerBoolean playerCreated = new PlayerBoolean();
-    private boolean songAlreadystarted = false;
-    private long finalTime;
-    private FirebaseAuth mAuth;
-    private FirebaseUser mUser;
-    public  TextView txtCurrentTime, txtEndTime;
-    public static LinearLayout playerView;
+    public static LinearLayout mMediaController;
     public static SeekBar playerSeek;
-    private Handler handler;
+    public FragmentManager mFragmentManager;
     @BindView(R.id.btnPlay)
-    public ImageButton playB;
+    ImageButton mPlayButton;
     @BindView(R.id.frag_pager)
     BottomNavViewPager mNavViewPager;
-    public static FragmentManager mFragmentManager;
-    private Uri mURI;
+
+    public static PlayerBoolean playerCreated = new PlayerBoolean();
+    @Inject
+    SimpleExoPlayer exoPlayer;
+    private long finalTime;
+    private FirebaseUser mUser;
+    public  TextView txtCurrentTime, txtEndTime;
+    private Handler handler;
+    private boolean hasSongStarted = false;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -111,29 +113,19 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
         setContentView(R.layout.activity_main);
-        ButterKnife.setDebug(true);
 
         ButterKnife.bind(this);
+        inject();
 
-        playerView = findViewById(R.id.media_controller);
-        playerView.setVisibility(View.GONE);
-
-        playerSeek = findViewById(R.id.mediacontroller_progress);
-
-        mAuth = FirebaseAuth.getInstance();
-        mUser = mAuth.getCurrentUser();
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        mUser = auth.getCurrentUser();
         mFragmentManager = getSupportFragmentManager();
-
-        //  mFabMenu.bringToFront();
-        playB.setImageResource(android.R.drawable.ic_media_pause);
-
 
         mNavigation.setSelectedItemId(R.id.navigation_home);
         mNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -142,6 +134,102 @@ public class MainActivity extends AppCompatActivity {
             requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION},
                     RC_LOCATION);
         }
+
+        mMediaController = findViewById(R.id.media_controller);
+        playerSeek = findViewById(R.id.mediacontroller_progress);
+        setupExoPlayerViews();
+
+
+    }
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (mUser == null) {
+            Intent intent = new Intent(this, SignUpActivity.class);
+            startActivity(intent);
+            finish();
+        } else {
+            BottomNavAdapter adapter = new BottomNavAdapter(mFragmentManager);
+            adapter.addFragment(new FeaturedMusicFragment());
+            adapter.addFragment(new PostsFragment());
+            adapter.addFragment(new LocalEventsFragment());
+            mNavViewPager.setAdapter(adapter);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        startLocationService();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == URI_REQUEST) {
+            if (data != null) {
+                Uri URI = data.getData();
+                UploadDialog uploadDialogFragment = UploadDialog.newInstance(Objects.requireNonNull(URI));
+                uploadDialogFragment.show(mFragmentManager, UploadDialog.TAG);
+            }
+        }
+    }
+
+    private boolean checkPermissions() {
+        return ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) ==
+                PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) ==
+                        PackageManager.PERMISSION_GRANTED;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == RC_LOCATION) {
+            for (int grantResult : grantResults) {
+                if (grantResult != PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(this, "We need location permissions", Toast.LENGTH_SHORT).show();
+                    break;
+                }
+            }
+        }
+    }
+
+    private void startLocationService() {
+        Intent intent = new Intent(this, LocationIntentService.class);
+        intent.putExtra(EXTRA_USER, mUser.getUid());
+        startService(intent);
+    }
+
+    @OnClick({R.id.fab_upload, R.id.fab_new_post, R.id.fab_menu})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.fab_upload:
+                setURI();
+                break;
+            case R.id.fab_new_post:
+                startActivity(new Intent(MainActivity.this, PostActivity.class));
+                break;
+            case R.id.fab_menu:
+                break;
+        }
+    }
+
+    private void setURI() {
+        Intent musicIntent = new Intent();
+        musicIntent.setAction(Intent.ACTION_GET_CONTENT);
+        musicIntent.setType("audio/mpeg");
+        startActivityForResult(Intent.createChooser(
+                musicIntent, "Open Audio (mp3) file"), URI_REQUEST);
+    }
+
+    private void inject() {
+        App app = (App) getApplication();
+        app.component.inject(this);
+    }
+
+    private void setupExoPlayerViews() {
         playerCreated.setListener(new PlayerBoolean.ChangeListener() {
             @Override
             public void onChange() {
@@ -152,35 +240,33 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-        playB.setOnClickListener(new View.OnClickListener() {
+        mPlayButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick (View v) {
                 if (songPlaying) {
                     exoPlayer.setPlayWhenReady(false);
                     songPlaying = false;
-                    playB.setImageResource(android.R.drawable.ic_media_play);
+                    mPlayButton.setImageResource(android.R.drawable.ic_media_play);
                 } else{
 
                     exoPlayer.setPlayWhenReady(true);
 
                     finalTime = exoPlayer.getDuration();
                     initTxtTime();
-                    if (!songAlreadystarted) {
+                    if (!hasSongStarted) {
                         initSeekBar();
                     }
                     setProgress();
-                    songAlreadystarted = true;
+                    hasSongStarted = true;
 
                     songPlaying = true;
-                    playB.setImageResource(android.R.drawable.ic_media_pause);
+                    mPlayButton.setImageResource(android.R.drawable.ic_media_pause);
 
 
                 }
             }
         });
-
-
     }
 
     private void initTxtTime() {
@@ -261,93 +347,5 @@ public class MainActivity extends AppCompatActivity {
         playerSeek.setMax(0);
         playerSeek.setMax((int) exoPlayer.getDuration()/1000);
 
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        //checks to see if the user is signed in or not, if not we send them to SignUpActivity
-        if (mUser == null) {
-            Intent intent = new Intent(this, SignUpActivity.class);
-            startActivity(intent);
-            finish();
-        } else {
-            BottomNavAdapter adapter = new BottomNavAdapter(mFragmentManager);
-            adapter.addFragment(new FeaturedMusicFragment());
-            adapter.addFragment(new PostsFragment());
-            adapter.addFragment(new LocalEventsFragment());
-            mNavViewPager.setAdapter(adapter);
-        }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        startLocationService();
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == URI_REQUEST) {
-            if (data != null) {
-                mURI = data.getData();
-                UploadDialog uploadDialogFragment = UploadDialog.newInstance(mURI);
-                uploadDialogFragment.show(mFragmentManager, UploadDialog.TAG);
-            }
-        }
-    }
-
-    private boolean checkPermissions() {
-        return ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) ==
-                PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) ==
-                        PackageManager.PERMISSION_GRANTED;
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == RC_LOCATION) {
-            for (int i = 0; i < grantResults.length; i++) {
-                if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(this, "We need location permissions", Toast.LENGTH_SHORT).show();
-                    break;
-                }
-            }
-        }
-    }
-
-    private void startLocationService() {
-        Intent intent = new Intent(this, LocationIntentService.class);
-        intent.putExtra(EXTRA_USER, mUser.getUid());
-        startService(intent);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return super.onOptionsItemSelected(item);
-    }
-
-
-    private void setURI() {
-        Intent musicIntent = new Intent();
-        musicIntent.setAction(Intent.ACTION_GET_CONTENT);
-        musicIntent.setType("audio/mpeg");
-        startActivityForResult(Intent.createChooser(
-                musicIntent, "Open Audio (mp3) file"), URI_REQUEST);
-    }
-
-    @OnClick({R.id.fab_upload, R.id.fab_new_post, R.id.fab_menu})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.fab_upload:
-                setURI();
-                break;
-            case R.id.fab_new_post:
-                startActivity(new Intent(MainActivity.this, PostActivity.class));
-                break;
-            case R.id.fab_menu:
-                break;
-        }
     }
 }
