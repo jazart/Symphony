@@ -11,19 +11,24 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 
 import com.jazart.symphony.R;
+import com.jazart.symphony.di.App;
+import com.jazart.symphony.di.SimpleViewModelFactory;
 import com.jazart.symphony.featured.SongViewModel;
 import com.jazart.symphony.model.Song;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
+
+import javax.inject.Inject;
 
 
-public class UploadDialog extends DialogFragment  implements DialogInterface.OnClickListener {
+public class UploadDialog extends DialogFragment implements DialogInterface.OnClickListener {
     public static final String TAG = "UploadDialog";
     public static final String ARG_URI = "1";
 
@@ -32,6 +37,8 @@ public class UploadDialog extends DialogFragment  implements DialogInterface.OnC
     private TextInputLayout mSongTitle;
     private Song mSong = new Song();
 
+    @Inject
+    SimpleViewModelFactory mViewModelFactory;
 
     public static UploadDialog newInstance(Uri uri){
         Bundle mBundle = new Bundle();
@@ -44,7 +51,8 @@ public class UploadDialog extends DialogFragment  implements DialogInterface.OnC
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mSongViewModel = ViewModelProviders.of(this).get(SongViewModel.class);
+        inject();
+        mSongViewModel = ViewModelProviders.of(this, mViewModelFactory).get(SongViewModel.class);
         if(getArguments() != null){
             mSong.setURI((getArguments().getString(ARG_URI)));
         }
@@ -74,29 +82,29 @@ public class UploadDialog extends DialogFragment  implements DialogInterface.OnC
                     .commitAllowingStateLoss();
     }
 
-
-    /**
-     * Implementing on click for dialog buttons. Validates email and password
-     * then sends result back to to the fragment to sign up via firebase
-     */
     @Override
     public void onClick(DialogInterface dialogInterface, int i) {
-        Log.d("DEBUG",mSongTitle.getEditText().getText().toString());
-        Log.d("DEBUG", mSong.getURI().toString());
-        List<String> result = new ArrayList<>();
-
-        if(mArtists.getEditText().getText().toString().contains(",")){
-            String[] artists = mArtists.getEditText().getText().toString().split(",");
-            for(int j = 0; j < artists.length;i++){
-                result.add(artists[j]);
-            }
-
-        }
-        else{
-            result.add(mArtists.getEditText().getText().toString());
-        }
-        mSong.setName(mSongTitle.getEditText().getText().toString());
+        List<String> result = getArtistsFromUi();
+        mSong.setName(Objects.requireNonNull(mSongTitle.getEditText()).getText().toString());
         mSong.setArtists(result);
         mSongViewModel.addSongToStorage(mSong);
+    }
+
+    @NonNull
+    private List<String> getArtistsFromUi() {
+        List<String> result = new ArrayList<>();
+
+        if (Objects.requireNonNull(mArtists.getEditText()).getText().toString().contains(",")) {
+            String[] artists = mArtists.getEditText().getText().toString().split(",");
+            result = Arrays.asList(artists);
+        } else {
+            result.add(mArtists.getEditText().getText().toString());
+        }
+        return result;
+    }
+
+    private void inject() {
+        App app = (App) requireActivity().getApplication();
+        app.component.inject(this);
     }
 }

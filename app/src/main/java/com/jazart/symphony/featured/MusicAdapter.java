@@ -10,9 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
-import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
@@ -23,15 +21,17 @@ import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.jazart.symphony.PlayerListener;
 import com.jazart.symphony.R;
+import com.jazart.symphony.di.App;
 import com.jazart.symphony.model.Song;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.ButterKnife;
 
-import static com.jazart.symphony.MainActivity.exoPlayerC;
+import static com.jazart.symphony.MainActivity.mMediaController;
 import static com.jazart.symphony.MainActivity.playerCreated;
-import static com.jazart.symphony.MainActivity.playerView;
 import static com.jazart.symphony.MainActivity.songPlaying;
 
 
@@ -39,26 +39,17 @@ import static com.jazart.symphony.MainActivity.songPlaying;
 public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicHolder> {
     private List<Song> mSongs;
     private LayoutInflater mInflater;
-    public static SimpleExoPlayer exoPlayer;
 
-    public Player.EventListener eventListener = new PlayerListener(){
-        @Override
-        public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-            if (playWhenReady && playbackState == Player.STATE_READY) {
+    @Inject
+    SimpleExoPlayer exoPlayer;
+    private Player.EventListener eventListener = new PlayerListener();
 
-            } else if (playWhenReady) {
-
-            } else {
-
-            }
-        }
-    };
-
-
-
-    public MusicAdapter(Context context) {
+    MusicAdapter(Context context) {
         mInflater = LayoutInflater.from(context);
+        App app = (App) context.getApplicationContext();
+        app.component.inject(this);
     }
+
     @NonNull
     @Override
     public MusicHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -85,7 +76,7 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicHolder>
         TextView mSongTV;
         ImageButton mPlayButton;
 
-        public MusicHolder(View itemView) {
+        MusicHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
             mSongTV = itemView.findViewById(R.id.songtitle);
@@ -103,18 +94,14 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicHolder>
                 }
             });
         }
-        private  void prepareExoPlayerFromURL(Uri uri){
 
+        private void prepareExoPlayerFromURL(Uri uri) {
             TrackSelector trackSelector = new DefaultTrackSelector();
-
             DefaultRenderersFactory renderersFactory = new DefaultRenderersFactory(itemView.getContext());
 
-
-            if(exoPlayerC != null){
+            if (exoPlayer != null) {
                 exoPlayer.stop();
             }
-            exoPlayer = ExoPlayerFactory.newSimpleInstance(renderersFactory, trackSelector, new DefaultLoadControl());
-            exoPlayerC = exoPlayer;
 
             DefaultDataSourceFactory dataSourceFactory = new DefaultDataSourceFactory(itemView.getContext(),
                     "exoplayer2example");
@@ -123,10 +110,9 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicHolder>
                     .createMediaSource(uri);
             exoPlayer.addListener(eventListener);
             exoPlayer.prepare(audioSource);
-            playerView.setVisibility(View.VISIBLE);
+            mMediaController.setVisibility(View.VISIBLE);
             playerCreated.setPlayerBool(true);
             songPlaying = true;
-
         }
 
     }

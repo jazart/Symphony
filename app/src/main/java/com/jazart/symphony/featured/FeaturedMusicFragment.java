@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -62,7 +63,7 @@ public class FeaturedMusicFragment extends Fragment implements SwipeRefreshLayou
                 .get(SongViewModel.class);
         mRefreshSongs.setOnRefreshListener(this);
         recMan = new LinearLayoutManager(getContext());
-
+        final RecyclerView.ItemDecoration decoration = new DividerItemDecoration(requireActivity(), LinearLayoutManager.VERTICAL);
 
         mSongsViewModel.getSongs().observe(this, new Observer<List<Song>>() {
             @Override
@@ -71,6 +72,7 @@ public class FeaturedMusicFragment extends Fragment implements SwipeRefreshLayou
                 showProgressBar(true);
                 mMusicAdapter.setSongs(songs);
                 mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                mRecyclerView.addItemDecoration(decoration);
                 mRecyclerView.setAdapter(mMusicAdapter);
                 mRefreshSongs.setRefreshing(false);
             }
