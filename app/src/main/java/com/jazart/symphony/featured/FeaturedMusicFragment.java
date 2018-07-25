@@ -21,7 +21,6 @@ import com.jazart.symphony.di.SimpleViewModelFactory;
 import com.jazart.symphony.model.Song;
 
 import java.util.List;
-import java.util.Objects;
 
 import javax.inject.Inject;
 
@@ -34,6 +33,7 @@ public class FeaturedMusicFragment extends Fragment implements SwipeRefreshLayou
     private SongViewModel mSongsViewModel;
     @Inject
     SimpleViewModelFactory mViewModelFactory;
+    private LinearLayoutManager recMan;
     @BindView(R.id.swipeRefreshLayout)
     SwipeRefreshLayout mRefreshSongs;
     @BindView(R.id.music_load_progress)
@@ -41,7 +41,10 @@ public class FeaturedMusicFragment extends Fragment implements SwipeRefreshLayou
     @BindView(R.id.featured_songs)
     RecyclerView mRecyclerView;
 
+
+
     public FeaturedMusicFragment() {
+
     }
 
     @Override
@@ -54,43 +57,29 @@ public class FeaturedMusicFragment extends Fragment implements SwipeRefreshLayou
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = LayoutInflater.from(getContext()).inflate(R.layout.feature_music_fragment, container, false);
         ButterKnife.bind(this, v);
-        inject();
-
+        App app = (App) requireActivity().getApplication();
+        app.component.inject(this);
         mSongsViewModel = ViewModelProviders.of(this, mViewModelFactory)
                 .get(SongViewModel.class);
         mRefreshSongs.setOnRefreshListener(this);
-        setupRecyclerView();
+        recMan = new LinearLayoutManager(getContext());
+        final RecyclerView.ItemDecoration decoration = new DividerItemDecoration(requireActivity(), LinearLayoutManager.VERTICAL);
 
-        Objects.requireNonNull(mSongsViewModel.getSongs()).observe(this, new Observer<List<Song>>() {
+        mSongsViewModel.getSongs().observe(this, new Observer<List<Song>>() {
             @Override
             public void onChanged(@Nullable List<Song> songs) {
-                hideProgressBar();
+                mMusicAdapter = new MusicAdapter(getContext());
+                showProgressBar(true);
                 mMusicAdapter.setSongs(songs);
-                mMusicAdapter.notifyDataSetChanged();
+                mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                mRecyclerView.addItemDecoration(decoration);
+                mRecyclerView.setAdapter(mMusicAdapter);
                 mRefreshSongs.setRefreshing(false);
             }
         });
         return v;
     }
 
-    @Override
-    public void onRefresh() {
-        loadSongs();
-    }
-
-    private void inject() {
-        App app = (App) requireActivity().getApplication();
-        app.component.inject(this);
-    }
-
-    private void setupRecyclerView() {
-        final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        final RecyclerView.ItemDecoration decoration = new DividerItemDecoration(requireActivity(), LinearLayoutManager.VERTICAL);
-        mMusicAdapter = new MusicAdapter(getContext());
-        mRecyclerView.setAdapter(mMusicAdapter);
-        mRecyclerView.setLayoutManager(layoutManager);
-        mRecyclerView.addItemDecoration(decoration);
-    }
 
     @Override
     public void onPause() {
@@ -113,9 +102,17 @@ public class FeaturedMusicFragment extends Fragment implements SwipeRefreshLayou
         mSongsViewModel.update();
     }
 
-    private void hideProgressBar() {
-        mSongLoading.setVisibility(View.GONE);
+    private void showProgressBar(boolean isLoaded) {
+        if (isLoaded) {
+            mSongLoading.setVisibility(View.GONE);
+            return;
+        }
+        mSongLoading.setVisibility(View.VISIBLE);
     }
 
+    @Override
+    public void onRefresh() {
+        loadSongs();
+    }
 }
 

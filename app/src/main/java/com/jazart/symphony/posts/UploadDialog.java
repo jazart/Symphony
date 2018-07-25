@@ -3,7 +3,6 @@ package com.jazart.symphony.posts;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -21,8 +20,6 @@ import com.jazart.symphony.di.SimpleViewModelFactory;
 import com.jazart.symphony.featured.SongViewModel;
 import com.jazart.symphony.model.Song;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -90,16 +87,7 @@ public class UploadDialog extends DialogFragment implements DialogInterface.OnCl
         List<String> result = getArtistsFromUi();
         mSong.setName(Objects.requireNonNull(mSongTitle.getEditText()).getText().toString());
         mSong.setArtists(result);
-        try {
-            mSongViewModel.addSongToStorage(mSong, convertSongUriToFile());
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private FileInputStream convertSongUriToFile() throws FileNotFoundException {
-        ContentResolver resolver = requireActivity().getContentResolver();
-        return (FileInputStream) resolver.openInputStream(Uri.parse(mSong.getURI()));
+        mSongViewModel.addSongToStorage(mSong);
     }
 
     @NonNull

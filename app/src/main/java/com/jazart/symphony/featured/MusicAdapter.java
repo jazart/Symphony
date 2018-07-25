@@ -10,11 +10,14 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
+import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.jazart.symphony.PlayerListener;
 import com.jazart.symphony.R;
@@ -25,7 +28,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.jazart.symphony.MainActivity.mMediaController;
@@ -71,15 +73,14 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicHolder>
     }
 
     public class MusicHolder extends RecyclerView.ViewHolder{
-        @BindView(R.id.songtitle)
         TextView mSongTV;
-
-        @BindView(R.id.playbutton)
         ImageButton mPlayButton;
 
         MusicHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            mSongTV = itemView.findViewById(R.id.songtitle);
+            mPlayButton = itemView.findViewById(R.id.playbutton);
         }
 
         public void bind(final Song song) {
@@ -95,6 +96,13 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicHolder>
         }
 
         private void prepareExoPlayerFromURL(Uri uri) {
+            TrackSelector trackSelector = new DefaultTrackSelector();
+            DefaultRenderersFactory renderersFactory = new DefaultRenderersFactory(itemView.getContext());
+
+            if (exoPlayer != null) {
+                exoPlayer.stop();
+            }
+
             DefaultDataSourceFactory dataSourceFactory = new DefaultDataSourceFactory(itemView.getContext(),
                     "exoplayer2example");
             MediaSource audioSource = new ExtractorMediaSource.Factory(dataSourceFactory)
