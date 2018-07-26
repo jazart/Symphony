@@ -1,4 +1,4 @@
-package com.jazart.symphony.repository;
+package com.jazart.symphony.network;
 
 public class FoursquareConstants {
     public static final String client_id = "QGRMTHS2GDDLF54XKFAGIBF4BKIVBUFQQE30UPRTOCBYZC4O";

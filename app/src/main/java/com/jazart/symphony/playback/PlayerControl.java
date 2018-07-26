@@ -1,12 +1,12 @@
-package com.jazart.symphony;
+package com.jazart.symphony.playback;
 
 /**
  * Created by kendrickgholston on 5/6/18.
  */
 
-import com.google.android.exoplayer2.ExoPlayer;
-
 import android.widget.MediaController.MediaPlayerControl;
+
+import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 
 /**

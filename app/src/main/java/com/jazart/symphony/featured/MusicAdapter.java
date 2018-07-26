@@ -19,10 +19,10 @@ import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
-import com.jazart.symphony.PlayerListener;
 import com.jazart.symphony.R;
 import com.jazart.symphony.di.App;
 import com.jazart.symphony.model.Song;
+import com.jazart.symphony.playback.PlayerListener;
 
 import java.util.List;
 

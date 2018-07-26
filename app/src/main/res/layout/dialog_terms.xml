@@ -6,18 +6,23 @@
 
     <TextView
         android:id="@+id/terms"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="158dp"
-        android:autoLink="web"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:lineSpacingExtra="8sp"
         android:padding="16dp"
         android:scrollbars="vertical"
         android:text="@string/tos"
         android:textAppearance="@android:style/TextAppearance.Material.Body1"
         android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.85"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="1.9" />
 
 </android.support.constraint.ConstraintLayout>

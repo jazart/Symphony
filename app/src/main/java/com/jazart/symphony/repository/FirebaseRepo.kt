@@ -1,23 +1,34 @@
-package com.jazart.symphony.location
+package com.jazart.symphony.repository
 
+
+import android.net.Uri
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
+import com.jazart.symphony.Constants
 import com.jazart.symphony.Constants.POSTS
+import com.jazart.symphony.Constants.SONGS
 import com.jazart.symphony.model.Song
 import com.jazart.symphony.posts.Comment
 import com.jazart.symphony.posts.PostsLiveData
 import com.jazart.symphony.posts.UserPost
-
-class FirebaseRepo(private val currentUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser,
-                   private val auth: FirebaseAuth = FirebaseAuth.getInstance(),
-                   private val db: FirebaseFirestore = FirebaseFirestore.getInstance()) {
+import java.io.FileInputStream
 
 
-    val firebaseRepoInstance by lazy {
-        FirebaseRepo()
+class FirebaseRepo private constructor(
+        private val currentUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser,
+        private val auth: FirebaseAuth = FirebaseAuth.getInstance(),
+        private val db: FirebaseFirestore = FirebaseFirestore.getInstance(),
+        private val storage: FirebaseStorage = FirebaseStorage.getInstance()
+) {
+    companion object {
+        val firebaseRepoInstance by lazy {
+            FirebaseRepo()
+        }
     }
+
 
     fun addPostToDb(post: UserPost) {
         post.author = currentUser?.uid
@@ -52,8 +63,21 @@ class FirebaseRepo(private val currentUser: FirebaseUser? = FirebaseAuth.getInst
         }
     }
 
-    fun addSongToStorage(song: Song) {
-
+    fun addSongToStorage(song: Song, inputStream: FileInputStream) {
+        val storageRef = storage.reference.child("${Constants.USERS}/${currentUser?.uid}/${Constants.SONGS}/${song.name}")
+        val uploadTask = storageRef.putStream(inputStream).addOnSuccessListener {
+            //Success
+            addSongToFireStore(storageRef.downloadUrl.result, song)
+        }.addOnFailureListener {
+            //failed
+        }
     }
 
+    private fun addSongToFireStore(songUri: Uri, song: Song) {
+        song.apply {
+            uri = "$songUri"
+            author = currentUser?.displayName
+        }
+        db.collection(SONGS).add(song)
+    }
 }

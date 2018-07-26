@@ -22,6 +22,7 @@ public class BottomNavViewPager extends ViewPager {
 
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
+        performClick();
         return isSwipeable && super.onTouchEvent(ev);
     }
 
@@ -37,6 +38,6 @@ public class BottomNavViewPager extends ViewPager {
 
     @Override
     public boolean performClick() {
-        return super.performClick();
+        return super.performClick() && isSwipeable;
     }
 }

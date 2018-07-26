@@ -1,4 +1,4 @@
-package com.jazart.symphony;
+package com.jazart.symphony.venues;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
 import com.bumptech.glide.Glide;
+import com.jazart.symphony.R;
 import com.jazart.symphony.model.venues.Venue;
 
 import java.util.List;
@@ -28,12 +29,11 @@ import butterknife.ButterKnife;
 public class LocalEventsFragment extends Fragment {
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
+
     @BindView(R.id.post_load_progress)
     ProgressBar mPostLoadProgress;
 
-
     private VenueAdapter mAdapter;
-    private VenueViewModel mVenueViewModel;
 
     public LocalEventsFragment() {
 

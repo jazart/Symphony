@@ -1,4 +1,4 @@
-package com.jazart.symphony.repository;
+package com.jazart.symphony.network;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

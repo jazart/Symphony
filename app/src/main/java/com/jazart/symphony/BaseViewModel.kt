@@ -1,8 +1,8 @@
-package com.jazart.symphony.posts
+package com.jazart.symphony
 
 import android.arch.lifecycle.ViewModel
-import com.jazart.symphony.location.FirebaseRepo
-import com.jazart.symphony.location.LocationHelperRepo
+import com.jazart.symphony.repository.FirebaseRepo
+import com.jazart.symphony.repository.LocationHelperRepo
 
 open class BaseViewModel
     : ViewModel() {
@@ -11,7 +11,7 @@ open class BaseViewModel
         LocationHelperRepo.getInstance()
     }
     val firebaseRepo: FirebaseRepo by lazy {
-        FirebaseRepo().firebaseRepoInstance
+        FirebaseRepo.firebaseRepoInstance
     }
 
     fun addUserToDb() {}

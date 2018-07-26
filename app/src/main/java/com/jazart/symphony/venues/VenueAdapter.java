@@ -1,4 +1,4 @@
-package com.jazart.symphony;
+package com.jazart.symphony.venues;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.bumptech.glide.RequestManager;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.jazart.symphony.R;
 import com.jazart.symphony.model.venues.Venue;
 
 import java.util.List;
@@ -24,7 +25,7 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.VenueHolder>
     private List<Venue> mVenueList;
     private RequestManager mGlide;
 
-    public VenueAdapter(RequestManager glide) {
+    VenueAdapter(RequestManager glide) {
         mGlide = glide;
     }
 

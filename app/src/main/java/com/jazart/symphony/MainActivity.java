@@ -28,10 +28,12 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.jazart.symphony.di.App;
 import com.jazart.symphony.featured.FeaturedMusicFragment;
 import com.jazart.symphony.location.LocationIntentService;
+import com.jazart.symphony.playback.PlayerBoolean;
 import com.jazart.symphony.posts.PostActivity;
 import com.jazart.symphony.posts.PostsFragment;
 import com.jazart.symphony.posts.UploadDialog;
 import com.jazart.symphony.signup.SignUpActivity;
+import com.jazart.symphony.venues.LocalEventsFragment;
 
 import java.util.Formatter;
 import java.util.Locale;

@@ -1,4 +1,4 @@
-package com.jazart.symphony.location;
+package com.jazart.symphony.repository;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;

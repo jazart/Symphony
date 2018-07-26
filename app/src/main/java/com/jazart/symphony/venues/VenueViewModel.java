@@ -1,4 +1,4 @@
-package com.jazart.symphony;
+package com.jazart.symphony.venues;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
@@ -8,14 +8,14 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.jazart.symphony.location.LocationHelperRepo;
 import com.jazart.symphony.model.venues.Item;
 import com.jazart.symphony.model.venues.Venue;
 import com.jazart.symphony.model.venues.VenuePicsResponse;
 import com.jazart.symphony.model.venues.VenueResponse;
-import com.jazart.symphony.repository.FoursquareApiClient;
-import com.jazart.symphony.repository.FoursquareConstants;
-import com.jazart.symphony.repository.NetworkService;
+import com.jazart.symphony.network.FoursquareApiClient;
+import com.jazart.symphony.network.FoursquareConstants;
+import com.jazart.symphony.network.NetworkService;
+import com.jazart.symphony.repository.LocationHelperRepo;
 
 import java.io.IOException;
 import java.util.HashMap;

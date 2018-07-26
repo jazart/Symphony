@@ -1,4 +1,4 @@
-package com.jazart.symphony;
+package com.jazart.symphony.playback;
 
 /**
  * Created by kendrickgholston on 5/8/18.

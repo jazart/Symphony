@@ -5,6 +5,7 @@
     <string name="title_collabs">Collabs</string>
     <string name="title_posts">Posts</string>
     <string name="title_events">Events</string>
+    <string name="upload_new">New Upload</string>
     <string name="web_client_id">869046089685-h14ulo71gpvoeoh216jr2q0tn9emelqb.apps.googleusercontent.com</string>
     <string name="email_password">Email/Password</string>
     <string name="sign_in">Sign-in</string>
@@ -22,16 +23,18 @@
     <string name="post_img_desc">Add image</string>
     <string name="sign_up_name">Name</string>
     <string name="tos">Symphony is a public music sharing app for fans and creators. You agree that
-    all content MUST be original. Uploading copyrighted content is forbidden and subject: account removal and
-    information being handed over to federal prosecutors if Symphony is contacted. Symphony store your location
+    all content MUST be original. Uploading copyrighted content is forbidden and subject to account removal and
+    information being handed over to federal prosecutors if Symphony is contacted. Symphony stores your location
     to allow other users to discover your content. Your exact location is NEVER shared with other users
-    an is only stored on the server as a means to make the app location aware. No location logging is enabled and
-    only your most recent location is stored in the database. Previous entries are removed on each location update.
-    For more about privacy please see
+    and is only stored on the server as a means to make the app location aware. No location logging is enabled and
+    only your most recent location is stored on our systems. Previous entries are removed on each location update.
+    For more about privacy please see:
         <a href="https://firebase.google.com/terms/data-processing-terms">
-        Terms</a>
+        Privacy Policy</a>
     </string>
 
+    <string name="terms_accept">I Accept</string>
+    <string name="terms_decline">I Decline</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

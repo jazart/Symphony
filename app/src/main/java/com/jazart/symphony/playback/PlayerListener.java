@@ -1,4 +1,4 @@
-package com.jazart.symphony;
+package com.jazart.symphony.playback;
 
 import com.google.android.exoplayer2.Player;
 

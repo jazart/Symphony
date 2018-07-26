@@ -1,4 +1,4 @@
-package com.jazart.symphony.repository;
+package com.jazart.symphony.network;
 
 import com.jazart.symphony.model.venues.VenuePicsResponse;
 import com.jazart.symphony.model.venues.VenueResponse;
