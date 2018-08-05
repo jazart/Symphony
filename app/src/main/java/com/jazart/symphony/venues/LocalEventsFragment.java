@@ -1,12 +1,10 @@
 package com.jazart.symphony.venues;
 
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,25 +13,33 @@ import android.widget.ProgressBar;
 
 import com.bumptech.glide.Glide;
 import com.jazart.symphony.R;
-import com.jazart.symphony.model.venues.Venue;
+import com.jazart.symphony.di.App;
+import com.jazart.symphony.network.FoursquareRepo;
 
-import java.util.List;
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Retrofit;
 
 /**
  * Displays local music and art events for the user to see whats going on in
  * their area. Gets its information fromt he venue viewmodel class
  */
-public class LocalEventsFragment extends Fragment {
+public class LocalEventsFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
 
     @BindView(R.id.post_load_progress)
     ProgressBar mPostLoadProgress;
 
+    @BindView(R.id.swipeRefreshLayout)
+    SwipeRefreshLayout mRefreshLayout;
+
     private VenueAdapter mAdapter;
+
+    @Inject
+    FoursquareRepo mRepo;
 
     public LocalEventsFragment() {
 
@@ -42,6 +48,7 @@ public class LocalEventsFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        inject();
     }
 
     @Nullable
@@ -49,20 +56,19 @@ public class LocalEventsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         final View view = inflater.inflate(R.layout.my_music_fragment, container, false);
-
+        Retrofit retrofit = mRepo.getService();
         ButterKnife.bind(this, view);
         mAdapter = new VenueAdapter(Glide.with(this));
-
-        ViewModelProviders.of(this).get(VenueViewModel.class)
-                .getVenues().observe(this, new Observer<List<Venue>>() {
-            @Override
-            public void onChanged(@Nullable List<Venue> venues) {
-                mPostLoadProgress.setVisibility(View.GONE);
-                mAdapter.setVenueList(venues);
-                mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-                mRecyclerView.setAdapter(mAdapter);
-            }
-        });
+//        ViewModelProviders.of(this).get(VenueViewModel.class)
+//                .getVenues().observe(this, new Observer<List<Venue>>() {
+//            @Override
+//            public void onChanged(@Nullable List<Venue> venues) {
+//                mPostLoadProgress.setVisibility(View.GONE);
+//                mAdapter.setVenueList(venues);
+//                mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+//                mRecyclerView.setAdapter(mAdapter);
+//            }
+//        });
         return view;
     }
 
@@ -81,5 +87,15 @@ public class LocalEventsFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+    }
+
+    @Override
+    public void onRefresh() {
+        mRefreshLayout.setRefreshing(false);
+    }
+
+    private void inject() {
+        App app = (App) requireActivity().getApplication();
+        app.getComponent().inject(this);
     }
 }

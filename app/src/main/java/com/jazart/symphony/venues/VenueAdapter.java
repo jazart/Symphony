@@ -1,6 +1,7 @@
 package com.jazart.symphony.venues;
 
 import android.support.annotation.NonNull;
+import android.support.v4.widget.CircularProgressDrawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +19,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import retrofit2.Retrofit;
 
 public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.VenueHolder> {
 
@@ -64,8 +64,6 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.VenueHolder>
         TextView mVenueAddressTv;
         @BindView(R.id.venue_event_tv)
         TextView mVenueEventTv;
-        private Retrofit mNetworkService;
-
 
         VenueHolder(View itemView) {
             super(itemView);
@@ -74,20 +72,23 @@ public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.VenueHolder>
         }
 
         void bind(final Venue venue) {
-            //Glide.with(itemView).load(venue.getImageUri())
+            CircularProgressDrawable circularProgressDrawable = new CircularProgressDrawable(itemView.getContext());
+            circularProgressDrawable.setStrokeWidth(5f);
+            circularProgressDrawable.setCenterRadius(30f);
+            circularProgressDrawable.start();
             mGlide.load(venue.getImageUri())
                     .apply(new RequestOptions()
                             .centerCrop()
-                            .diskCacheStrategy(DiskCacheStrategy.ALL))
+                            .placeholder(circularProgressDrawable)
+                            .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC))
                     .into(mVenuePicIv);
+
             mVenueNameTv.setText(venue.getName());
             mVenueAddressTv.setText(venue.getLocation().getAddress());
         }
 
         @Override
         public void onClick(View v) {
-
         }
-
     }
 }

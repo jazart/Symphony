@@ -37,4 +37,6 @@
     <string name="terms_decline">I Decline</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="song_play_iv">Play Song</string>
+    <string name="song_like">Like Song</string>
 </resources>
