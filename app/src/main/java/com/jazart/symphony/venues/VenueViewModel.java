@@ -39,11 +39,6 @@ class VenueViewModel extends ViewModel {
         return mVenueLiveData;
     }
 
-    private void loadVenuePics(String venueId, final int index) {
-
-
-    }
-
     private void loadVenues() {
         Retrofit client = NetworkService.get().getService();
 

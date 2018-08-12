@@ -8,7 +8,7 @@ import java.util.Date;
  * Created by kendrickgholston on 4/15/18.
  */
 
-public class Event {
+class Event {
     private Date mDate;
     private String mHost;
     private Location mLocation; //Temporary data type until we implement Google Maps API

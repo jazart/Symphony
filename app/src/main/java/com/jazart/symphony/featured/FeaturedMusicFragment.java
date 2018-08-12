@@ -47,11 +47,6 @@ public class FeaturedMusicFragment extends Fragment implements SwipeRefreshLayou
 
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -69,7 +64,7 @@ public class FeaturedMusicFragment extends Fragment implements SwipeRefreshLayou
             @Override
             public void onChanged(@Nullable List<Song> songs) {
                 mMusicAdapter = new MusicAdapter(getContext());
-                showProgressBar(true);
+                hideProgress();
                 mMusicAdapter.setSongs(songs);
                 mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
                 mRecyclerView.addItemDecoration(decoration);
@@ -82,19 +77,9 @@ public class FeaturedMusicFragment extends Fragment implements SwipeRefreshLayou
 
 
     @Override
-    public void onPause() {
-        super.onPause();
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
         loadSongs();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
     }
 
     private void loadSongs() {
@@ -102,12 +87,8 @@ public class FeaturedMusicFragment extends Fragment implements SwipeRefreshLayou
         mSongsViewModel.update();
     }
 
-    private void showProgressBar(boolean isLoaded) {
-        if (isLoaded) {
-            mSongLoading.setVisibility(View.GONE);
-            return;
-        }
-        mSongLoading.setVisibility(View.VISIBLE);
+    private void hideProgress() {
+        mSongLoading.setVisibility(View.GONE);
     }
 
     @Override

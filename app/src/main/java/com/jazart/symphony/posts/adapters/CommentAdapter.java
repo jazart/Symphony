@@ -55,12 +55,12 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentH
         @BindView(R.id.list_item_commet_profile_pic)
         ImageView mProfilePic;
 
-        public CommentHolder(View itemView) {
+        CommentHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
 
-        public void bind(Comment comment) {
+        void bind(Comment comment) {
             mCommentTv.setText(comment.getContent());
             Glide.with(itemView)
                     .load(comment.getProfilePic())

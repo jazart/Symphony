@@ -59,10 +59,8 @@ public class MainActivity extends AppCompatActivity {
 
     public static final FirebaseFirestore sDb = FirebaseFirestore.getInstance();
     public static final int RC_SIGN_IN = 0;
-    public static final int UPLOAD_MP3 = 2;
-    public static final String TAG = "MainActivity";
     private static final int URI_REQUEST = 1;
-    public static final int RC_LOCATION = 100;
+    private static final int RC_LOCATION = 100;
     public static final String EXTRA_USER = "com.jazart.symphony.EXTRA_USER";
     public static boolean songPlaying = false;
 
@@ -73,8 +71,8 @@ public class MainActivity extends AppCompatActivity {
     FloatingActionMenu mFabMenu;
 
     public static LinearLayout mMediaController;
-    public static SeekBar playerSeek;
-    public FragmentManager mFragmentManager;
+    private static SeekBar playerSeek;
+    private FragmentManager mFragmentManager;
     @BindView(R.id.btnPlay)
     ImageButton mPlayButton;
     @BindView(R.id.frag_pager)
@@ -85,7 +83,8 @@ public class MainActivity extends AppCompatActivity {
     SimpleExoPlayer exoPlayer;
     private long finalTime;
     private FirebaseUser mUser;
-    public  TextView txtCurrentTime, txtEndTime;
+    private TextView txtCurrentTime;
+    private TextView txtEndTime;
     private Handler handler;
     private boolean hasSongStarted = false;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -254,7 +253,7 @@ public class MainActivity extends AppCompatActivity {
 
                     exoPlayer.setPlayWhenReady(true);
 
-                    finalTime = exoPlayer.getDuration();
+//                    finalTime = exoPlayer.getDuration();
                     initTxtTime();
                     if (!hasSongStarted) {
                         initSeekBar();

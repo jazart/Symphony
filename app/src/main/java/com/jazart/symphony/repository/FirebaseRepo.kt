@@ -1,7 +1,9 @@
 package com.jazart.symphony.repository
 
 
+import android.arch.lifecycle.MutableLiveData
 import android.net.Uri
+import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.CollectionReference
@@ -21,9 +23,11 @@ class FirebaseRepo private constructor(
         private val currentUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser,
         private val auth: FirebaseAuth = FirebaseAuth.getInstance(),
         private val db: FirebaseFirestore = FirebaseFirestore.getInstance(),
-        private val storage: FirebaseStorage = FirebaseStorage.getInstance()
-) {
+        private val storage: FirebaseStorage = FirebaseStorage.getInstance()) {
+
+    var uploadProgress = MutableLiveData<Int>()
     companion object {
+        @JvmStatic
         val firebaseRepoInstance by lazy {
             FirebaseRepo()
         }
@@ -65,9 +69,13 @@ class FirebaseRepo private constructor(
 
     fun addSongToStorage(song: Song, inputStream: FileInputStream) {
         val storageRef = storage.reference.child("${Constants.USERS}/${currentUser?.uid}/${Constants.SONGS}/${song.name}")
-        val uploadTask = storageRef.putStream(inputStream).addOnSuccessListener {
-            //Success
-            addSongToFireStore(storageRef.downloadUrl.result, song)
+        val uploadTask = storageRef.putStream(inputStream)
+        uploadTask.addOnProgressListener { progress ->
+            also { Log.d("PROGRESS_UPLOAD", "${progress.bytesTransferred} ${progress.totalByteCount}") }
+            val progressPercentage = (100.times(progress.bytesTransferred)).div(progress.totalByteCount)
+            uploadProgress.value = progressPercentage.toInt()
+        }.addOnSuccessListener {
+            //Success addSongToFireStore(storageRef.downloadUrl.result, song)
         }.addOnFailureListener {
             //failed
         }

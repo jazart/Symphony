@@ -10,7 +10,7 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BottomNavAdapter extends FragmentPagerAdapter {
+class BottomNavAdapter extends FragmentPagerAdapter {
     private List<Fragment> mFragments;
     private SparseArray<WeakReference<Fragment>> instantiatedFrags;
 

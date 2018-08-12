@@ -35,8 +35,8 @@ and stores the exact coordinates and city name in the database.
 
 public class LocationIntentService extends IntentService {
 
-    public static final String TAG = "LocationIntentService";
-    FusedLocationProviderClient mProviderClient;
+    private static final String TAG = "LocationIntentService";
+    private FusedLocationProviderClient mProviderClient;
 
     public LocationIntentService() {
         super("LocationIntentService");

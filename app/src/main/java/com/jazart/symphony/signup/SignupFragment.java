@@ -42,9 +42,8 @@ import static com.jazart.symphony.MainActivity.sDb;
 public class SignupFragment extends Fragment implements View.OnClickListener{
     private static final String TAG = "SignupFragment" ;
     public static final int RC_SIGN_UP = 1;
-    public static final int RC_TERMS = 5;
+    private static final int RC_TERMS = 5;
     private FirebaseAuth mAuth;
-    private FirebaseUser mUser;
     private GoogleSignInClient mSignInClient;
     private String mEmail;
     private String mPassword;
@@ -218,9 +217,10 @@ public class SignupFragment extends Fragment implements View.OnClickListener{
     }
 
     private void addToDb() {
-        mUser = mAuth.getCurrentUser();
-        sDb.collection("users").document(mUser.getUid())
-                .set(new User(mUser));
+        FirebaseUser user = mAuth.getCurrentUser();
+        assert user != null;
+        sDb.collection("users").document(user.getUid())
+                .set(new User(user));
     }
 
     private void setUpUser(FirebaseUser user, String name, Uri photoUrl) {

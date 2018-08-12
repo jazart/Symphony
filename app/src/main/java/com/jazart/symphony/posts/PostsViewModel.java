@@ -14,6 +14,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.jazart.symphony.BaseViewModel;
 
 import java.util.List;
+import java.util.Objects;
 
 import static com.jazart.symphony.Constants.POSTS;
 import static com.jazart.symphony.MainActivity.sDb;
@@ -33,7 +34,7 @@ public class PostsViewModel extends BaseViewModel {
         super();
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
-        mUserPostsLiveData = getLocationRepo().getNearbyPosts();
+        mUserPostsLiveData = Objects.requireNonNull(getLocationRepo()).getNearbyPosts();
         mComments = new MutableLiveData<>();
         mPostsLiveData = getFirebaseRepo().getUserPosts();
     }
@@ -59,7 +60,7 @@ public class PostsViewModel extends BaseViewModel {
         refreshContent();
     }
 
-    public void addComment(Comment comment, String id) {
+    private void addComment(Comment comment, String id) {
         addComment(comment, id);
     }
 

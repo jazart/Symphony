@@ -35,8 +35,14 @@
 
     <string name="terms_accept">I Accept</string>
     <string name="terms_decline">I Decline</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="song_play_iv">Play Song</string>
     <string name="song_like">Like Song</string>
+    <string name="artists">Artists</string>
+    <string name="upload">Upload</string>
+    <string name="upload_dialog_song_title">Song Title</string>
+    <string name="player_start_time">00:00</string>
+    <string name="player_max_time">99:99</string>
+    <string name="player_full_screen">Fullscreen</string>
+    <string name="post_submit">Submit</string>
 </resources>

@@ -36,10 +36,10 @@ Viewmodel used to pull and push data to the PostViewmodel class
 
 public class PostDetailFragment extends Fragment {
 
-    public static final String ARG_POST = "com.jazart.symphony.userPost";
+    private static final String ARG_POST = "com.jazart.symphony.userPost";
 
 
-    PostsViewModel mViewModel;
+    private PostsViewModel mViewModel;
     @BindView(R.id.post_detail_image)
     ImageView mPostDetailImage;
 
@@ -58,7 +58,7 @@ public class PostDetailFragment extends Fragment {
     @BindView(R.id.post_detail_comment_btn)
     ImageButton mPostDetailCommentBtn;
 
-    CommentAdapter mCommentAdapter;
+    private CommentAdapter mCommentAdapter;
 
     @BindView(R.id.comment_et)
     TextInputEditText mCommentEt;
@@ -70,7 +70,6 @@ public class PostDetailFragment extends Fragment {
     ImageButton mCommentSendBtn;
 
     private boolean isCommenting;
-    private UserPost mPost;
 
     public PostDetailFragment() {
 
@@ -103,10 +102,10 @@ public class PostDetailFragment extends Fragment {
 
         if (getArguments() != null) {
             Gson gson = new Gson();
-            mPost = gson.fromJson(getArguments().getString(ARG_POST),
+            UserPost post = gson.fromJson(getArguments().getString(ARG_POST),
                     UserPost.class);
 
-            mViewModel.loadComments(mPost.getId());
+            mViewModel.loadComments(post.getId());
             mViewModel.getComments().observe(this, new Observer<List<Comment>>() {
                 @Override
                 public void onChanged(@Nullable List<Comment> comments) {
@@ -116,25 +115,10 @@ public class PostDetailFragment extends Fragment {
                 }
             });
             mCommentAdapter = new CommentAdapter(getContext());
-            buildUi(mPost);
+            buildUi(post);
         }
 
         return view;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
     }
 
 

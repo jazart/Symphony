@@ -36,8 +36,6 @@ public class LocalEventsFragment extends Fragment implements SwipeRefreshLayout.
     @BindView(R.id.swipeRefreshLayout)
     SwipeRefreshLayout mRefreshLayout;
 
-    private VenueAdapter mAdapter;
-
     @Inject
     FoursquareRepo mRepo;
 
@@ -58,7 +56,7 @@ public class LocalEventsFragment extends Fragment implements SwipeRefreshLayout.
         final View view = inflater.inflate(R.layout.my_music_fragment, container, false);
         Retrofit retrofit = mRepo.getService();
         ButterKnife.bind(this, view);
-        mAdapter = new VenueAdapter(Glide.with(this));
+        VenueAdapter adapter = new VenueAdapter(Glide.with(this));
 //        ViewModelProviders.of(this).get(VenueViewModel.class)
 //                .getVenues().observe(this, new Observer<List<Venue>>() {
 //            @Override
@@ -72,22 +70,6 @@ public class LocalEventsFragment extends Fragment implements SwipeRefreshLayout.
         return view;
     }
 
-
-    @Override
-    public void onStart() {
-        super.onStart();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-    }
-
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-    }
 
     @Override
     public void onRefresh() {

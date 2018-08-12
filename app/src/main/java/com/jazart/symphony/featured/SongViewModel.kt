@@ -19,10 +19,12 @@ class SongViewModel @Inject constructor(app: App) : BaseViewModel() {
     private val mAuth: FirebaseAuth = FirebaseAuth.getInstance()
     private val mUser: FirebaseUser?
     var songs: LiveData<List<Song>>
+    var progressLiveData: LiveData<Int>
 
     init {
         mUser = mAuth.currentUser
         songs = LocationHelperRepo.getInstance().nearbySongs
+        progressLiveData = firebaseRepo.uploadProgress
     }
 
     fun update() {

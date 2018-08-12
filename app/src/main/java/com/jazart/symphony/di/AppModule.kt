@@ -40,7 +40,6 @@ class App : Application() {
 
 @Module
 class AppModule(private val app: App) {
-
     @Singleton
     @Provides
     fun provideApplication(): App = app
@@ -103,3 +102,4 @@ interface AppComponent {
     fun inject(adapter: MusicAdapter)
     fun inject(fragment: LocalEventsFragment)
 }
+

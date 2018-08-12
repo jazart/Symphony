@@ -83,7 +83,7 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicHolder>
             mPlayButton = itemView.findViewById(R.id.playbutton);
         }
 
-        public void bind(final Song song) {
+        void bind(final Song song) {
             mSongTV.setText(song.getName());
             mPlayButton.setOnClickListener(new View.OnClickListener() {
                 @Override

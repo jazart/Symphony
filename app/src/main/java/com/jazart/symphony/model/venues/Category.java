@@ -4,7 +4,7 @@ package com.jazart.symphony.model.venues;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Category {
+class Category {
 
     @SerializedName("id")
     @Expose

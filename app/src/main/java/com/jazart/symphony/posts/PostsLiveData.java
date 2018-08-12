@@ -1,5 +1,4 @@
 package com.jazart.symphony.posts;
-
 import android.arch.lifecycle.LiveData;
 import android.support.annotation.NonNull;
 

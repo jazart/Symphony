@@ -91,7 +91,6 @@
                         android:layout_alignParentBottom="true"
                         android:layout_alignParentEnd="true"
                         android:layout_marginEnd="25dp"
-                        android:layout_weight="1"
                         android:backgroundTint="@android:color/transparent"
                         android:src="@drawable/ic_insert_comment_white_24dp" />
                 </RelativeLayout>
@@ -117,7 +116,6 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:padding="16dp"
-                android:text="TextView"
                 android:textAppearance="@android:style/TextAppearance.Material.Display1"
                 android:textStyle="bold" />
 
@@ -127,7 +125,6 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:padding="16dp"
-                android:text="TextView"
                 android:textSize="18sp" />
 
             <android.support.v7.widget.RecyclerView

@@ -49,7 +49,7 @@ public class TermsFragment extends DialogFragment {
                 .create();
     }
 
-    void sendResult(int resultCode) {
+    private void sendResult(int resultCode) {
         if (getTargetFragment() != null)
             getTargetFragment().onActivityResult(getTargetRequestCode(), resultCode, null);
     }

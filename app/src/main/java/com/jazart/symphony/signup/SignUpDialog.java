@@ -21,15 +21,13 @@ import android.widget.ImageButton;
 import com.bumptech.glide.Glide;
 import com.jazart.symphony.R;
 
-import static com.jazart.symphony.signup.SignupFragment.RC_SIGN_UP;
-
 public class SignUpDialog extends DialogFragment implements DialogInterface.OnClickListener, View.OnClickListener, TextWatcher {
 
     public static final String TAG = "SignUpDialog";
-    public static final String EXTRA_EMAIL = "com.jazart.symphony.extra_email";
-    public static final String EXTRA_PASSWORD = "com.jazart.symphony.extra_password";
-    public static final String EXTRA_PHOTO = "com.jazart.symphony.extra_photo";
-    public static final String EXTRA_NAME = "com.jazart.symphony.extra_name";
+    private static final String EXTRA_EMAIL = "com.jazart.symphony.extra_email";
+    private static final String EXTRA_PASSWORD = "com.jazart.symphony.extra_password";
+    private static final String EXTRA_PHOTO = "com.jazart.symphony.extra_photo";
+    private static final String EXTRA_NAME = "com.jazart.symphony.extra_name";
     private static final int MIN_PASS_LENGTH = 8;
 
     private View mView;
@@ -44,7 +42,7 @@ public class SignUpDialog extends DialogFragment implements DialogInterface.OnCl
     private TextInputEditText mVerifyPassEt;
 
 
-    private void sendResult(int resultCode, String email, String password, String name) {
+    private void sendResult(String email, String password, String name) {
         if(getTargetFragment() == null) {
             return;
         }
@@ -53,7 +51,7 @@ public class SignUpDialog extends DialogFragment implements DialogInterface.OnCl
         intent.putExtra(EXTRA_PASSWORD, password);
         intent.putExtra(EXTRA_PHOTO, selectedImg);
         intent.putExtra(EXTRA_NAME, name);
-        getTargetFragment().onActivityResult(getTargetRequestCode(), resultCode, intent);
+        getTargetFragment().onActivityResult(getTargetRequestCode(), SignupFragment.RC_SIGN_UP, intent);
     }
 
     @NonNull
@@ -67,6 +65,7 @@ public class SignUpDialog extends DialogFragment implements DialogInterface.OnCl
         mVerifyPassLayout = mView.findViewById(R.id.sign_up_reenter_password);
         mNameLayout = mView.findViewById(R.id.sign_up_name_til);
         mVerifyPassEt = (TextInputEditText) mVerifyPassLayout.getEditText();
+        assert mVerifyPassEt != null;
         mVerifyPassEt.addTextChangedListener(this);
         mPassEt = (TextInputEditText) mPasswordLayout.getEditText();
 
@@ -91,7 +90,7 @@ then sends result back to to the fragment to sign up via firebase
         String password = mPasswordLayout.getEditText().getText().toString();
         if (isValidPassword(password) && mNameLayout.getEditText().getText() != null) {
             String name = mNameLayout.getEditText().getText().toString();
-            sendResult(RC_SIGN_UP, email, password, name);
+            sendResult(email, password, name);
         }
 
     }
