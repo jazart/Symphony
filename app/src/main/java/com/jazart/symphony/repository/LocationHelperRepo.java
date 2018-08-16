@@ -20,6 +20,7 @@ import com.jazart.symphony.posts.UserPost;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static com.jazart.symphony.Constants.POSTS;
 import static com.jazart.symphony.Constants.SONGS;
@@ -35,10 +36,10 @@ Here we make several calls to find users in the same city and expose their posts
 public class LocationHelperRepo {
     private static LocationHelperRepo INSTANCE;
     private User mUser;
-    private DocumentReference mReference;
-    private MutableLiveData<List<User>> mNearbyUsers;
-    private MutableLiveData<List<UserPost>> mPosts;
-    private MutableLiveData<List<Song>> mSongs;
+    private final DocumentReference mReference;
+    private final MutableLiveData<List<User>> mNearbyUsers;
+    private final MutableLiveData<List<UserPost>> mPosts;
+    private final MutableLiveData<List<Song>> mSongs;
 
     private LocationHelperRepo(String uId) {
         mReference = sDb.collection(USERS).document(uId);
@@ -133,7 +134,7 @@ public class LocationHelperRepo {
         CollectionReference reference = sDb.collection(SONGS);
         final List<Song> songs = new ArrayList<>();
 
-        for (int i = 0; i < getNearbyUsers().getValue().size(); i++) {
+        for (int i = 0; i < Objects.requireNonNull(getNearbyUsers().getValue()).size(); i++) {
             reference.whereEqualTo("author", getNearbyUsers().getValue().get(i).getId())
                     .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override

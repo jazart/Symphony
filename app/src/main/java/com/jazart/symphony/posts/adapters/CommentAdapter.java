@@ -21,7 +21,7 @@ import butterknife.ButterKnife;
 
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentHolder> {
     private List<Comment> mComments;
-    private LayoutInflater mInflater;
+    private final LayoutInflater mInflater;
 
     public CommentAdapter(Context context) {
         mInflater = LayoutInflater.from(context);

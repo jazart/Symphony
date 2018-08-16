@@ -21,6 +21,8 @@ import android.widget.ImageButton;
 import com.bumptech.glide.Glide;
 import com.jazart.symphony.R;
 
+import java.util.Objects;
+
 public class SignUpDialog extends DialogFragment implements DialogInterface.OnClickListener, View.OnClickListener, TextWatcher {
 
     public static final String TAG = "SignUpDialog";
@@ -39,7 +41,6 @@ public class SignUpDialog extends DialogFragment implements DialogInterface.OnCl
     private TextInputEditText mEmailEt;
     private TextInputEditText mNameEt;
     private TextInputEditText mPassEt;
-    private TextInputEditText mVerifyPassEt;
 
 
     private void sendResult(String email, String password, String name) {
@@ -64,9 +65,9 @@ public class SignUpDialog extends DialogFragment implements DialogInterface.OnCl
         mPasswordLayout = mView.findViewById(R.id.sign_up_password);
         mVerifyPassLayout = mView.findViewById(R.id.sign_up_reenter_password);
         mNameLayout = mView.findViewById(R.id.sign_up_name_til);
-        mVerifyPassEt = (TextInputEditText) mVerifyPassLayout.getEditText();
-        assert mVerifyPassEt != null;
-        mVerifyPassEt.addTextChangedListener(this);
+        TextInputEditText verifyPassEt = (TextInputEditText) mVerifyPassLayout.getEditText();
+        assert verifyPassEt != null;
+        Objects.requireNonNull(verifyPassEt).addTextChangedListener(this);
         mPassEt = (TextInputEditText) mPasswordLayout.getEditText();
 
 
@@ -84,11 +85,11 @@ then sends result back to to the fragment to sign up via firebase
  */
     @Override
     public void onClick(DialogInterface dialogInterface, int i) {
-        String email = mEmailLayout.getEditText().getText().toString();
+        String email = Objects.requireNonNull(mEmailLayout.getEditText()).getText().toString();
 
 
-        String password = mPasswordLayout.getEditText().getText().toString();
-        if (isValidPassword(password) && mNameLayout.getEditText().getText() != null) {
+        String password = Objects.requireNonNull(mPasswordLayout.getEditText()).getText().toString();
+        if (isValidPassword(password) && Objects.requireNonNull(mNameLayout.getEditText()).getText() != null) {
             String name = mNameLayout.getEditText().getText().toString();
             sendResult(email, password, name);
         }

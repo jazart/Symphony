@@ -15,6 +15,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -44,7 +45,7 @@ public class UploadDialog extends DialogFragment implements DialogInterface.OnCl
     private TextInputLayout mArtists;
     private TextInputLayout mSongTitle;
     private ProgressBar mUploadProgress;
-    private Song mSong = new Song();
+    private final Song mSong = new Song();
 
     @Inject
     SimpleViewModelFactory mViewModelFactory;
@@ -73,7 +74,6 @@ public class UploadDialog extends DialogFragment implements DialogInterface.OnCl
             @Override
             public void onChanged(@Nullable Integer progress) {
                 mUploadProgress.setVisibility(View.VISIBLE);
-                mUploadProgress.setProgress(Objects.requireNonNull(progress));
                 if (progress == 100) dismiss();
             }
         });
@@ -122,6 +122,8 @@ public class UploadDialog extends DialogFragment implements DialogInterface.OnCl
         mSong.setName(Objects.requireNonNull(mSongTitle.getEditText()).getText().toString());
         mSong.setArtists(result);
         try {
+            String size = getFileSize();
+            Log.d("TAG/ UPLOAD", size);
             mSongViewModel.addSongToStorage(mSong, convertSongUriToFile());
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -133,38 +135,18 @@ public class UploadDialog extends DialogFragment implements DialogInterface.OnCl
         return (FileInputStream) resolver.openInputStream(Uri.parse(mSong.getURI()));
     }
 
-    private String getImageRealPath(ContentResolver contentResolver, Uri uri, String whereClause) {
-        String ret = "";
+    private String getFileSize() {
+        ContentResolver resolver = requireActivity().getContentResolver();
+        String [] projection = {MediaStore.Audio.Media.SIZE};
+        Cursor cursor = resolver.query(Uri.parse(mSong.getURI()), projection, null, null, null);
+        String fileSize = "";
 
-        // Query the uri with condition.
-        Cursor cursor = contentResolver.query(uri, null, whereClause, null, null);
-
-        if (cursor != null) {
-            boolean moveToFirst = cursor.moveToFirst();
-            if (moveToFirst) {
-
-                // Get columns name by uri type.
-                String columnName = MediaStore.Images.Media.DATA;
-
-                if (uri == MediaStore.Images.Media.EXTERNAL_CONTENT_URI) {
-                    columnName = MediaStore.Images.Media.DATA;
-                } else if (uri == MediaStore.Audio.Media.EXTERNAL_CONTENT_URI) {
-                    columnName = MediaStore.Audio.Media.DATA;
-                } else if (uri == MediaStore.Video.Media.EXTERNAL_CONTENT_URI) {
-                    columnName = MediaStore.Video.Media.DATA;
-                }
-
-                // Get column index.
-                int imageColumnIndex = cursor.getColumnIndex(columnName);
-
-                // Get column value which is the uri related file local path.
-                ret = cursor.getString(imageColumnIndex);
-            }
+        if(cursor.moveToFirst()) {
+            int size = cursor.getColumnIndex(MediaStore.Audio.Media.SIZE);
+            fileSize = cursor.getString(size);
+            cursor.close();
         }
-
-        Objects.requireNonNull(cursor);
-        cursor.close();
-        return ret;
+        return fileSize;
     }
 
     @NonNull

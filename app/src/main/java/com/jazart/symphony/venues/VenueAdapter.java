@@ -23,7 +23,7 @@ import butterknife.ButterKnife;
 public class VenueAdapter extends RecyclerView.Adapter<VenueAdapter.VenueHolder> {
 
     private List<Venue> mVenueList;
-    private RequestManager mGlide;
+    private final RequestManager mGlide;
 
     VenueAdapter(RequestManager glide) {
         mGlide = glide;

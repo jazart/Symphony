@@ -11,7 +11,7 @@ public class Response {
 
     @SerializedName("venues")
     @Expose
-    private List<Venue> venues = new ArrayList<Venue>();
+    private List<Venue> venues = new ArrayList<>();
 
     public List<Venue> getVenues() {
         return venues;

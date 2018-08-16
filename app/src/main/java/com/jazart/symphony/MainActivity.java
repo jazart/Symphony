@@ -47,7 +47,7 @@ import butterknife.OnClick;
 
 /**
  * Main entry point into the application. Here we create a custom view holder to house our fragments
- * which are shown using bottom navigation tabs. Each tab corresponds to a different fragement in the activity.
+ * which are shown using bottom navigation tabs. Each tab corresponds to a different fragment in the activity.
  * We also use this class to check if a user is signed in and send them to the sign in / sign up activity.
  * Permissions are checked and intents are built out for requesting data.
  * <p>
@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.frag_pager)
     BottomNavViewPager mNavViewPager;
 
-    public static PlayerBoolean playerCreated = new PlayerBoolean();
+    public static final PlayerBoolean playerCreated = new PlayerBoolean();
     @Inject
     SimpleExoPlayer exoPlayer;
     private long finalTime;
@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView txtEndTime;
     private Handler handler;
     private boolean hasSongStarted = false;
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+    private final BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
         @Override

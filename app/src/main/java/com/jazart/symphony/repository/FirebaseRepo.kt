@@ -87,5 +87,6 @@ class FirebaseRepo private constructor(
             author = currentUser?.displayName
         }
         db.collection(SONGS).add(song)
+        var nums = intArrayOf(3)
     }
 }

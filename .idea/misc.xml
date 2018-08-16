@@ -1,5 +1,280 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="EntryPointsManager">
+    <entry_points version="2.0">
+      <entry_point TYPE="field" FQNAME="com.jazart.symphony.posts.Comment mPostId" />
+      <entry_point TYPE="field" FQNAME="com.jazart.symphony.Constants COMMENTS" />
+      <entry_point TYPE="field" FQNAME="com.jazart.symphony.featured.FeaturedMusicFragment mViewModelFactory" />
+      <entry_point TYPE="field" FQNAME="com.jazart.symphony.venues.LocalEventsFragment mRepo" />
+      <entry_point TYPE="field" FQNAME="com.jazart.symphony.venues.LocalEventsFragment mPostLoadProgress" />
+      <entry_point TYPE="field" FQNAME="com.jazart.symphony.venues.LocalEventsFragment mRecyclerView" />
+      <entry_point TYPE="field" FQNAME="com.jazart.symphony.MainActivity finalTime" />
+      <entry_point TYPE="field" FQNAME="com.jazart.symphony.MainActivity exoPlayer" />
+      <entry_point TYPE="field" FQNAME="com.jazart.symphony.MainActivity mFabMenu" />
+      <entry_point TYPE="field" FQNAME="com.jazart.symphony.featured.MusicAdapter exoPlayer" />
+      <entry_point TYPE="field" FQNAME="com.jazart.symphony.posts.NewPostFragment mBodyTil" />
+      <entry_point TYPE="field" FQNAME="com.jazart.symphony.posts.NewPostFragment mTitleTil" />
+      <entry_point TYPE="field" FQNAME="com.jazart.symphony.posts.PostDetailFragment mCommentEt" />
+      <entry_point TYPE="field" FQNAME="com.jazart.symphony.posts.PostDetailFragment mPostDetailImage" />
+      <entry_point TYPE="field" FQNAME="com.jazart.symphony.signup.SignUpDialog mNameEt" />
+      <entry_point TYPE="field" FQNAME="com.jazart.symphony.signup.SignUpDialog mEmailEt" />
+      <entry_point TYPE="field" FQNAME="com.jazart.symphony.signup.SignupFragment mName" />
+      <entry_point TYPE="field" FQNAME="com.jazart.symphony.signup.SignupFragment mPhoto" />
+      <entry_point TYPE="field" FQNAME="com.jazart.symphony.signup.SignupFragment mPassword" />
+      <entry_point TYPE="field" FQNAME="com.jazart.symphony.signup.SignupFragment mEmail" />
+      <entry_point TYPE="field" FQNAME="com.jazart.symphony.posts.UploadDialog mViewModelFactory" />
+      <entry_point TYPE="field" FQNAME="com.jazart.symphony.venues.VenueAdapter.VenueHolder mVenueEventTv" />
+      <entry_point TYPE="field" FQNAME="com.jazart.symphony.venues.VenueAdapter.VenueHolder mVenueEvent2Tv" />
+      <entry_point TYPE="field" FQNAME="com.jazart.symphony.venues.VenueAdapter.VenueHolder TAG" />
+      <entry_point TYPE="field" FQNAME="com.jazart.symphony.venues.VenueViewModel TAG" />
+    </entry_points>
+    <pattern value="com.jazart.symphony.BottomNavViewPager" method="BottomNavViewPager" />
+    <pattern value="com.jazart.symphony.BottomNavViewPager" />
+    <pattern value="com.jazart.symphony.model.venues.Category" method="setPrimary" />
+    <pattern value="com.jazart.symphony.model.venues.Category" method="getPrimary" />
+    <pattern value="com.jazart.symphony.model.venues.Category" method="setIcon" />
+    <pattern value="com.jazart.symphony.model.venues.Category" method="getIcon" />
+    <pattern value="com.jazart.symphony.model.venues.Category" method="setShortName" />
+    <pattern value="com.jazart.symphony.model.venues.Category" method="getShortName" />
+    <pattern value="com.jazart.symphony.model.venues.Category" method="setPluralName" />
+    <pattern value="com.jazart.symphony.model.venues.Category" method="getPluralName" />
+    <pattern value="com.jazart.symphony.model.venues.Category" method="setName" />
+    <pattern value="com.jazart.symphony.model.venues.Category" method="getName" />
+    <pattern value="com.jazart.symphony.model.venues.Category" method="setId" />
+    <pattern value="com.jazart.symphony.model.venues.Category" method="getId" />
+    <pattern value="com.jazart.symphony.model.venues.Category" />
+    <pattern value="com.jazart.symphony.model.venues.Checkin" method="setTimeZoneOffset" />
+    <pattern value="com.jazart.symphony.model.venues.Checkin" method="getTimeZoneOffset" />
+    <pattern value="com.jazart.symphony.model.venues.Checkin" method="setType" />
+    <pattern value="com.jazart.symphony.model.venues.Checkin" method="getType" />
+    <pattern value="com.jazart.symphony.model.venues.Checkin" method="setCreatedAt" />
+    <pattern value="com.jazart.symphony.model.venues.Checkin" method="getCreatedAt" />
+    <pattern value="com.jazart.symphony.model.venues.Checkin" method="setId" />
+    <pattern value="com.jazart.symphony.model.venues.Checkin" method="getId" />
+    <pattern value="com.jazart.symphony.model.venues.Checkin" />
+    <pattern value="com.jazart.symphony.posts.Comment" method="profilePic" />
+    <pattern value="com.jazart.symphony.posts.Comment" method="setLikes" />
+    <pattern value="com.jazart.symphony.posts.Comment" method="getLikes" />
+    <pattern value="com.jazart.symphony.posts.Comment" method="setAuthorId" />
+    <pattern value="com.jazart.symphony.posts.Comment" method="getAuthorId" />
+    <pattern value="com.jazart.symphony.posts.Comment" method="setAuthorName" />
+    <pattern value="com.jazart.symphony.posts.Comment" method="getAuthorName" />
+    <pattern value="com.jazart.symphony.posts.Comment" method="setContent" />
+    <pattern value="com.jazart.symphony.posts.Comment" />
+    <pattern value="com.jazart.symphony.Constants" />
+    <pattern value="com.jazart.symphony.model.Event" method="setmHost" />
+    <pattern value="com.jazart.symphony.model.Event" method="getmHost" />
+    <pattern value="com.jazart.symphony.model.Event" method="setmLocation" />
+    <pattern value="com.jazart.symphony.model.Event" method="getmLocation" />
+    <pattern value="com.jazart.symphony.model.Event" method="setmDate" />
+    <pattern value="com.jazart.symphony.model.Event" method="getmDate" />
+    <pattern value="com.jazart.symphony.model.Event" method="Event" />
+    <pattern value="com.jazart.symphony.model.Event" />
+    <pattern value="com.jazart.symphony.featured.FeaturedMusicFragment" method="FeaturedMusicFragment" />
+    <pattern value="com.jazart.symphony.featured.FeaturedMusicFragment" />
+    <pattern value="com.jazart.symphony.network.FoursquareApiClient" method="getVenues" />
+    <pattern value="com.jazart.symphony.network.FoursquareApiClient" />
+    <pattern value="com.jazart.symphony.model.venues.Icon" method="setSuffix" />
+    <pattern value="com.jazart.symphony.model.venues.Icon" method="getSuffix" />
+    <pattern value="com.jazart.symphony.model.venues.Icon" method="setPrefix" />
+    <pattern value="com.jazart.symphony.model.venues.Icon" method="getPrefix" />
+    <pattern value="com.jazart.symphony.model.venues.Icon" />
+    <pattern value="com.jazart.symphony.model.venues.Item" method="setVisibility" />
+    <pattern value="com.jazart.symphony.model.venues.Item" method="getVisibility" />
+    <pattern value="com.jazart.symphony.model.venues.Item" method="setCheckin" />
+    <pattern value="com.jazart.symphony.model.venues.Item" method="getCheckin" />
+    <pattern value="com.jazart.symphony.model.venues.Item" method="setUser" />
+    <pattern value="com.jazart.symphony.model.venues.Item" method="getUser" />
+    <pattern value="com.jazart.symphony.model.venues.Item" method="setHeight" />
+    <pattern value="com.jazart.symphony.model.venues.Item" method="setWidth" />
+    <pattern value="com.jazart.symphony.model.venues.Item" method="setSuffix" />
+    <pattern value="com.jazart.symphony.model.venues.Item" method="setPrefix" />
+    <pattern value="com.jazart.symphony.model.venues.Item" method="setSource" />
+    <pattern value="com.jazart.symphony.model.venues.Item" method="getSource" />
+    <pattern value="com.jazart.symphony.model.venues.Item" method="setCreatedAt" />
+    <pattern value="com.jazart.symphony.model.venues.Item" method="getCreatedAt" />
+    <pattern value="com.jazart.symphony.model.venues.Item" method="setId" />
+    <pattern value="com.jazart.symphony.model.venues.Item" method="getId" />
+    <pattern value="com.jazart.symphony.model.venues.Item" />
+    <pattern value="com.jazart.symphony.model.venues.LabeledLatLng" method="setLng" />
+    <pattern value="com.jazart.symphony.model.venues.LabeledLatLng" method="getLng" />
+    <pattern value="com.jazart.symphony.model.venues.LabeledLatLng" method="setLat" />
+    <pattern value="com.jazart.symphony.model.venues.LabeledLatLng" method="getLat" />
+    <pattern value="com.jazart.symphony.model.venues.LabeledLatLng" method="setLabel" />
+    <pattern value="com.jazart.symphony.model.venues.LabeledLatLng" method="getLabel" />
+    <pattern value="com.jazart.symphony.model.venues.LabeledLatLng" />
+    <pattern value="com.jazart.symphony.venues.LocalEventsFragment" method="onCreateView" />
+    <pattern value="com.jazart.symphony.venues.LocalEventsFragment" method="LocalEventsFragment" />
+    <pattern value="com.jazart.symphony.venues.LocalEventsFragment" />
+    <pattern value="com.jazart.symphony.model.venues.Location" method="setFormattedAddress" />
+    <pattern value="com.jazart.symphony.model.venues.Location" method="getFormattedAddress" />
+    <pattern value="com.jazart.symphony.model.venues.Location" method="setCountry" />
+    <pattern value="com.jazart.symphony.model.venues.Location" method="getCountry" />
+    <pattern value="com.jazart.symphony.model.venues.Location" method="setState" />
+    <pattern value="com.jazart.symphony.model.venues.Location" method="getState" />
+    <pattern value="com.jazart.symphony.model.venues.Location" method="setCity" />
+    <pattern value="com.jazart.symphony.model.venues.Location" method="getCity" />
+    <pattern value="com.jazart.symphony.model.venues.Location" method="setCc" />
+    <pattern value="com.jazart.symphony.model.venues.Location" method="getCc" />
+    <pattern value="com.jazart.symphony.model.venues.Location" method="setPostalCode" />
+    <pattern value="com.jazart.symphony.model.venues.Location" method="getPostalCode" />
+    <pattern value="com.jazart.symphony.model.venues.Location" method="setDistance" />
+    <pattern value="com.jazart.symphony.model.venues.Location" method="getDistance" />
+    <pattern value="com.jazart.symphony.model.venues.Location" method="setLabeledLatLngs" />
+    <pattern value="com.jazart.symphony.model.venues.Location" method="getLabeledLatLngs" />
+    <pattern value="com.jazart.symphony.model.venues.Location" method="setLng" />
+    <pattern value="com.jazart.symphony.model.venues.Location" method="getLng" />
+    <pattern value="com.jazart.symphony.model.venues.Location" method="setLat" />
+    <pattern value="com.jazart.symphony.model.venues.Location" method="getLat" />
+    <pattern value="com.jazart.symphony.model.venues.Location" method="setCrossStreet" />
+    <pattern value="com.jazart.symphony.model.venues.Location" method="getCrossStreet" />
+    <pattern value="com.jazart.symphony.model.venues.Location" method="setAddress" />
+    <pattern value="com.jazart.symphony.model.venues.Location" />
+    <pattern value="com.jazart.symphony.location.LocationIntentService" method="LocationIntentService" />
+    <pattern value="com.jazart.symphony.location.LocationIntentService" />
+    <pattern value="com.jazart.symphony.MainActivity" method="onViewClicked" />
+    <pattern value="com.jazart.symphony.MainActivity" />
+    <pattern value="com.jazart.symphony.model.venues.Meta" method="setRequestId" />
+    <pattern value="com.jazart.symphony.model.venues.Meta" method="getRequestId" />
+    <pattern value="com.jazart.symphony.model.venues.Meta" method="setCode" />
+    <pattern value="com.jazart.symphony.model.venues.Meta" method="getCode" />
+    <pattern value="com.jazart.symphony.model.venues.Meta" />
+    <pattern value="com.jazart.symphony.featured.MusicAdapter" />
+    <pattern value="com.jazart.symphony.playback.MusicService" method="MusicService" />
+    <pattern value="com.jazart.symphony.playback.MusicService" />
+    <pattern value="com.jazart.symphony.network.NetworkService" method="buildCacheClient" />
+    <pattern value="com.jazart.symphony.network.NetworkService" method="buildClient" />
+    <pattern value="com.jazart.symphony.network.NetworkService" />
+    <pattern value="com.jazart.symphony.posts.NewPostFragment" method="submit" />
+    <pattern value="com.jazart.symphony.posts.NewPostFragment" />
+    <pattern value="com.jazart.symphony.model.venues.Photo" method="setSuffix" />
+    <pattern value="com.jazart.symphony.model.venues.Photo" method="getSuffix" />
+    <pattern value="com.jazart.symphony.model.venues.Photo" method="setPrefix" />
+    <pattern value="com.jazart.symphony.model.venues.Photo" method="getPrefix" />
+    <pattern value="com.jazart.symphony.model.venues.Photo" />
+    <pattern value="com.jazart.symphony.model.venues.Photos" method="setDupesRemoved" />
+    <pattern value="com.jazart.symphony.model.venues.Photos" method="getDupesRemoved" />
+    <pattern value="com.jazart.symphony.model.venues.Photos" method="setItems" />
+    <pattern value="com.jazart.symphony.model.venues.Photos" method="getItems" />
+    <pattern value="com.jazart.symphony.model.venues.Photos" method="setCount" />
+    <pattern value="com.jazart.symphony.model.venues.Photos" method="getCount" />
+    <pattern value="com.jazart.symphony.model.venues.Photos" />
+    <pattern value="com.jazart.symphony.model.venues.PicResponse" method="setPhotos" />
+    <pattern value="com.jazart.symphony.model.venues.PicResponse" method="getPhotos" />
+    <pattern value="com.jazart.symphony.model.venues.PicResponse" />
+    <pattern value="com.jazart.symphony.playback.PlayerBoolean" method="getListener" />
+    <pattern value="com.jazart.symphony.playback.PlayerBoolean" />
+    <pattern value="com.jazart.symphony.playback.PlayerControl" method="PlayerControl" />
+    <pattern value="com.jazart.symphony.playback.PlayerControl" />
+    <pattern value="com.jazart.symphony.posts.PostActivity" />
+    <pattern value="com.jazart.symphony.posts.PostDetailFragment" method="onBtnClick" />
+    <pattern value="com.jazart.symphony.posts.PostDetailFragment" method="PostDetailFragment" />
+    <pattern value="com.jazart.symphony.posts.PostDetailFragment" />
+    <pattern value="com.jazart.symphony.posts.PostsLiveData" method="PostsLiveData" />
+    <pattern value="com.jazart.symphony.posts.PostsLiveData" />
+    <pattern value="com.jazart.symphony.posts.PostsViewModel" method="getUserProfilePic" />
+    <pattern value="com.jazart.symphony.posts.PostsViewModel" method="loadComments" />
+    <pattern value="com.jazart.symphony.posts.PostsViewModel" method="addComment" />
+    <pattern value="com.jazart.symphony.posts.PostsViewModel" />
+    <pattern value="com.jazart.symphony.model.venues.Response" method="setVenues" />
+    <pattern value="com.jazart.symphony.model.venues.Response" method="getVenues" />
+    <pattern value="com.jazart.symphony.model.venues.Response" />
+    <pattern value="com.jazart.symphony.signup.SignUpActivity" />
+    <pattern value="com.jazart.symphony.signup.SignUpDialog" method="isValidEmail" />
+    <pattern value="com.jazart.symphony.signup.SignUpDialog" />
+    <pattern value="com.jazart.symphony.signup.SignupFragment" method="setUpUser" />
+    <pattern value="com.jazart.symphony.signup.SignupFragment" />
+    <pattern value="com.jazart.symphony.model.Song" method="getAuthor" />
+    <pattern value="com.jazart.symphony.model.Song" method="setLikes" />
+    <pattern value="com.jazart.symphony.model.Song" method="getLikes" />
+    <pattern value="com.jazart.symphony.model.Song" method="setDate" />
+    <pattern value="com.jazart.symphony.model.Song" method="getDate" />
+    <pattern value="com.jazart.symphony.model.Song" method="getArtists" />
+    <pattern value="com.jazart.symphony.model.Song" />
+    <pattern value="com.jazart.symphony.model.venues.Source" method="setUrl" />
+    <pattern value="com.jazart.symphony.model.venues.Source" method="getUrl" />
+    <pattern value="com.jazart.symphony.model.venues.Source" method="setName" />
+    <pattern value="com.jazart.symphony.model.venues.Source" method="getName" />
+    <pattern value="com.jazart.symphony.model.venues.Source" />
+    <pattern value="com.jazart.symphony.posts.UploadDialog" method="getImageRealPath" />
+    <pattern value="com.jazart.symphony.posts.UploadDialog" />
+    <pattern value="com.jazart.symphony.model.venues.User" method="setPhoto" />
+    <pattern value="com.jazart.symphony.model.venues.User" method="getPhoto" />
+    <pattern value="com.jazart.symphony.model.venues.User" method="setGender" />
+    <pattern value="com.jazart.symphony.model.venues.User" method="getGender" />
+    <pattern value="com.jazart.symphony.model.venues.User" method="setLastName" />
+    <pattern value="com.jazart.symphony.model.venues.User" method="getLastName" />
+    <pattern value="com.jazart.symphony.model.venues.User" method="setFirstName" />
+    <pattern value="com.jazart.symphony.model.venues.User" method="getFirstName" />
+    <pattern value="com.jazart.symphony.model.venues.User" method="setId" />
+    <pattern value="com.jazart.symphony.model.venues.User" method="getId" />
+    <pattern value="com.jazart.symphony.model.venues.User" />
+    <pattern value="com.jazart.symphony.model.User" method="setCity" />
+    <pattern value="com.jazart.symphony.model.User" method="setLocation" />
+    <pattern value="com.jazart.symphony.model.User" method="setNumPlays" />
+    <pattern value="com.jazart.symphony.model.User" method="getNumPlays" />
+    <pattern value="com.jazart.symphony.model.User" method="setNumSongs" />
+    <pattern value="com.jazart.symphony.model.User" method="getNumSongs" />
+    <pattern value="com.jazart.symphony.model.User" method="setFriends" />
+    <pattern value="com.jazart.symphony.model.User" method="getFriends" />
+    <pattern value="com.jazart.symphony.model.User" method="setDateJoined" />
+    <pattern value="com.jazart.symphony.model.User" method="getDateJoined" />
+    <pattern value="com.jazart.symphony.model.User" method="setId" />
+    <pattern value="com.jazart.symphony.model.User" method="setName" />
+    <pattern value="com.jazart.symphony.model.User" method="getName" />
+    <pattern value="com.jazart.symphony.model.User" />
+    <pattern value="com.jazart.symphony.posts.UserPost.Builder" method="likes" />
+    <pattern value="com.jazart.symphony.posts.UserPost.Builder" method="authorName" />
+    <pattern value="com.jazart.symphony.posts.UserPost.Builder" method="image" />
+    <pattern value="com.jazart.symphony.posts.UserPost.Builder" method="profilePic" />
+    <pattern value="com.jazart.symphony.posts.UserPost.Builder" method="author" />
+    <pattern value="com.jazart.symphony.posts.UserPost.Builder" />
+    <pattern value="com.jazart.symphony.posts.UserPost" method="addComment" />
+    <pattern value="com.jazart.symphony.posts.UserPost" method="setComments" />
+    <pattern value="com.jazart.symphony.posts.UserPost" method="getComments" />
+    <pattern value="com.jazart.symphony.posts.UserPost" method="setLikes" />
+    <pattern value="com.jazart.symphony.posts.UserPost" method="getLikes" />
+    <pattern value="com.jazart.symphony.posts.UserPost" method="setAuthorName" />
+    <pattern value="com.jazart.symphony.posts.UserPost" method="getAuthorName" />
+    <pattern value="com.jazart.symphony.posts.UserPost" method="getPostDate" />
+    <pattern value="com.jazart.symphony.posts.UserPost" method="setImageUri" />
+    <pattern value="com.jazart.symphony.posts.UserPost" method="getImageUri" />
+    <pattern value="com.jazart.symphony.posts.UserPost" method="getAuthor" />
+    <pattern value="com.jazart.symphony.posts.UserPost" method="setBody" />
+    <pattern value="com.jazart.symphony.posts.UserPost" method="setTitle" />
+    <pattern value="com.jazart.symphony.posts.UserPost" />
+    <pattern value="com.jazart.symphony.model.venues.Venue" method="setImageUri" />
+    <pattern value="com.jazart.symphony.model.venues.Venue" method="setVenuePage" />
+    <pattern value="com.jazart.symphony.model.venues.Venue" method="getVenuePage" />
+    <pattern value="com.jazart.symphony.model.venues.Venue" method="setCategories" />
+    <pattern value="com.jazart.symphony.model.venues.Venue" method="getCategories" />
+    <pattern value="com.jazart.symphony.model.venues.Venue" method="setLocation" />
+    <pattern value="com.jazart.symphony.model.venues.Venue" method="setName" />
+    <pattern value="com.jazart.symphony.model.venues.Venue" method="setId" />
+    <pattern value="com.jazart.symphony.model.venues.Venue" method="getId" />
+    <pattern value="com.jazart.symphony.model.venues.Venue" />
+    <pattern value="com.jazart.symphony.venues.VenueAdapter.VenueHolder" />
+    <pattern value="com.jazart.symphony.venues.VenueAdapter" method="setVenueList" />
+    <pattern value="com.jazart.symphony.venues.VenueAdapter" />
+    <pattern value="com.jazart.symphony.model.venues.VenuePage" method="setId" />
+    <pattern value="com.jazart.symphony.model.venues.VenuePage" method="getId" />
+    <pattern value="com.jazart.symphony.model.venues.VenuePage" />
+    <pattern value="com.jazart.symphony.model.venues.VenuePicsResponse" method="setResponse" />
+    <pattern value="com.jazart.symphony.model.venues.VenuePicsResponse" method="getResponse" />
+    <pattern value="com.jazart.symphony.model.venues.VenuePicsResponse" method="setMeta" />
+    <pattern value="com.jazart.symphony.model.venues.VenuePicsResponse" method="getMeta" />
+    <pattern value="com.jazart.symphony.model.venues.VenuePicsResponse" />
+    <pattern value="com.jazart.symphony.model.venues.VenueResponse" method="setResponse" />
+    <pattern value="com.jazart.symphony.model.venues.VenueResponse" method="getResponse" />
+    <pattern value="com.jazart.symphony.model.venues.VenueResponse" method="setMeta" />
+    <pattern value="com.jazart.symphony.model.venues.VenueResponse" method="getMeta" />
+    <pattern value="com.jazart.symphony.model.venues.VenueResponse" />
+    <pattern value="com.jazart.symphony.venues.VenueViewModel" method="getOptions" />
+    <pattern value="com.jazart.symphony.venues.VenueViewModel" method="buildUri" />
+    <pattern value="com.jazart.symphony.venues.VenueViewModel" method="loadVenues" />
+    <pattern value="com.jazart.symphony.venues.VenueViewModel" method="getVenues" />
+    <pattern value="com.jazart.symphony.venues.VenueViewModel" />
+  </component>
   <component name="JavadocGenerationManager">
     <option name="OUTPUT_DIRECTORY" />
     <option name="OPTION_SCOPE" value="protected" />

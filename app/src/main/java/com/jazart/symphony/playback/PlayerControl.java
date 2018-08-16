@@ -1,8 +1,5 @@
 package com.jazart.symphony.playback;
 
-/**
- * Created by kendrickgholston on 5/6/18.
- */
 
 import android.widget.MediaController.MediaPlayerControl;
 

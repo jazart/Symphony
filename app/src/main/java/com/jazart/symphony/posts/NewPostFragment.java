@@ -13,6 +13,8 @@ import android.view.ViewGroup;
 
 import com.jazart.symphony.R;
 
+import java.util.Objects;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -51,8 +53,8 @@ public class NewPostFragment extends android.support.v4.app.Fragment {
     @OnClick(R.id.button)
     public void submit() {
         UserPost post = new UserPost.Builder()
-                .title(mTitle.getText().toString())
-                .body(mBody.getText().toString())
+                .title(Objects.requireNonNull(mTitle.getText()).toString())
+                .body(Objects.requireNonNull(mBody.getText()).toString())
                 .build();
         mPostsViewModel.addToDb(post);
     }

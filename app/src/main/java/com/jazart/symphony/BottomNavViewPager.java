@@ -13,7 +13,7 @@ import android.view.MotionEvent;
  * custom view disables the typical swiping ability of the viewpager container
  */
 public class BottomNavViewPager extends ViewPager {
-    private boolean isSwipeable;
+    private final boolean isSwipeable;
 
     public BottomNavViewPager(@NonNull Context context, AttributeSet attrs) {
         super(context, attrs);

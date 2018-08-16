@@ -14,7 +14,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 @Singleton
 public class NetworkService {
     private static NetworkService sINSTANCE;
-    private Retrofit mService;
+    private final Retrofit mService;
     private OkHttpClient mClient;
 
     private NetworkService() {

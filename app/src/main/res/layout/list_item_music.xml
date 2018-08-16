@@ -23,14 +23,14 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/songtitle"
+            android:id="@+id/song_title"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center" />
 
         <ImageButton
 
-            android:id="@+id/playbutton"
+            android:id="@+id/play_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@string/song_play_iv"

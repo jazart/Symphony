@@ -22,7 +22,7 @@ public class Venue {
     private Location location;
     @SerializedName("categories")
     @Expose
-    private List<Category> categories = new ArrayList<Category>();
+    private List<Category> categories = new ArrayList<>();
     @SerializedName("venuePage")
     @Expose
     private VenuePage venuePage;

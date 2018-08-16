@@ -33,7 +33,6 @@ public class FeaturedMusicFragment extends Fragment implements SwipeRefreshLayou
     private SongViewModel mSongsViewModel;
     @Inject
     SimpleViewModelFactory mViewModelFactory;
-    private LinearLayoutManager recMan;
     @BindView(R.id.swipeRefreshLayout)
     SwipeRefreshLayout mRefreshSongs;
     @BindView(R.id.music_load_progress)
@@ -57,7 +56,7 @@ public class FeaturedMusicFragment extends Fragment implements SwipeRefreshLayou
         mSongsViewModel = ViewModelProviders.of(this, mViewModelFactory)
                 .get(SongViewModel.class);
         mRefreshSongs.setOnRefreshListener(this);
-        recMan = new LinearLayoutManager(getContext());
+        LinearLayoutManager recMan = new LinearLayoutManager(getContext());
         final RecyclerView.ItemDecoration decoration = new DividerItemDecoration(requireActivity(), LinearLayoutManager.VERTICAL);
 
         mSongsViewModel.getSongs().observe(this, new Observer<List<Song>>() {

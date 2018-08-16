@@ -152,7 +152,7 @@ public class UserPost {
         private String mTitle;
         private String mBody;
         private String mAuthor;
-        private Date mPostDate = new Date();
+        private final Date mPostDate = new Date();
         private Uri mImg;
         private String mProfilePic;
         private String mAuthorName;

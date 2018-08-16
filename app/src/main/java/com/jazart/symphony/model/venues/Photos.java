@@ -14,7 +14,7 @@ public class Photos {
     private Integer count;
     @SerializedName("items")
     @Expose
-    private List<Item> items = new ArrayList<Item>();
+    private List<Item> items = new ArrayList<>();
     @SerializedName("dupesRemoved")
     @Expose
     private Integer dupesRemoved;

@@ -10,14 +10,11 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
-import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.jazart.symphony.R;
 import com.jazart.symphony.di.App;
@@ -38,11 +35,11 @@ import static com.jazart.symphony.MainActivity.songPlaying;
 
 public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicHolder> {
     private List<Song> mSongs;
-    private LayoutInflater mInflater;
+    private final LayoutInflater mInflater;
 
     @Inject
     SimpleExoPlayer exoPlayer;
-    private Player.EventListener eventListener = new PlayerListener();
+    private final Player.EventListener eventListener = new PlayerListener();
 
     MusicAdapter(Context context) {
         mInflater = LayoutInflater.from(context);
@@ -73,14 +70,14 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicHolder>
     }
 
     public class MusicHolder extends RecyclerView.ViewHolder{
-        TextView mSongTV;
-        ImageButton mPlayButton;
+        final TextView mSongTV;
+        final ImageButton mPlayButton;
 
         MusicHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            mSongTV = itemView.findViewById(R.id.songtitle);
-            mPlayButton = itemView.findViewById(R.id.playbutton);
+            mSongTV = itemView.findViewById(R.id.song_title);
+            mPlayButton = itemView.findViewById(R.id.play_button);
         }
 
         void bind(final Song song) {
@@ -96,8 +93,8 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicHolder>
         }
 
         private void prepareExoPlayerFromURL(Uri uri) {
-            TrackSelector trackSelector = new DefaultTrackSelector();
-            DefaultRenderersFactory renderersFactory = new DefaultRenderersFactory(itemView.getContext());
+//            TrackSelector trackSelector = new DefaultTrackSelector();
+//            DefaultRenderersFactory renderersFactory = new DefaultRenderersFactory(itemView.getContext());
 
             if (exoPlayer != null) {
                 exoPlayer.stop();

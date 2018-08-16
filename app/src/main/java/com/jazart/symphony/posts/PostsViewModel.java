@@ -24,23 +24,20 @@ import static com.jazart.symphony.MainActivity.sDb;
  * Here we get data from the database and have them wrapped in livedata objects for a more reactive interface
  */
 public class PostsViewModel extends BaseViewModel {
-    private FirebaseAuth mAuth;
-    private FirebaseUser mUser;
-    private LiveData<List<UserPost>> mUserPostsLiveData;
-    private MutableLiveData<List<Comment>> mComments;
-    private PostsLiveData mPostsLiveData;
+    private final FirebaseUser mUser;
+    private final MutableLiveData<List<Comment>> mComments;
 
     public PostsViewModel() {
         super();
-        mAuth = FirebaseAuth.getInstance();
-        mUser = mAuth.getCurrentUser();
-        mUserPostsLiveData = Objects.requireNonNull(getLocationRepo()).getNearbyPosts();
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        mUser = auth.getCurrentUser();
+        LiveData<List<UserPost>> userPostsLiveData = Objects.requireNonNull(Objects.requireNonNull(getLocationRepo())).getNearbyPosts();
         mComments = new MutableLiveData<>();
-        mPostsLiveData = getFirebaseRepo().getUserPosts();
+        PostsLiveData postsLiveData = getFirebaseRepo().getUserPosts();
     }
 
     public LiveData<List<UserPost>> getUserPostsLiveData() {
-        return getLocationRepo().getNearbyPosts();
+        return Objects.requireNonNull(getLocationRepo()).getNearbyPosts();
     }
 
     public LiveData<List<Comment>> getComments() {
@@ -61,7 +58,7 @@ public class PostsViewModel extends BaseViewModel {
     }
 
     private void addComment(Comment comment, String id) {
-        addComment(comment, id);
+        getFirebaseRepo().addPostComment(comment, id);
     }
 
     public void loadComments(String id) {

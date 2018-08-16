@@ -1,5 +1,6 @@
 package com.jazart.symphony;
 
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -11,8 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 class BottomNavAdapter extends FragmentPagerAdapter {
-    private List<Fragment> mFragments;
-    private SparseArray<WeakReference<Fragment>> instantiatedFrags;
+    private final List<Fragment> mFragments;
+    private final SparseArray<WeakReference<Fragment>> instantiatedFrags;
 
     BottomNavAdapter(FragmentManager fm) {
         super(fm);
@@ -35,6 +36,7 @@ class BottomNavAdapter extends FragmentPagerAdapter {
 
     }
 
+    @NonNull
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         final Fragment fragment = (Fragment) super.instantiateItem(container, position);

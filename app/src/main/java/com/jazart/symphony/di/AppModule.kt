@@ -26,6 +26,7 @@ import javax.inject.Singleton
 
 class App : Application() {
     lateinit var component: AppComponent
+
     @Inject
     lateinit var viewModelFactory: SimpleViewModelFactory
 

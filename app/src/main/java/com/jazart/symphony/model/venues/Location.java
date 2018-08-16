@@ -23,7 +23,7 @@ public class Location {
     private Double lng;
     @SerializedName("labeledLatLngs")
     @Expose
-    private List<LabeledLatLng> labeledLatLngs = new ArrayList<LabeledLatLng>();
+    private List<LabeledLatLng> labeledLatLngs = new ArrayList<>();
     @SerializedName("distance")
     @Expose
     private Integer distance;
