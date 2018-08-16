@@ -1,0 +1,12 @@
+<lint>
+    <issue id="InvalidPackage">
+        <ignore path="**/androidannotations*.jar" />
+        <ignore path="**/cling-support*.jar" />
+        <ignore path="**/javax.servlet*.jar" />
+        <ignore path="**/jetty-server*.jar" />
+        <ignore path="**/jetty-servlet*.jar" />
+        <ignore path="**/jetty-util*.jar" />
+        <ignore path="**/seamless-swing*.jar" />
+        <ignore path="**/seamless-util*.jar" />
+    </issue>
+</lint>

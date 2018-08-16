@@ -6,6 +6,11 @@ def dagger_version = 2.13
 
 
 android {
+    lintOptions {
+            abortOnError false
+            lintConfig file("lint.xml")
+    }
+
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.jazart.symphony"
