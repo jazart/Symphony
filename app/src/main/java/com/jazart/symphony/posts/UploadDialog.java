@@ -1,5 +1,6 @@
 package com.jazart.symphony.posts;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.arch.lifecycle.Observer;
@@ -70,10 +71,11 @@ public class UploadDialog extends DialogFragment implements DialogInterface.OnCl
     }
 
     private void updateProgress() {
-        mSongViewModel.getProgressLiveData().observe(this, new Observer<Integer>() {
+        mSongViewModel.getPercentageLiveData().observe(this, new Observer<Integer>() {
             @Override
             public void onChanged(@Nullable Integer progress) {
                 mUploadProgress.setVisibility(View.VISIBLE);
+                mUploadProgress.setProgress(progress, true);
                 if (progress == 100) dismiss();
             }
         });
@@ -81,7 +83,7 @@ public class UploadDialog extends DialogFragment implements DialogInterface.OnCl
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        View view = LayoutInflater.from(getContext())
+        @SuppressLint("InflateParams") View view = LayoutInflater.from(getContext())
                 .inflate(R.layout.fragment_upload_dialog, null);
 
         mArtists = view.findViewById(R.id.enter_artists);
@@ -94,8 +96,11 @@ public class UploadDialog extends DialogFragment implements DialogInterface.OnCl
                 List<String> result = getArtistsFromUi();
                 mSong.setName(Objects.requireNonNull(mSongTitle.getEditText()).getText().toString());
                 mSong.setArtists(result);
+
+                String size = getFileSize();
+                Log.d("TAG/ UPLOAD", size);
                 try {
-                    mSongViewModel.addSongToStorage(mSong, convertSongUriToFile());
+                    mSongViewModel.addSongToStorage(mSong, convertSongUriToFile(), size);
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
@@ -124,7 +129,7 @@ public class UploadDialog extends DialogFragment implements DialogInterface.OnCl
         try {
             String size = getFileSize();
             Log.d("TAG/ UPLOAD", size);
-            mSongViewModel.addSongToStorage(mSong, convertSongUriToFile());
+            mSongViewModel.addSongToStorage(mSong, convertSongUriToFile(), size);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

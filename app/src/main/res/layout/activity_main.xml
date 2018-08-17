@@ -67,7 +67,6 @@
 
     </android.support.design.widget.BottomNavigationView>
 
-
     <LinearLayout
 
         android:id="@+id/media_controller"

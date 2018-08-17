@@ -50,8 +50,17 @@ public class LocationHelperRepo {
     }
 
     public static LocationHelperRepo getInstance() {
+        if (INSTANCE == null)
+            INSTANCE = new LocationHelperRepo(FirebaseAuth.getInstance().getUid()).create();
+        return INSTANCE;
+    }
+
+    public LocationHelperRepo create() {
         if (INSTANCE == null) {
-            INSTANCE = new LocationHelperRepo(FirebaseAuth.getInstance().getUid());
+            synchronized (this) {
+                INSTANCE = new LocationHelperRepo(FirebaseAuth.getInstance().getUid());
+                INSTANCE.getUserById();
+            }
         }
 
         return INSTANCE;

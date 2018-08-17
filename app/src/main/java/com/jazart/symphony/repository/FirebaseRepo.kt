@@ -71,13 +71,16 @@ class FirebaseRepo private constructor(
         val storageRef = storage.reference.child("${Constants.USERS}/${currentUser?.uid}/${Constants.SONGS}/${song.name}")
         val uploadTask = storageRef.putStream(inputStream)
         uploadTask.addOnProgressListener { progress ->
-            also { Log.d("PROGRESS_UPLOAD", "${progress.bytesTransferred} ${progress.totalByteCount}") }
-            val progressPercentage = (100.times(progress.bytesTransferred)).div(progress.totalByteCount)
-            uploadProgress.value = progressPercentage.toInt()
-        }.addOnSuccessListener {
-            //Success addSongToFireStore(storageRef.downloadUrl.result, song)
-        }.addOnFailureListener {
-            //failed
+            uploadProgress.value = progress.bytesTransferred.toInt()
+        }
+
+        uploadTask.addOnCompleteListener {
+            if (it.isComplete && it.isSuccessful) {
+                storageRef.downloadUrl.addOnCompleteListener { url ->
+                    Log.d("44343434", url.result.toString())
+                    addSongToFireStore(url.result, song)
+                }
+            }
         }
     }
 
@@ -85,8 +88,8 @@ class FirebaseRepo private constructor(
         song.apply {
             uri = "$songUri"
             author = currentUser?.displayName
+            name = "test"
         }
         db.collection(SONGS).add(song)
-        var nums = intArrayOf(3)
     }
 }
