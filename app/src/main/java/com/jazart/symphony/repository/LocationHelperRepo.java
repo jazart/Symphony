@@ -145,23 +145,16 @@ public class LocationHelperRepo {
 
         for (int i = 0; i < Objects.requireNonNull(getNearbyUsers().getValue()).size(); i++) {
             reference.whereEqualTo("author", getNearbyUsers().getValue().get(i).getId())
-                    .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                    for (int j = 0; j < task.getResult().size(); j++) {
-                        songs.add(task.getResult().toObjects(Song.class).get(j));
-                    }
-                    mSongs.setValue(songs);
-                }
-            })
-                    .addOnFailureListener(new OnFailureListener() {
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
-                        public void onFailure(@NonNull Exception e) {
-
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            for (int j = 0; j < task.getResult().size(); j++) {
+                                songs.add(task.getResult().toObjects(Song.class).get(j));
+                            }
+                            mSongs.setValue(songs);
                         }
                     });
         }
     }
-
-
 }

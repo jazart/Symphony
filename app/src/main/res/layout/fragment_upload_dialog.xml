@@ -62,7 +62,7 @@
         app:layout_constraintVertical_bias="0.184"
         app:layout_constraintWidth_percent="0.20" />
 
-    <Button
+    <android.support.design.button.MaterialButton
         android:id="@+id/upload_button"
         android:layout_width="167dp"
         android:layout_height="wrap_content"

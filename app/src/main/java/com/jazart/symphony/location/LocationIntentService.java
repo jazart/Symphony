@@ -19,6 +19,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.GeoPoint;
+import com.jazart.symphony.Constants;
 
 import java.io.IOException;
 import java.util.List;
@@ -83,7 +84,7 @@ public class LocationIntentService extends IntentService {
     private void addToDb(Location location, String city, String userId) {
         DocumentReference reference = sDb.collection(USERS).document(userId);
         reference
-                .update("location", new GeoPoint(location.getLatitude(), location.getLongitude()))
+                .update(Constants.LOCATION, new GeoPoint(location.getLatitude(), location.getLongitude()))
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
@@ -91,7 +92,7 @@ public class LocationIntentService extends IntentService {
                                 .show();
                     }
                 });
-        reference.update("city", city)
+        reference.update(Constants.CITY, city)
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {

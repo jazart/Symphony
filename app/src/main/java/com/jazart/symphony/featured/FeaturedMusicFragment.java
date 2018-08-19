@@ -1,5 +1,6 @@
 package com.jazart.symphony.featured;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
@@ -10,12 +11,14 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
 import com.jazart.symphony.R;
+import com.jazart.symphony.SwipeController;
 import com.jazart.symphony.di.App;
 import com.jazart.symphony.di.SimpleViewModelFactory;
 import com.jazart.symphony.model.Song;
@@ -55,22 +58,35 @@ public class FeaturedMusicFragment extends Fragment implements SwipeRefreshLayou
         app.component.inject(this);
         mSongsViewModel = ViewModelProviders.of(this, mViewModelFactory)
                 .get(SongViewModel.class);
-        mRefreshSongs.setOnRefreshListener(this);
-        LinearLayoutManager recMan = new LinearLayoutManager(getContext());
-        final RecyclerView.ItemDecoration decoration = new DividerItemDecoration(requireActivity(), LinearLayoutManager.VERTICAL);
 
-        mSongsViewModel.getSongs().observe(this, new Observer<List<Song>>() {
+        final LiveData<List<Song>> mSongsLiveData = mSongsViewModel.getSongs();
+        mSongsLiveData.observe(this, new Observer<List<Song>>() {
             @Override
             public void onChanged(@Nullable List<Song> songs) {
                 mMusicAdapter = new MusicAdapter(getContext());
                 hideProgress();
                 mMusicAdapter.setSongs(songs);
                 mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-                mRecyclerView.addItemDecoration(decoration);
                 mRecyclerView.setAdapter(mMusicAdapter);
                 mRefreshSongs.setRefreshing(false);
             }
         });
+
+        mRefreshSongs.setOnRefreshListener(this);
+        ItemTouchHelper swipeController = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback() {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
+                int pos = viewHolder.getAdapterPosition();
+                Song song = mSongsLiveData.getValue().get(pos);
+                //songvm remove.
+            }
+        });
+        swipeController.attachToRecyclerView(mRecyclerView);
         return v;
     }
 
@@ -92,7 +108,7 @@ public class FeaturedMusicFragment extends Fragment implements SwipeRefreshLayou
 
     @Override
     public void onRefresh() {
-        loadSongs();
+        mSongsViewModel.refreshContent();
     }
 }
 
