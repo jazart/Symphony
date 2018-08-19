@@ -10,8 +10,7 @@ import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.jazart.symphony.Constants
-import com.jazart.symphony.Constants.POSTS
-import com.jazart.symphony.Constants.SONGS
+import com.jazart.symphony.Constants.*
 import com.jazart.symphony.model.Song
 import com.jazart.symphony.posts.Comment
 import com.jazart.symphony.posts.PostsLiveData
@@ -91,5 +90,14 @@ class FirebaseRepo private constructor(
             name = "test"
         }
         db.collection(SONGS).add(song)
+    }
+
+    fun remove(song: Song) {
+        db.collection(SONGS).whereEqualTo("uri", song.uri).get()
+                .continueWith { querySnapshot ->
+                    querySnapshot.result.forEach { result -> result.reference.delete() }
+                }
+        val songStorageRef = storage.reference.child("$USERS/${currentUser?.uid}/$SONGS/${song.name}")
+        songStorageRef.delete()
     }
 }

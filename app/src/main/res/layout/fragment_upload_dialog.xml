@@ -10,8 +10,8 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="68dp"
-        app:hintAnimationEnabled="true"
         app:errorEnabled="true"
+        app:hintAnimationEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -64,7 +64,8 @@
 
     <android.support.design.button.MaterialButton
         android:id="@+id/upload_button"
-        android:layout_width="167dp"
+        style="Widget.Sy"
+        android:layout_width="146dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="248dp"
         android:layout_marginEnd="8dp"
@@ -73,6 +74,8 @@
         android:text="@string/upload"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHeight_percent="0.08"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintWidth_percent="0.4" />
 
 </android.support.constraint.ConstraintLayout>

@@ -8,7 +8,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -17,13 +16,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
+import com.jazart.symphony.MainActivity;
 import com.jazart.symphony.R;
-import com.jazart.symphony.SwipeController;
 import com.jazart.symphony.di.App;
 import com.jazart.symphony.di.SimpleViewModelFactory;
 import com.jazart.symphony.model.Song;
 
 import java.util.List;
+import java.util.Objects;
 
 import javax.inject.Inject;
 
@@ -43,8 +43,6 @@ public class FeaturedMusicFragment extends Fragment implements SwipeRefreshLayou
     @BindView(R.id.featured_songs)
     RecyclerView mRecyclerView;
 
-
-
     public FeaturedMusicFragment() {
 
     }
@@ -60,6 +58,32 @@ public class FeaturedMusicFragment extends Fragment implements SwipeRefreshLayou
                 .get(SongViewModel.class);
 
         final LiveData<List<Song>> mSongsLiveData = mSongsViewModel.getSongs();
+        loadSongs(mSongsLiveData);
+
+        mRefreshSongs.setOnRefreshListener(this);
+        setupSwipeListener(mSongsLiveData);
+        return v;
+    }
+
+    private void setupSwipeListener(final LiveData<List<Song>> mSongsLiveData) {
+        ItemTouchHelper swipeController = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
+                int pos = viewHolder.getAdapterPosition();
+                Song song = Objects.requireNonNull(mSongsLiveData.getValue()).get(pos);
+                mSongsViewModel.removeSongFromStorage(song);
+                mMusicAdapter.notifyDataSetChanged();
+            }
+        });
+        swipeController.attachToRecyclerView(mRecyclerView);
+    }
+
+    private void loadSongs(LiveData<List<Song>> mSongsLiveData) {
         mSongsLiveData.observe(this, new Observer<List<Song>>() {
             @Override
             public void onChanged(@Nullable List<Song> songs) {
@@ -71,33 +95,15 @@ public class FeaturedMusicFragment extends Fragment implements SwipeRefreshLayou
                 mRefreshSongs.setRefreshing(false);
             }
         });
-
-        mRefreshSongs.setOnRefreshListener(this);
-        ItemTouchHelper swipeController = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback() {
-            @Override
-            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1) {
-                return false;
-            }
-
-            @Override
-            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
-                int pos = viewHolder.getAdapterPosition();
-                Song song = mSongsLiveData.getValue().get(pos);
-                //songvm remove.
-            }
-        });
-        swipeController.attachToRecyclerView(mRecyclerView);
-        return v;
     }
-
 
     @Override
     public void onResume() {
         super.onResume();
-        loadSongs();
+        reloadSongs();
     }
 
-    private void loadSongs() {
+    private void reloadSongs() {
         mRefreshSongs.setRefreshing(false);
         mSongsViewModel.update();
     }
@@ -111,4 +117,3 @@ public class FeaturedMusicFragment extends Fragment implements SwipeRefreshLayou
         mSongsViewModel.refreshContent();
     }
 }
-

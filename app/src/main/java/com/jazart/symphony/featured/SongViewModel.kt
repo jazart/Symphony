@@ -38,4 +38,8 @@ class SongViewModel @Inject constructor(app: App) : BaseViewModel() {
         firebaseRepo.addSongToStorage(song, songStream)
         songSize = size.toInt()
     }
+
+    fun removeSongFromStorage(song: Song) {
+        firebaseRepo.remove(song)
+    }
 }
