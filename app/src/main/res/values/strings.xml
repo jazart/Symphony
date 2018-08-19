@@ -45,4 +45,5 @@
     <string name="player_max_time">99:99</string>
     <string name="player_full_screen">Fullscreen</string>
     <string name="post_submit">Submit</string>
+    <string name="search">Search</string>
 </resources>

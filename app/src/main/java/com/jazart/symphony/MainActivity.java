@@ -12,6 +12,8 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
@@ -123,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
         inject();
-
+        setSupportActionBar((Toolbar)findViewById(R.id.featured_songs_toolbar));
         FirebaseAuth auth = FirebaseAuth.getInstance();
         mUser = auth.getCurrentUser();
         mFragmentManager = getSupportFragmentManager();
@@ -142,7 +144,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
-
 
     @Override
     protected void onStart() {
@@ -164,6 +165,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         startLocationService();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.featured_music_menu, menu);
+        return true;
     }
 
     @Override
