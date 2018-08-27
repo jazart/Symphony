@@ -3,7 +3,9 @@ package com.jazart.symphony.featured;
 import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.v4.text.TextUtilsCompat;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -69,19 +71,23 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicHolder>
         mSongs = songs;
     }
 
-    public class MusicHolder extends RecyclerView.ViewHolder{
-        final TextView mSongTV;
+    class MusicHolder extends RecyclerView.ViewHolder{
+        final TextView mSongTV, mArtistTV;
         final ImageButton mPlayButton;
+
 
         MusicHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
             mSongTV = itemView.findViewById(R.id.song_title);
             mPlayButton = itemView.findViewById(R.id.play_button);
+            mArtistTV = itemView.findViewById(R.id.artist);
         }
 
         void bind(final Song song) {
             mSongTV.setText(song.getName());
+            String artist = song.getArtists().size() == 0 ? "Unknown" : song.getArtists().size() == 1 ? song.getArtists().get(0) : TextUtils.join(",", song.getArtists());
+            mArtistTV.setText(artist);
             mPlayButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -93,15 +99,12 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicHolder>
         }
 
         private void prepareExoPlayerFromURL(Uri uri) {
-//            TrackSelector trackSelector = new DefaultTrackSelector();
-//            DefaultRenderersFactory renderersFactory = new DefaultRenderersFactory(itemView.getContext());
-
             if (exoPlayer != null) {
                 exoPlayer.stop();
             }
 
             DefaultDataSourceFactory dataSourceFactory = new DefaultDataSourceFactory(itemView.getContext(),
-                    "exoplayer2example");
+                    "");
             MediaSource audioSource = new ExtractorMediaSource.Factory(dataSourceFactory)
                     .setExtractorsFactory(new DefaultExtractorsFactory())
                     .createMediaSource(uri);

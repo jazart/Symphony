@@ -11,6 +11,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.jazart.symphony.Constants
 import com.jazart.symphony.Constants.*
+import com.jazart.symphony.Result
 import com.jazart.symphony.model.Song
 import com.jazart.symphony.posts.Comment
 import com.jazart.symphony.posts.PostsLiveData
@@ -24,7 +25,7 @@ class FirebaseRepo private constructor(
         private val db: FirebaseFirestore = FirebaseFirestore.getInstance(),
         private val storage: FirebaseStorage = FirebaseStorage.getInstance()) {
 
-    var uploadProgress = MutableLiveData<Int>()
+    var uploadProgress = MutableLiveData<Result>()
     companion object {
         @JvmStatic
         val firebaseRepoInstance by lazy {
@@ -70,7 +71,7 @@ class FirebaseRepo private constructor(
         val storageRef = storage.reference.child("${Constants.USERS}/${currentUser?.uid}/${Constants.SONGS}/${song.name}")
         val uploadTask = storageRef.putStream(inputStream)
         uploadTask.addOnProgressListener { progress ->
-            uploadProgress.value = progress.bytesTransferred.toInt()
+            uploadProgress.value = Result.Success(progress.bytesTransferred.toInt())
         }
 
         uploadTask.addOnCompleteListener {
@@ -86,8 +87,9 @@ class FirebaseRepo private constructor(
     private fun addSongToFireStore(songUri: Uri, song: Song) {
         song.apply {
             uri = "$songUri"
-            author = currentUser?.displayName
-            name = "test"
+            author = currentUser?.uid
+            name = song.name
+            artists = song.artists
         }
         db.collection(SONGS).add(song)
     }

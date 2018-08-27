@@ -90,7 +90,7 @@
             <ImageButton
                 android:id="@+id/btnPlay"
                 style="@android:style/MediaButton.Play"
-                android:src="@drawable/exo_controls_play"
+                android:src="@drawable/ic_play_arrow_24dp"
                 android:contentDescription="@string/exo_controls_play_description" />
 
         </LinearLayout>
@@ -110,7 +110,7 @@
                 android:paddingRight="4dip"
                 android:paddingTop="4dip"
                 android:text="@string/player_start_time"
-                android:textColor="#ffffff"
+                android:textColor="@color/colorAccent"
                 android:textSize="14sp"
                 android:textStyle="bold" />
 
@@ -130,7 +130,7 @@
                 android:paddingRight="4dip"
                 android:paddingTop="4dip"
                 android:text="@string/player_max_time"
-                android:textColor="#ffffff"
+                android:textColor="@color/colorAccent"
                 android:textSize="14sp"
                 android:textStyle="bold" />
 

@@ -1,4 +1,4 @@
-package com.jazart.symphony.posts;
+package com.jazart.symphony.featured;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -25,7 +25,6 @@ import android.widget.ProgressBar;
 import com.jazart.symphony.R;
 import com.jazart.symphony.di.App;
 import com.jazart.symphony.di.SimpleViewModelFactory;
-import com.jazart.symphony.featured.SongViewModel;
 import com.jazart.symphony.model.Song;
 
 import java.io.FileInputStream;
@@ -89,8 +88,7 @@ public class UploadDialog extends DialogFragment implements DialogInterface.OnCl
         mArtists = view.findViewById(R.id.enter_artists);
         mSongTitle = view.findViewById(R.id.enter_song_title);
         mUploadProgress = view.findViewById(R.id.upload_progress);
-        Button uploadButton = view.findViewById(R.id.upload_button);
-        uploadButton.setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.upload_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 List<String> result = getArtistsFromUi();
@@ -98,7 +96,6 @@ public class UploadDialog extends DialogFragment implements DialogInterface.OnCl
                 mSong.setArtists(result);
 
                 String size = getFileSize();
-                Log.d("TAG/ UPLOAD", size);
                 try {
                     mSongViewModel.addSongToStorage(mSong, convertSongUriToFile(), size);
                 } catch (FileNotFoundException e) {
@@ -109,7 +106,6 @@ public class UploadDialog extends DialogFragment implements DialogInterface.OnCl
         return new AlertDialog.Builder(getContext())
                 .setView(view)
                 .setTitle("Upload")
-                .setPositiveButton(android.R.string.ok, this)
                 .create();
 
     }
@@ -146,6 +142,7 @@ public class UploadDialog extends DialogFragment implements DialogInterface.OnCl
         Cursor cursor = resolver.query(Uri.parse(mSong.getURI()), projection, null, null, null);
         String fileSize = "";
 
+        assert cursor != null;
         if(cursor.moveToFirst()) {
             int size = cursor.getColumnIndex(MediaStore.Audio.Media.SIZE);
             fileSize = cursor.getString(size);

@@ -13,7 +13,7 @@ import com.jazart.symphony.featured.FeaturedMusicFragment
 import com.jazart.symphony.featured.MusicAdapter
 import com.jazart.symphony.network.FoursquareConstants
 import com.jazart.symphony.network.FoursquareRepo
-import com.jazart.symphony.posts.UploadDialog
+import com.jazart.symphony.featured.UploadDialog
 import com.jazart.symphony.venues.LocalEventsFragment
 import dagger.Component
 import dagger.Module
@@ -23,6 +23,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Inject
 import javax.inject.Singleton
+import com.squareup.leakcanary.LeakCanary
 
 class App : Application() {
     lateinit var component: AppComponent
@@ -32,6 +33,8 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        if(LeakCanary.isInAnalyzerProcess(this)) return
+        LeakCanary.install(this)
         component = DaggerAppComponent.builder().apply {
             appModule(AppModule(this@App))
         }.build()

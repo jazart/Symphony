@@ -7,20 +7,25 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.Toolbar;
 
 import com.jazart.symphony.MainActivity;
 import com.jazart.symphony.R;
 import com.jazart.symphony.di.App;
 import com.jazart.symphony.di.SimpleViewModelFactory;
 import com.jazart.symphony.model.Song;
+import com.squareup.haha.perflib.Main;
 
 import java.util.List;
 import java.util.Objects;
@@ -42,6 +47,10 @@ public class FeaturedMusicFragment extends Fragment implements SwipeRefreshLayou
     ProgressBar mSongLoading;
     @BindView(R.id.featured_songs)
     RecyclerView mRecyclerView;
+    @BindView(R.id.featured_songs_toolbar)
+    android.support.v7.widget.Toolbar mSongsToolBar;
+    @BindView(R.id.scrollView)
+    NestedScrollView mScrollView;
 
     public FeaturedMusicFragment() {
 
@@ -52,17 +61,30 @@ public class FeaturedMusicFragment extends Fragment implements SwipeRefreshLayou
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = LayoutInflater.from(getContext()).inflate(R.layout.feature_music_fragment, container, false);
         ButterKnife.bind(this, v);
-        App app = (App) requireActivity().getApplication();
-        app.component.inject(this);
+        inject();
+        mRecyclerView.setNestedScrollingEnabled(true);
+
+        showHideFabMenu();
+        setHasOptionsMenu(true);
+        mSongsToolBar.inflateMenu(R.menu.featured_music_menu);
+
         mSongsViewModel = ViewModelProviders.of(this, mViewModelFactory)
                 .get(SongViewModel.class);
 
-        final LiveData<List<Song>> mSongsLiveData = mSongsViewModel.getSongs();
+        LiveData<List<Song>> mSongsLiveData = mSongsViewModel.getSongs();
         loadSongs(mSongsLiveData);
 
         mRefreshSongs.setOnRefreshListener(this);
+        reloadSongs();
+
         setupSwipeListener(mSongsLiveData);
         return v;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.featured_music_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     private void setupSwipeListener(final LiveData<List<Song>> mSongsLiveData) {
@@ -77,7 +99,6 @@ public class FeaturedMusicFragment extends Fragment implements SwipeRefreshLayou
                 int pos = viewHolder.getAdapterPosition();
                 Song song = Objects.requireNonNull(mSongsLiveData.getValue()).get(pos);
                 mSongsViewModel.removeSongFromStorage(song);
-                mMusicAdapter.notifyDataSetChanged();
             }
         });
         swipeController.attachToRecyclerView(mRecyclerView);
@@ -100,7 +121,11 @@ public class FeaturedMusicFragment extends Fragment implements SwipeRefreshLayou
     @Override
     public void onResume() {
         super.onResume();
-        reloadSongs();
+    }
+
+    @Override
+    public void onRefresh() {
+        mSongsViewModel.refreshContent();
     }
 
     private void reloadSongs() {
@@ -112,8 +137,21 @@ public class FeaturedMusicFragment extends Fragment implements SwipeRefreshLayou
         mSongLoading.setVisibility(View.GONE);
     }
 
-    @Override
-    public void onRefresh() {
-        mSongsViewModel.refreshContent();
+    private void showHideFabMenu() {
+        final MainActivity activity = (MainActivity) requireActivity();
+
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                if(dy < 0 && !activity.mFabMenu.isShown()) activity.mFabMenu.showMenu(true);
+                else if(dy > 0 && activity.mFabMenu.isShown()) activity.mFabMenu.hideMenu(true);
+            }
+        });
     }
+
+    private void inject() {
+        App app = (App) requireActivity().getApplication();
+        app.component.inject(this);
+    }
+
 }

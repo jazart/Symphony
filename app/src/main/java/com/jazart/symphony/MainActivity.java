@@ -33,7 +33,7 @@ import com.jazart.symphony.location.LocationIntentService;
 import com.jazart.symphony.playback.PlayerBoolean;
 import com.jazart.symphony.posts.PostActivity;
 import com.jazart.symphony.posts.PostsFragment;
-import com.jazart.symphony.posts.UploadDialog;
+import com.jazart.symphony.featured.UploadDialog;
 import com.jazart.symphony.signup.SignUpActivity;
 import com.jazart.symphony.venues.LocalEventsFragment;
 
@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
     BottomNavigationView mNavigation;
 
     @BindView(R.id.fab_menu)
-    FloatingActionMenu mFabMenu;
+    public FloatingActionMenu mFabMenu;
 
     public static LinearLayout mMediaController;
     private static SeekBar playerSeek;
@@ -125,7 +125,6 @@ public class MainActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
         inject();
-        setSupportActionBar((Toolbar)findViewById(R.id.featured_songs_toolbar));
         FirebaseAuth auth = FirebaseAuth.getInstance();
         mUser = auth.getCurrentUser();
         mFragmentManager = getSupportFragmentManager();
@@ -165,12 +164,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         startLocationService();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.featured_music_menu, menu);
-        return true;
     }
 
     @Override
@@ -260,7 +253,6 @@ public class MainActivity extends AppCompatActivity {
 
                     exoPlayer.setPlayWhenReady(true);
 
-//                    finalTime = exoPlayer.getDuration();
                     initTxtTime();
                     if (!hasSongStarted) {
                         initSeekBar();
