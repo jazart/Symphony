@@ -18,14 +18,12 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import android.widget.Toolbar;
 
 import com.jazart.symphony.MainActivity;
 import com.jazart.symphony.R;
 import com.jazart.symphony.di.App;
 import com.jazart.symphony.di.SimpleViewModelFactory;
 import com.jazart.symphony.model.Song;
-import com.squareup.haha.perflib.Main;
 
 import java.util.List;
 import java.util.Objects;
