@@ -348,3 +348,4 @@ public class MainActivity extends AppCompatActivity {
         playerSeek.setMax((int) exoPlayer.getDuration()/1000);
     }
 }
+

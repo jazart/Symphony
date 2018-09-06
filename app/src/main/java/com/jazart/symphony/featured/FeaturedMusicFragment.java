@@ -47,8 +47,8 @@ public class FeaturedMusicFragment extends Fragment implements SwipeRefreshLayou
     RecyclerView mRecyclerView;
     @BindView(R.id.featured_songs_toolbar)
     android.support.v7.widget.Toolbar mSongsToolBar;
-    @BindView(R.id.scrollView)
-    NestedScrollView mScrollView;
+   // @BindView(R.id.scrollView)
+   // NestedScrollView mScrollView;
 
     public FeaturedMusicFragment() {
 
