@@ -3,11 +3,15 @@ package com.jazart.symphony.featured;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.NestedScrollView;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -47,8 +51,6 @@ public class FeaturedMusicFragment extends Fragment implements SwipeRefreshLayou
     RecyclerView mRecyclerView;
     @BindView(R.id.featured_songs_toolbar)
     android.support.v7.widget.Toolbar mSongsToolBar;
-   // @BindView(R.id.scrollView)
-   // NestedScrollView mScrollView;
 
     public FeaturedMusicFragment() {
 
@@ -97,6 +99,33 @@ public class FeaturedMusicFragment extends Fragment implements SwipeRefreshLayou
                 int pos = viewHolder.getAdapterPosition();
                 Song song = Objects.requireNonNull(mSongsLiveData.getValue()).get(pos);
                 mSongsViewModel.removeSongFromStorage(song);
+            }
+
+            @Override
+            public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+
+                ColorDrawable bg = new ColorDrawable(Color.RED);
+                Drawable icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_delete_white_32dp);
+                View v = viewHolder.itemView;
+                int backgroundCornerOffset = 5;
+                int iconMargin = (v.getHeight() - icon.getIntrinsicHeight()) / 2;
+                int iconTop = v.getTop() + (v.getHeight() - icon.getIntrinsicHeight()) / 2;
+                int iconBottom = iconTop + icon.getIntrinsicHeight();
+                int iconLeft = 0;
+                int iconRight = 0;
+                if(dX > 0) {
+                    bg.setBounds(0, v.getTop(),
+                            v.getLeft() + ((int) dX) + backgroundCornerOffset,
+                            v.getBottom());
+                    iconLeft = iconMargin;
+                    iconRight = iconMargin + icon.getIntrinsicWidth();
+                } else {
+                    bg.setBounds(0, 0, 0, 0);
+                }
+                bg.draw(c);
+                icon.setBounds(iconLeft, iconTop, iconRight, iconBottom);
+                icon.draw(c);
+                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
             }
         });
         swipeController.attachToRecyclerView(mRecyclerView);

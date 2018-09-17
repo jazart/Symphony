@@ -34,7 +34,6 @@ public class NetworkService {
     }
 
     private Retrofit buildClient() {
-        //buildCacheClient();
         Gson gson = new GsonBuilder()
                 .excludeFieldsWithoutExposeAnnotation()
                 .create();

@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.fab_menu)
     public FloatingActionMenu mFabMenu;
 
-    public static LinearLayout mMediaController;
+    public LinearLayout mMediaController;
     private static SeekBar playerSeek;
     private FragmentManager mFragmentManager;
     @BindView(R.id.btnPlay)
@@ -138,6 +138,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         mMediaController = findViewById(R.id.media_controller);
+        mMediaController.setVisibility(View.VISIBLE);
         playerSeek = findViewById(R.id.mediacontroller_progress);
         setupExoPlayerViews();
 

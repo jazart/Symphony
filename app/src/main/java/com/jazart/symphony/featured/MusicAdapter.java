@@ -3,7 +3,6 @@ package com.jazart.symphony.featured;
 import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.NonNull;
-import android.support.v4.text.TextUtilsCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -29,7 +28,6 @@ import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 
-import static com.jazart.symphony.MainActivity.mMediaController;
 import static com.jazart.symphony.MainActivity.playerCreated;
 import static com.jazart.symphony.MainActivity.songPlaying;
 
@@ -104,13 +102,13 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicHolder>
             }
 
             DefaultDataSourceFactory dataSourceFactory = new DefaultDataSourceFactory(itemView.getContext(),
-                    "");
+                    "exo");
             MediaSource audioSource = new ExtractorMediaSource.Factory(dataSourceFactory)
                     .setExtractorsFactory(new DefaultExtractorsFactory())
                     .createMediaSource(uri);
             exoPlayer.addListener(eventListener);
             exoPlayer.prepare(audioSource);
-            mMediaController.setVisibility(View.VISIBLE);
+            //mMediaController.setVisibility(View.VISIBLE);
             playerCreated.setPlayerBool(true);
             songPlaying = true;
         }
