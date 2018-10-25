@@ -1,16 +1,16 @@
 package com.jazart.symphony.repository;
 
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
-import android.support.annotation.NonNull;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -25,7 +25,6 @@ import java.util.Objects;
 import static com.jazart.symphony.Constants.POSTS;
 import static com.jazart.symphony.Constants.SONGS;
 import static com.jazart.symphony.Constants.USERS;
-import static com.jazart.symphony.MainActivity.sDb;
 
 /**
 singleton class that serves as a hub for querying and propagating localized data to our other fragment classes
@@ -40,9 +39,10 @@ public class LocationHelperRepo {
     private final MutableLiveData<List<User>> mNearbyUsers;
     private final MutableLiveData<List<UserPost>> mPosts;
     private final MutableLiveData<List<Song>> mSongs;
+    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     private LocationHelperRepo(String uId) {
-        mReference = sDb.collection(USERS).document(uId);
+        mReference = db.collection(USERS).document(uId);
         mNearbyUsers = new MutableLiveData<>();
         mSongs = new MutableLiveData<>();
         mPosts = new MutableLiveData<>();
@@ -55,7 +55,7 @@ public class LocationHelperRepo {
         return INSTANCE;
     }
 
-    public LocationHelperRepo create() {
+    private LocationHelperRepo create() {
         if (INSTANCE == null) {
             synchronized (this) {
                 INSTANCE = new LocationHelperRepo(FirebaseAuth.getInstance().getUid());
@@ -95,7 +95,7 @@ public class LocationHelperRepo {
     }
 
     private void findNearbyUsers() {
-        Query query = sDb.collection(USERS).whereEqualTo("city", mUser.getCity());
+        Query query = db.collection(USERS).whereEqualTo("city", mUser.getCity());
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -117,7 +117,7 @@ public class LocationHelperRepo {
     }
 
     private void findNearbyPosts() {
-        CollectionReference reference = sDb.collection(POSTS);
+        CollectionReference reference = db.collection(POSTS);
         final List<UserPost> posts = new ArrayList<>();
 
         if (getNearbyUsers().getValue() != null) {
@@ -140,7 +140,7 @@ public class LocationHelperRepo {
     }
 
     private void findNearbySongs() {
-        CollectionReference reference = sDb.collection(SONGS);
+        CollectionReference reference = db.collection(SONGS);
         final List<Song> songs = new ArrayList<>();
 
         for (int i = 0; i < Objects.requireNonNull(getNearbyUsers().getValue()).size(); i++) {

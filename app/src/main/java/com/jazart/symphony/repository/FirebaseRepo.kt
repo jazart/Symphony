@@ -1,7 +1,7 @@
 package com.jazart.symphony.repository
 
 
-import android.arch.lifecycle.MutableLiveData
+import androidx.lifecycle.MutableLiveData
 import android.net.Uri
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
@@ -43,7 +43,7 @@ class FirebaseRepo private constructor(
         db.collection(POSTS)
     }
 
-    fun getUserPosts(): PostsLiveData {
+    fun getUserPosts(): PostsLiveData<List<UserPost>> {
         val query = db.collection(POSTS)
                 .whereEqualTo("author", currentUser?.uid)
                 .orderBy("postDate")
@@ -84,7 +84,7 @@ class FirebaseRepo private constructor(
         }
     }
 
-    private fun addSongToFireStore(songUri: Uri, song: Song) {
+    private fun addSongToFireStore(songUri: Uri?, song: Song) {
         song.apply {
             uri = "$songUri"
             author = currentUser?.uid
@@ -97,7 +97,7 @@ class FirebaseRepo private constructor(
     fun remove(song: Song) {
         db.collection(SONGS).whereEqualTo("uri", song.uri).get()
                 .continueWith { querySnapshot ->
-                    querySnapshot.result.forEach { result -> result.reference.delete() }
+                    querySnapshot.result?.forEach { result -> result.reference.delete() }
                 }
         val songStorageRef = storage.reference.child("$USERS/${currentUser?.uid}/$SONGS/${song.name}")
         songStorageRef.delete()

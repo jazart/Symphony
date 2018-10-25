@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="ContentDescription"
     android:layout_width="match_parent"
     android:layout_height="300dp"
     android:layout_marginBottom="8dp"
@@ -16,7 +18,7 @@
     app:layout_constraintTop_toTopOf="parent"
     app:layout_constraintVertical_bias="0.016">
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -35,20 +37,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                app:srcCompat="@android:drawable/ic_delete" />
+                app:srcCompat="@android:drawable/ic_delete"/>
 
             <TextView
                 android:id="@+id/post_title"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="6"
-                android:paddingEnd="16dp"
                 android:paddingStart="16dp"
-
+                android:paddingEnd="16dp"
                 android:textAppearance="@android:style/TextAppearance.Material.Title" />
 
             <TextView
-                android:id="@+id/post_author"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="2"
@@ -59,16 +59,15 @@
                 android:id="@+id/post_profile_pic"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
-                android:layout_marginBottom="8dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
                 android:layout_weight="2"
                 android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/linearLayout"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.0"
-                app:srcCompat="@color/colorAccent" />
+                app:srcCompat="@color/colorAccent"/>
 
         </LinearLayout>
 
@@ -89,10 +88,10 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_gravity="center_vertical"
-            android:layout_marginBottom="8dp"
             android:layout_marginTop="8dp"
-            android:paddingEnd="16dp"
+            android:layout_marginBottom="8dp"
             android:paddingStart="16dp"
+            android:paddingEnd="16dp"
             android:textAppearance="@android:style/TextAppearance.Material.Body2"
             app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
             app:layout_constraintEnd_toEndOf="parent"
@@ -111,31 +110,28 @@
             tools:showIn="@layout/list_item_post">
 
             <ImageButton
-                android:id="@+id/btn_post_heart"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@color/colorPrimary"
-                app:srcCompat="@drawable/ic_heart_liked_24" />
+                app:srcCompat="@drawable/ic_heart_liked_24"/>
 
             <ImageButton
-                android:id="@+id/btn_post_comment"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@color/colorPrimary"
-                app:srcCompat="@drawable/ic_insert_comment_white_24dp" />
+                app:srcCompat="@drawable/ic_insert_comment_white_24dp"/>
 
             <ImageButton
-                android:id="@+id/btn_post_share"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@color/colorPrimary"
-                app:srcCompat="@drawable/ic_share_white_24dp" />
+                app:srcCompat="@drawable/ic_share_white_24dp"/>
 
         </LinearLayout>
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-</android.support.v7.widget.CardView>
+</androidx.cardview.widget.CardView>

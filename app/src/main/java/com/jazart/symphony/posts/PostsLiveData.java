@@ -1,6 +1,6 @@
 package com.jazart.symphony.posts;
-import android.arch.lifecycle.LiveData;
-import android.support.annotation.NonNull;
+import androidx.lifecycle.LiveData;
+import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -8,7 +8,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
-public class PostsLiveData extends LiveData {
+public class PostsLiveData<T> extends LiveData<T> {
     private final Query mQuery;
 
     public PostsLiveData(Query query) {
@@ -19,6 +19,7 @@ public class PostsLiveData extends LiveData {
         mQuery = reference;
     }
 
+    @SuppressWarnings("unchecked Cast")
     @Override
     protected void onActive() {
         super.onActive();
@@ -26,7 +27,11 @@ public class PostsLiveData extends LiveData {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
-                    setValue(task.getResult().toObjects(UserPost.class));
+                    try {
+                        setValue((T) task.getResult().toObjects(UserPost.class));
+                    } catch (ClassCastException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });

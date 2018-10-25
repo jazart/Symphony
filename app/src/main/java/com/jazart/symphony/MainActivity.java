@@ -7,13 +7,11 @@ import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.Menu;
+import androidx.annotation.NonNull;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.FragmentManager;
+import androidx.appcompat.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
@@ -72,7 +70,6 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.fab_menu)
     public FloatingActionMenu mFabMenu;
 
-    public LinearLayout mMediaController;
     private static SeekBar playerSeek;
     private FragmentManager mFragmentManager;
     @BindView(R.id.btnPlay)
@@ -137,8 +134,8 @@ public class MainActivity extends AppCompatActivity {
                     RC_LOCATION);
         }
 
-        mMediaController = findViewById(R.id.media_controller);
-        mMediaController.setVisibility(View.VISIBLE);
+        LinearLayout mediaController = findViewById(R.id.media_controller);
+        mediaController.setVisibility(View.VISIBLE);
         playerSeek = findViewById(R.id.mediacontroller_progress);
         setupExoPlayerViews();
 

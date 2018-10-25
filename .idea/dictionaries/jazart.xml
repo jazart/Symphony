@@ -6,11 +6,13 @@
       <w>appspot</w>
       <w>bohj</w>
       <w>butterknife</w>
+      <w>checkin</w>
       <w>collab</w>
       <w>collabs</w>
       <w>emelqb</w>
       <w>exoplayer</w>
       <w>firebase</w>
+      <w>fragmets</w>
       <w>geofence</w>
       <w>geofencing</w>
       <w>getm</w>
@@ -23,6 +25,8 @@
       <w>jhclu</w>
       <w>jpken</w>
       <w>kendrickgholston</w>
+      <w>leakcanary</w>
+      <w>livedata</w>
       <w>mediacontroller</w>
       <w>messageable</w>
       <w>mobilesdk</w>
@@ -32,6 +36,8 @@
       <w>setm</w>
       <w>signup</w>
       <w>swipeable</w>
+      <w>viewmodel</w>
+      <w>wrappinng</w>
     </words>
   </dictionary>
 </component>

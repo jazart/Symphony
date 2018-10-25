@@ -1,6 +1,6 @@
 package com.jazart.symphony.network
 
-import android.arch.lifecycle.MutableLiveData
+import androidx.lifecycle.MutableLiveData
 import com.jazart.symphony.model.venues.Venue
 import com.jazart.symphony.model.venues.VenuePicsResponse
 import retrofit2.Call

@@ -10,6 +10,7 @@ import com.google.android.exoplayer2.SimpleExoPlayer;
  * An implementation of {@link MediaPlayerControl} for controlling an {@link ExoPlayer} instance.
  * <p>
  */
+@SuppressWarnings({"SameReturnValue", "unused"})
 class PlayerControl implements MediaPlayerControl {
 
     private final SimpleExoPlayer exoPlayer;

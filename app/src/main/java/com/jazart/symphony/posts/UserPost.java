@@ -57,7 +57,7 @@ public class UserPost {
 
     }
 
-    public UserPost(UserPost.Builder builder) {
+    UserPost(UserPost.Builder builder) {
         mAuthor = builder.mAuthor;
         mBody = builder.mBody;
         mImageUri = builder.mImg;

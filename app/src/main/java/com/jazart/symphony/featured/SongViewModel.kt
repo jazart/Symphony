@@ -1,7 +1,7 @@
 package com.jazart.symphony.featured
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.Transformations
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Transformations
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.jazart.symphony.BaseViewModel
@@ -21,7 +21,7 @@ class SongViewModel @Inject constructor(app: App) : BaseViewModel() {
     private val mAuth: FirebaseAuth = FirebaseAuth.getInstance()
     private val mUser: FirebaseUser?
     var songs: LiveData<List<Song>>
-    var progressLiveData: LiveData<Result> = firebaseRepo.uploadProgress
+    private var progressLiveData: LiveData<Result> = firebaseRepo.uploadProgress
     var percentageLiveData: LiveData<Int> = Transformations.map(progressLiveData) { progress  ->
         when(progress) {
             is Result.Success<*> ->  (100.times(progress.data as Int)).div(songSize)
@@ -29,7 +29,7 @@ class SongViewModel @Inject constructor(app: App) : BaseViewModel() {
             is Result.Loading -> Integer.MAX_VALUE
         }
     }
-    var songSize = 1
+    private var songSize = 1
 
     init {
         mUser = mAuth.currentUser

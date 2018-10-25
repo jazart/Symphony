@@ -1,8 +1,8 @@
 package com.jazart.symphony.venues;
 
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.ViewModel;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
 import android.net.Uri;
 import android.text.TextUtils;
 
@@ -43,7 +43,7 @@ class VenueViewModel extends ViewModel {
         Retrofit client = NetworkService.get().getService();
 
         FoursquareApiClient apiClient = client.create(FoursquareApiClient.class);
-        Map<String, String> options = new HashMap<>();
+        @SuppressWarnings("MismatchedQueryAndUpdateOfCollection") Map<String, String> options = new HashMap<>();
         options.put("client_id", FoursquareConstants.client_id);
         options.put("client_secret", FoursquareConstants.CLIENT_SECRET);
         options.put("ll", LocationHelperRepo.getInstance().getUserLocation());

@@ -1,5 +1,6 @@
 package com.jazart.symphony.signup;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -7,10 +8,10 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
-import android.support.design.widget.TextInputEditText;
-import android.support.design.widget.TextInputLayout;
-import android.support.v4.app.DialogFragment;
+import androidx.annotation.NonNull;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
+import androidx.fragment.app.DialogFragment;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -25,7 +26,7 @@ import java.util.Objects;
 
 public class SignUpDialog extends DialogFragment implements DialogInterface.OnClickListener, View.OnClickListener, TextWatcher {
 
-    public static final String TAG = "SignUpDialog";
+    static final String TAG = "SignUpDialog";
     private static final String EXTRA_EMAIL = "com.jazart.symphony.extra_email";
     private static final String EXTRA_PASSWORD = "com.jazart.symphony.extra_password";
     private static final String EXTRA_PHOTO = "com.jazart.symphony.extra_photo";
@@ -55,6 +56,7 @@ public class SignUpDialog extends DialogFragment implements DialogInterface.OnCl
         getTargetFragment().onActivityResult(getTargetRequestCode(), SignupFragment.RC_SIGN_UP, intent);
     }
 
+    @SuppressLint("InflateParams")
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -86,8 +88,6 @@ then sends result back to to the fragment to sign up via firebase
     @Override
     public void onClick(DialogInterface dialogInterface, int i) {
         String email = Objects.requireNonNull(mEmailLayout.getEditText()).getText().toString();
-
-
         String password = Objects.requireNonNull(mPasswordLayout.getEditText()).getText().toString();
         if (isValidPassword(password) && Objects.requireNonNull(mNameLayout.getEditText()).getText() != null) {
             String name = mNameLayout.getEditText().getText().toString();
@@ -109,7 +109,6 @@ then sends result back to to the fragment to sign up via firebase
     public void onClick(View view) {
         Intent intent = new Intent(Intent.ACTION_PICK,
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        intent.setType("image/*");
         startActivityForResult(intent, 2);
     }
 
@@ -118,7 +117,7 @@ then sends result back to to the fragment to sign up via firebase
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == 2) {
             selectedImg = data.getData();
-            Glide.with(this).load(selectedImg)
+            Glide.with(requireContext()).load(selectedImg)
                     .into((ImageButton)mView.findViewById(R.id.sign_up_photo));
         }
     }

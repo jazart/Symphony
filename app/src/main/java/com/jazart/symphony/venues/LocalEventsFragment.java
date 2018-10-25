@@ -1,11 +1,11 @@
 package com.jazart.symphony.venues;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +24,7 @@ import retrofit2.Retrofit;
 
 /**
  * Displays local music and art events for the user to see whats going on in
- * their area. Gets its information fromt he venue viewmodel class
+ * their area. Gets its information from he venue viewmodel class
  */
 public class LocalEventsFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     @BindView(R.id.recycler_view)
@@ -56,7 +56,7 @@ public class LocalEventsFragment extends Fragment implements SwipeRefreshLayout.
         final View view = inflater.inflate(R.layout.my_music_fragment, container, false);
         Retrofit retrofit = mRepo.getService();
         ButterKnife.bind(this, view);
-        VenueAdapter adapter = new VenueAdapter(Glide.with(this));
+        VenueAdapter adapter = new VenueAdapter(Glide.with(requireContext()));
 //        ViewModelProviders.of(this).get(VenueViewModel.class)
 //                .getVenues().observe(this, new Observer<List<Venue>>() {
 //            @Override

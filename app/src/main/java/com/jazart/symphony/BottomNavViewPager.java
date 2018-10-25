@@ -1,8 +1,8 @@
 package com.jazart.symphony;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.v4.view.ViewPager;
+import androidx.annotation.NonNull;
+import androidx.viewpager.widget.ViewPager;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -38,6 +38,7 @@ public class BottomNavViewPager extends ViewPager {
 
     @Override
     public boolean performClick() {
+        super.performClick();
         return isSwipeable;
     }
 

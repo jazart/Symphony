@@ -1,8 +1,8 @@
 package com.jazart.symphony.posts.adapters;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,7 +52,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentH
     public class CommentHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.list_item_comment_body)
         TextView mCommentTv;
-        @BindView(R.id.list_item_commet_profile_pic)
+        @BindView(R.id.list_item_comment_profile_pic)
         ImageView mProfilePic;
 
         CommentHolder(View itemView) {

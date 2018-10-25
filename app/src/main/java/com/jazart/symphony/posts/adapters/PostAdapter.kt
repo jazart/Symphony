@@ -2,7 +2,7 @@ package com.jazart.symphony.posts.adapters
 
 import android.content.Context
 import android.net.Uri
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -37,7 +37,6 @@ class PostAdapter(context: Context,
 
     inner class PostHolder(override val containerView: View) : RecyclerView.ViewHolder(containerView),
             LayoutContainer {
-        //binds view widgets with post data
         private lateinit var post: UserPost
         private val clickHandler = View.OnClickListener { view ->
             clickListener(post, view.id)

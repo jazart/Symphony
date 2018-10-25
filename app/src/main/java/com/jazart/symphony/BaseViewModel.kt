@@ -1,6 +1,6 @@
 package com.jazart.symphony
 
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.ViewModel
 import com.jazart.symphony.repository.FirebaseRepo
 import com.jazart.symphony.repository.LocationHelperRepo
 
@@ -18,7 +18,7 @@ open class BaseViewModel
 
     fun removeUserFromDb() {}
 
-    fun upateUserProfile() {}
+    fun updateUserProfile() {}
 
     fun getNearbyUsers() {}
 

@@ -1,7 +1,7 @@
 package com.jazart.symphony.di
 
-import android.arch.lifecycle.ViewModel
-import android.arch.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.jazart.symphony.featured.SongViewModel
 import javax.inject.Inject
 import javax.inject.Named

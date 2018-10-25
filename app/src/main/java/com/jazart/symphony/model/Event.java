@@ -18,9 +18,6 @@ class Event {
     public Event(Date date, String host, Location location){
         mLocation = location;
         mDate = date;
-        mLocation = location;
-
-
     }
 
     public Date getmDate() {
