@@ -39,22 +39,22 @@ kapt {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:0.26.1-eap13"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:0.26.1-eap13"
-    implementation 'androidx.appcompat:appcompat:1.0.0'
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.1.0"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.1.0"
+    implementation 'androidx.appcompat:appcompat:1.0.2'
     implementation 'com.google.android.material:material:1.0.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha2'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha3'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     //fab library
     implementation 'com.github.clans:fab:1.6.4'
     //google play services
     implementation 'com.google.android.gms:play-services-auth:16.0.1'
     //firebase
-    implementation 'com.google.firebase:firebase-core:16.0.4'
-    implementation 'com.google.firebase:firebase-auth:16.0.5'
-    implementation 'com.google.firebase:firebase-firestore:17.1.1'
-    implementation 'com.google.firebase:firebase-storage:16.0.3'
-    implementation 'com.google.firebase:firebase-database:16.0.3'
+    implementation 'com.google.firebase:firebase-core:16.0.6'
+    implementation 'com.google.firebase:firebase-auth:16.1.0'
+    implementation 'com.google.firebase:firebase-firestore:17.1.5'
+    implementation 'com.google.firebase:firebase-storage:16.0.5'
+    implementation 'com.google.firebase:firebase-database:16.0.5'
     //exoplayer
     implementation 'com.google.android.exoplayer:exoplayer:2.7.3'
     implementation 'com.google.android.exoplayer:exoplayer-core:2.7.3'
@@ -81,7 +81,11 @@ dependencies {
     implementation 'com.google.android.gms:play-services-location:16.0.0'
     //retrofit networking
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'
+    implementation 'com.jakewharton.retrofit:retrofit2-kotlin-coroutines-experimental-adapter:1.0.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
+    implementation 'com.squareup.moshi:moshi:1.7.0'
+    kapt 'com.squareup.moshi:moshi-kotlin-codegen:1.6.0'
+
     testImplementation 'junit:junit:4.12'
 
     //leakcanary
@@ -89,14 +93,32 @@ dependencies {
     debugImplementation 'com.squareup.leakcanary:leakcanary-support-fragment:1.6.1'
     releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.1'
 
+    //rx
+    implementation 'io.reactivex.rxjava2:rxkotlin:2.3.0'
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.2'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.0'
+    implementation 'com.github.tbruyelle:rxpermissions:0.10.2'
+    implementation 'com.jakewharton.rxbinding3:rxbinding-core:3.0.0-alpha2'
+    implementation 'com.jakewharton.rxbinding3:rxbinding-appcompat:3.0.0-alpha2'
+    implementation 'com.jakewharton.rxbinding3:rxbinding-drawerlayout:3.0.0-alpha2'
+    implementation 'com.jakewharton.rxbinding3:rxbinding-leanback:3.0.0-alpha2'
+    implementation 'com.jakewharton.rxbinding3:rxbinding-recyclerview:3.0.0-alpha2'
+    implementation 'com.jakewharton.rxbinding3:rxbinding-slidingpanelayout:3.0.0-alpha2'
+    implementation 'com.jakewharton.rxbinding3:rxbinding-swiperefreshlayout:3.0.0-alpha2'
+    implementation 'com.jakewharton.rxbinding3:rxbinding-viewpager:3.0.0-alpha2'
+    implementation 'com.jakewharton.rxbinding3:rxbinding-material:3.0.0-alpha2'
+    implementation 'com.jakewharton.rxbinding3:rxbinding:3.0.0-alpha2'
+
+
 
     //test
-    androidTestImplementation 'androidx.test:runner:1.1.0-beta02'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-beta02'
+    androidTestImplementation 'androidx.test:runner:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
 
 apply plugin: 'com.google.gms.google-services'
 repositories {
     mavenCentral()
+
 }

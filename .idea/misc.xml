@@ -27,9 +27,10 @@
       <entry_point TYPE="field" FQNAME="com.jazart.symphony.venues.VenueAdapter.VenueHolder mVenueEvent2Tv" />
       <entry_point TYPE="field" FQNAME="com.jazart.symphony.venues.VenueAdapter.VenueHolder TAG" />
       <entry_point TYPE="field" FQNAME="com.jazart.symphony.venues.VenueViewModel TAG" />
+      <entry_point TYPE="field" FQNAME="com.jazart.symphony.model.venues.User firstName" />
+      <entry_point TYPE="field" FQNAME="com.jazart.symphony.posts.UserPost mComments" />
     </entry_points>
     <pattern value="com.jazart.symphony.BottomNavViewPager" method="BottomNavViewPager" />
-    <pattern value="com.jazart.symphony.BottomNavViewPager" />
     <pattern value="com.jazart.symphony.model.venues.Category" method="setPrimary" />
     <pattern value="com.jazart.symphony.model.venues.Category" method="getPrimary" />
     <pattern value="com.jazart.symphony.model.venues.Category" method="setIcon" />

@@ -7,7 +7,7 @@ import com.jazart.symphony.repository.LocationHelperRepo
 open class BaseViewModel
     : ViewModel() {
 
-    val locationRepo: LocationHelperRepo? by lazy {
+    val locationRepo: LocationHelperRepo by lazy {
         LocationHelperRepo.getInstance()
     }
     val firebaseRepo: FirebaseRepo by lazy {
@@ -23,6 +23,6 @@ open class BaseViewModel
     fun getNearbyUsers() {}
 
     fun refreshContent() {
-        locationRepo?.update()
+        locationRepo.update()
     }
 }

@@ -12,4 +12,8 @@
         <item name="android:navigationBarColor">@color/colorAccent</item>
         <item name="android:statusBarColor">@color/colorPrimary</item>
     </style>
+
+    <style name="SeekTheme" parent="Widget.AppCompat.SeekBar">
+        <item name="android:colorAccent">@color/colorAccent</item>
+    </style>
 </resources>

@@ -24,7 +24,7 @@ import com.jazart.symphony.R;
 
 import java.util.Objects;
 
-public class SignUpDialog extends DialogFragment implements DialogInterface.OnClickListener, View.OnClickListener, TextWatcher {
+public class SignUpDialog extends DialogFragment implements DialogInterface.OnClickListener, View.OnClickListener {
 
     static final String TAG = "SignUpDialog";
     private static final String EXTRA_EMAIL = "com.jazart.symphony.extra_email";
@@ -69,7 +69,6 @@ public class SignUpDialog extends DialogFragment implements DialogInterface.OnCl
         mNameLayout = mView.findViewById(R.id.sign_up_name_til);
         TextInputEditText verifyPassEt = (TextInputEditText) mVerifyPassLayout.getEditText();
         assert verifyPassEt != null;
-        Objects.requireNonNull(verifyPassEt).addTextChangedListener(this);
         mPassEt = (TextInputEditText) mPasswordLayout.getEditText();
 
 
@@ -119,27 +118,6 @@ then sends result back to to the fragment to sign up via firebase
             selectedImg = data.getData();
             Glide.with(requireContext()).load(selectedImg)
                     .into((ImageButton)mView.findViewById(R.id.sign_up_photo));
-        }
-    }
-
-
-
-    @Override
-    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-    }
-
-    @Override
-    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-    }
-
-    @Override
-    public void afterTextChanged(Editable editable) {
-        if(!editable.equals(mPassEt.getText())) {
-            mVerifyPassLayout.setError(getString(R.string.sign_up_pass_error_2));
-        } else {
-            mVerifyPassLayout.setErrorEnabled(false);
         }
     }
 }

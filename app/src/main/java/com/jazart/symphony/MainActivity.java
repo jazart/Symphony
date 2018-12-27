@@ -3,6 +3,7 @@ package com.jazart.symphony;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.PorterDuff;
 import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -62,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int URI_REQUEST = 1;
     private static final int RC_LOCATION = 100;
     public static final String EXTRA_USER = "com.jazart.symphony.EXTRA_USER";
-    public static boolean songPlaying = false;
+    public boolean songPlaying = false;
 
     @BindView(R.id.navigation)
     BottomNavigationView mNavigation;
@@ -70,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.fab_menu)
     public FloatingActionMenu mFabMenu;
 
-    private static SeekBar playerSeek;
+    private SeekBar playerSeek;
     private FragmentManager mFragmentManager;
     @BindView(R.id.btnPlay)
     ImageButton mPlayButton;
@@ -169,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == URI_REQUEST) {
             if (data != null) {
                 Uri URI = data.getData();
-                UploadDialog uploadDialogFragment = UploadDialog.newInstance(Objects.requireNonNull(URI));
+                UploadDialog uploadDialogFragment = UploadDialog.Companion.newInstance(Objects.requireNonNull(URI));
                 uploadDialogFragment.show(mFragmentManager, UploadDialog.TAG);
             }
         }
@@ -292,13 +293,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setProgress() {
+        playerSeek.getProgressDrawable().setColorFilter(getResources().getColor(R.color.colorAccent, getTheme()), PorterDuff.Mode.MULTIPLY);
         playerSeek.setProgress(0);
         playerSeek.setMax((int) exoPlayer.getDuration()/1000);
         txtCurrentTime.setText(stringForTime((int)exoPlayer.getCurrentPosition()));
         txtEndTime.setText(stringForTime((int)exoPlayer.getDuration()));
 
         if(handler == null)handler = new Handler();
-        //Make sure you update Seekbar on UI thread
         handler.post(new Runnable() {
             @Override
             public void run() {

@@ -15,23 +15,23 @@ import kotlinx.android.synthetic.main.list_item_post.view.*
 
 class PostAdapter(context: Context,
                   private val clickListener: (UserPost, Int) -> Unit) : RecyclerView.Adapter<PostAdapter.PostHolder>() {
-    var mPosts: List<UserPost>? = null
-    private val mInflater: LayoutInflater = LayoutInflater.from(context)
+    var posts: List<UserPost>? = null
+    private val inflater: LayoutInflater = LayoutInflater.from(context)
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostHolder {
-        val v = mInflater.inflate(R.layout.list_item_post, parent, false)
+        val v = inflater.inflate(R.layout.list_item_post, parent, false)
         return PostHolder(v)
     }
 
     override fun onBindViewHolder(holder: PostHolder, position: Int) {
-        mPosts?.get(position)?.let { post ->
+        posts?.get(position)?.let { post ->
             holder.bind(post)
         }
     }
 
     override fun getItemCount(): Int {
-        return mPosts?.size ?: 0
+        return posts?.size ?: 0
     }
 
 

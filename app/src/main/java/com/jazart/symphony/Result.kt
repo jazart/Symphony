@@ -1,13 +1,15 @@
 package com.jazart.symphony
 
+import kotlin.Exception
+
 sealed class Result {
     object Loading : Result()
-    data class Success<T>(val data: T) : Result()
-    data class Failure(val e: Throwable, val message: Error) : Result()
+    object Success : Result()
+    data class SuccessWithData<T>(val data: T) : Result()
+    data class Failure(val e: Throwable = Exception(), val message: Error) : Result()
 }
 
 enum class Error(var message: String = "") {
     NOT_FOUND("Entry not found"),
-    UNKNOWN_ERROR()
-    // more enum error cases here
+    ILLEGAL_ACCESS("Invalid access.")
 }

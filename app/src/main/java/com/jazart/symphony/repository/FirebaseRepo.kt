@@ -4,11 +4,15 @@ package com.jazart.symphony.repository
 import androidx.lifecycle.MutableLiveData
 import android.net.Uri
 import android.util.Log
+import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.ControllableTask
 import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.UploadTask
 import com.jazart.symphony.Constants
 import com.jazart.symphony.Constants.*
 import com.jazart.symphony.Result
@@ -16,7 +20,17 @@ import com.jazart.symphony.model.Song
 import com.jazart.symphony.posts.Comment
 import com.jazart.symphony.posts.PostsLiveData
 import com.jazart.symphony.posts.UserPost
+import io.reactivex.Observable
+import io.reactivex.ObservableEmitter
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.channels.sendBlocking
+import kotlinx.coroutines.supervisorScope
+import kotlinx.coroutines.withContext
 import java.io.FileInputStream
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
+import kotlin.coroutines.suspendCoroutine
 
 
 class FirebaseRepo private constructor(
@@ -25,7 +39,6 @@ class FirebaseRepo private constructor(
         private val db: FirebaseFirestore = FirebaseFirestore.getInstance(),
         private val storage: FirebaseStorage = FirebaseStorage.getInstance()) {
 
-    var uploadProgress = MutableLiveData<Result>()
     companion object {
         @JvmStatic
         val firebaseRepoInstance by lazy {
@@ -67,13 +80,20 @@ class FirebaseRepo private constructor(
         }
     }
 
-    fun addSongToStorage(song: Song, inputStream: FileInputStream) {
+    fun addSongToStorage(song: Song, inputStream: FileInputStream): Observable<Long> {
         val storageRef = storage.reference.child("${Constants.USERS}/${currentUser?.uid}/${Constants.SONGS}/${song.name}")
         val uploadTask = storageRef.putStream(inputStream)
-        uploadTask.addOnProgressListener { progress ->
-            uploadProgress.value = Result.Success(progress.bytesTransferred.toInt())
+        return Observable.create{ emitter ->
+            uploadTask.addOnProgressListener { progress ->
+                emitter.onNext(progress.bytesTransferred)
+            }
+            uploadToFirestore(uploadTask, storageRef, song, emitter)
         }
 
+
+    }
+
+    private fun uploadToFirestore(uploadTask: UploadTask, storageRef: StorageReference, song: Song, emitter: ObservableEmitter<Long>) {
         uploadTask.addOnCompleteListener {
             if (it.isComplete && it.isSuccessful) {
                 storageRef.downloadUrl.addOnCompleteListener { url ->
@@ -81,6 +101,7 @@ class FirebaseRepo private constructor(
                     addSongToFireStore(url.result, song)
                 }
             }
+            emitter.onComplete()
         }
     }
 
@@ -94,12 +115,17 @@ class FirebaseRepo private constructor(
         db.collection(SONGS).add(song)
     }
 
-    fun remove(song: Song) {
+    fun remove(song: Song): Boolean {
+        if(song.author != auth.currentUser?.uid) {
+            return false
+        }
+
         db.collection(SONGS).whereEqualTo("uri", song.uri).get()
                 .continueWith { querySnapshot ->
                     querySnapshot.result?.forEach { result -> result.reference.delete() }
                 }
         val songStorageRef = storage.reference.child("$USERS/${currentUser?.uid}/$SONGS/${song.name}")
         songStorageRef.delete()
+        return true
     }
 }

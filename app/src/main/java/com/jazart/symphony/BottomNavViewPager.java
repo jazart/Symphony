@@ -12,6 +12,7 @@ import android.view.MotionEvent;
  * This helps keep all the fragmets loaded. The
  * custom view disables the typical swiping ability of the viewpager container
  */
+@SuppressWarnings("ALL")
 public class BottomNavViewPager extends ViewPager {
     private final boolean isSwipeable;
 

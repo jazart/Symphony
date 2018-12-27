@@ -14,7 +14,6 @@ import android.widget.ProgressBar;
 import com.bumptech.glide.Glide;
 import com.jazart.symphony.R;
 import com.jazart.symphony.di.App;
-import com.jazart.symphony.network.FoursquareRepo;
 
 import javax.inject.Inject;
 
@@ -36,8 +35,6 @@ public class LocalEventsFragment extends Fragment implements SwipeRefreshLayout.
     @BindView(R.id.swipeRefreshLayout)
     SwipeRefreshLayout mRefreshLayout;
 
-    @Inject
-    FoursquareRepo mRepo;
 
     public LocalEventsFragment() {
 
@@ -54,19 +51,7 @@ public class LocalEventsFragment extends Fragment implements SwipeRefreshLayout.
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         final View view = inflater.inflate(R.layout.my_music_fragment, container, false);
-        Retrofit retrofit = mRepo.getService();
         ButterKnife.bind(this, view);
-        VenueAdapter adapter = new VenueAdapter(Glide.with(requireContext()));
-//        ViewModelProviders.of(this).get(VenueViewModel.class)
-//                .getVenues().observe(this, new Observer<List<Venue>>() {
-//            @Override
-//            public void onChanged(@Nullable List<Venue> venues) {
-//                mPostLoadProgress.setVisibility(View.GONE);
-//                mAdapter.setVenueList(venues);
-//                mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-//                mRecyclerView.setAdapter(mAdapter);
-//            }
-//        });
         return view;
     }
 

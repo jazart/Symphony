@@ -3,16 +3,16 @@ package com.jazart.symphony.di
 import android.app.Application
 import android.content.Context
 import android.content.res.Resources
-import com.google.android.exoplayer2.DefaultLoadControl
-import com.google.android.exoplayer2.DefaultRenderersFactory
-import com.google.android.exoplayer2.ExoPlayerFactory
-import com.google.android.exoplayer2.SimpleExoPlayer
+import android.media.AudioAttributes
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
+import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.jazart.symphony.MainActivity
 import com.jazart.symphony.featured.FeaturedMusicFragment
 import com.jazart.symphony.featured.MusicAdapter
 import com.jazart.symphony.network.FoursquareConstants
-import com.jazart.symphony.network.FoursquareRepo
 import com.jazart.symphony.featured.UploadDialog
 import com.jazart.symphony.venues.LocalEventsFragment
 import dagger.Component
@@ -28,16 +28,17 @@ import com.squareup.leakcanary.LeakCanary
 class App : Application() {
     lateinit var component: AppComponent
 
-    @Inject
-    lateinit var viewModelFactory: SimpleViewModelFactory
+    @Inject lateinit var player: SimpleExoPlayer
 
     override fun onCreate() {
         super.onCreate()
         if(LeakCanary.isInAnalyzerProcess(this)) return
         LeakCanary.install(this)
-        component = DaggerAppComponent.builder().apply {
+        component = DaggerAppComponent.builder().run {
             appModule(AppModule(this@App))
-        }.build()
+            build()
+        }
+        component.inject(this)
     }
 
 }
@@ -56,20 +57,20 @@ class AppModule(private val app: App) {
     @Provides
     fun provideResources(): Resources = app.resources
 
-    @Singleton
-    @Provides
-    fun provideSimpleViewModelFactory(): SimpleViewModelFactory =
-            SimpleViewModelFactory(app = app)
-
     @Provides
     fun provideMusicFragment(): FeaturedMusicFragment = FeaturedMusicFragment()
 
-    @Singleton
     @Provides
     fun provideSimpleExoPlayer(): SimpleExoPlayer = ExoPlayerFactory.newSimpleInstance(
             DefaultRenderersFactory(app.applicationContext),
             DefaultTrackSelector(),
-            DefaultLoadControl())
+            DefaultLoadControl()).apply {
+            audioAttributes = com.google.android.exoplayer2.audio.AudioAttributes.Builder().run {
+                setUsage(C.USAGE_MEDIA)
+                setContentType(C.CONTENT_TYPE_MUSIC)
+                build()
+            }
+    }
 
     @Singleton
     @Provides
@@ -88,10 +89,6 @@ class AppModule(private val app: App) {
                 .build()
     }
 
-    @Singleton
-    @Provides
-    fun provideVenueRepo(service: Retrofit): FoursquareRepo = FoursquareRepo(service)
-
     @Provides
     fun provideLocalEventsFragment(): LocalEventsFragment = LocalEventsFragment()
 }
@@ -107,3 +104,4 @@ interface AppComponent {
     fun inject(fragment: LocalEventsFragment)
 }
 
+fun Fragment.app(): App = requireActivity().application as App

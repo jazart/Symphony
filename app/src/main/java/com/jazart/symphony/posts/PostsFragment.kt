@@ -53,9 +53,9 @@ class PostsFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
         v.recycler_view.layoutManager = LinearLayoutManager(context)
 
         mPostsViewModel.userPostsLiveData
-                .observe(this, Observer { posts ->
+                .observe(viewLifecycleOwner, Observer { posts ->
                     showProgressBar(true)
-                    mPostAdapter?.mPosts = posts
+                    mPostAdapter?.posts = posts
                     mPostAdapter?.notifyDataSetChanged()
                     swipeRefreshLayout.isRefreshing = false
                 })
