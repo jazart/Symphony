@@ -19,9 +19,10 @@ import com.jazart.symphony.di.SimpleViewModelFactory
 import com.jazart.symphony.di.app
 import com.jazart.symphony.model.Song
 import kotlinx.android.synthetic.main.feature_music_fragment.*
+import java.lang.StringBuilder
 
 
-class FeaturedMusicFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
+class FeaturedMusicFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, SwipeRefreshLayout.OnChildScrollUpCallback {
     private lateinit var musicAdapter: MusicAdapter
     private lateinit var songsViewModel: SongViewModel
     private lateinit var songsLiveData: LiveData<List<Song>>
@@ -40,10 +41,9 @@ class FeaturedMusicFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
         setupAdapter()
         showHideFabMenu()
-        featured_songs_toolbar.inflateMenu(R.menu.featured_music_menu)
+//        featured_songs_toolbar.inflateMenu(R.menu.featured_music_menu)
         loadSongs()
 
         setupSnackbarBehavior()
@@ -56,12 +56,14 @@ class FeaturedMusicFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
         val swipeController = SwipeController(requireContext(),songsViewModel, songsLiveData, musicAdapter)
         val itemTouchHelper = ItemTouchHelper(swipeController)
         itemTouchHelper.attachToRecyclerView(featured_songs)
+        swipeRefreshLayout.setOnChildScrollUpCallback(this)
     }
 
     private fun loadSongs() {
         songsLiveData.observe(viewLifecycleOwner, Observer { songs ->
             hideProgress()
             musicAdapter.setSongs(songs)
+            musicAdapter.notifyDataSetChanged()
             swipeRefreshLayout.isRefreshing = false
         })
     }
@@ -69,6 +71,7 @@ class FeaturedMusicFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     override fun onRefresh() {
         swipeRefreshLayout.isRefreshing = false
         songsViewModel.refreshContent()
+        featured_songs.scrollToPosition(7)
     }
 
     private fun hideProgress() {
@@ -89,22 +92,28 @@ class FeaturedMusicFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     }
 
     private fun setupAdapter() {
-        featured_songs.isNestedScrollingEnabled = true
         musicAdapter = MusicAdapter(context)
-        featured_songs.layoutManager = LinearLayoutManager(context)
         featured_songs.adapter = musicAdapter
+        featured_songs.layoutManager = LinearLayoutManager(requireContext())
+
     }
 
     private fun setupSnackbarBehavior() {
         songsViewModel.snackbar.observe(viewLifecycleOwner, Observer { event ->
-            when (event) {
-                is Result.Success -> Snackbar.make(requireActivity().currentFocus!!, getString(R.string.deleted_song), Snackbar.LENGTH_SHORT)
-                else -> Snackbar.make(requireActivity().currentFocus!!, getString(R.string.hidden_song), Snackbar.LENGTH_SHORT)
-            }.show()
+            requireActivity().currentFocus?.let {
+                when (event) {
+                    is Result.Success -> Snackbar.make(it, getString(R.string.deleted_song), Snackbar.LENGTH_SHORT)
+                    else -> Snackbar.make(it, getString(R.string.hidden_song), Snackbar.LENGTH_SHORT)
+                }.show()
+            }
         })
     }
 
     private fun inject() {
         app().component.inject(this)
+    }
+
+    override fun canChildScrollUp(parent: SwipeRefreshLayout, child: View?): Boolean {
+        return child is RecyclerView
     }
 }

@@ -11,6 +11,7 @@ import android.os.Handler;
 import androidx.annotation.NonNull;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.MenuItem;
@@ -36,12 +37,15 @@ import com.jazart.symphony.featured.UploadDialog;
 import com.jazart.symphony.signup.SignUpActivity;
 import com.jazart.symphony.venues.LocalEventsFragment;
 
+import java.io.FileReader;
 import java.util.Formatter;
 import java.util.Locale;
 import java.util.Objects;
 
 import javax.inject.Inject;
 
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.fragment.app.FragmentStatePagerAdapter;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -75,8 +79,8 @@ public class MainActivity extends AppCompatActivity {
     private FragmentManager mFragmentManager;
     @BindView(R.id.btnPlay)
     ImageButton mPlayButton;
-    @BindView(R.id.frag_pager)
-    BottomNavViewPager mNavViewPager;
+//    @BindView(R.id.frag_pager)
+//    BottomNavViewPager mNavViewPager;
 
     public static final PlayerBoolean playerCreated = new PlayerBoolean();
     @Inject
@@ -87,27 +91,25 @@ public class MainActivity extends AppCompatActivity {
     private TextView txtEndTime;
     private Handler handler;
     private boolean hasSongStarted = false;
+    private Fragment featuredFragement, postFragment, active;
     private final BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            if (mFragmentManager.getBackStackEntryCount() > 0) {
-                mFragmentManager.popBackStack();
-            }
+//            if (mFragmentManager.getBackStackEntryCount() > 0) {
+//                mFragmentManager.popBackStack();
+//            }
             switch (item.getItemId()) {
-
                 case R.id.navigation_home:
-                    mNavViewPager.setCurrentItem(0);
-
+                    display(featuredFragement, active, "FeaturedFragment");
+                    active = featuredFragement;
                     return true;
                 case R.id.nav_my_music:
-
-                    mNavViewPager.setCurrentItem(1);
+                    display(postFragment, active, "PostsFragment");
+                    active = postFragment;
                     return true;
                 case R.id.nav_events:
-
-                    mNavViewPager.setCurrentItem(2);
                     return true;
             }
             return false;
@@ -129,7 +131,11 @@ public class MainActivity extends AppCompatActivity {
 
         mNavigation.setSelectedItemId(R.id.navigation_home);
         mNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-
+        featuredFragement = new FeaturedMusicFragment();
+        postFragment = new PostsFragment();
+        mFragmentManager.beginTransaction().add(R.id.frag_container, postFragment, "Posts").hide(postFragment).commit();
+        mFragmentManager.beginTransaction().add(R.id.frag_container, featuredFragement, "Featured").commit();
+        active = featuredFragement;
         if (!checkPermissions()) {
             requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION},
                     RC_LOCATION);
@@ -151,11 +157,22 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         } else {
-            BottomNavAdapter adapter = new BottomNavAdapter(mFragmentManager);
-            adapter.addFragment(new FeaturedMusicFragment());
-            adapter.addFragment(new PostsFragment());
-            adapter.addFragment(new LocalEventsFragment());
-            mNavViewPager.setAdapter(adapter);
+            FragmentPagerAdapter pagerAdapter = new FragmentPagerAdapter(mFragmentManager) {
+                @Override
+                public Fragment getItem(int position) {
+                    switch (position) {
+                        case 0: return new FeaturedMusicFragment();
+                        case 1: return new PostsFragment();
+                        default: return new Fragment();
+                    }
+                }
+
+                @Override
+                public int getCount() {
+                    return 2;
+                }
+            };
+//            mNavViewPager.setAdapter(pagerAdapter);
         }
     }
 
@@ -345,6 +362,13 @@ public class MainActivity extends AppCompatActivity {
 
         playerSeek.setMax(0);
         playerSeek.setMax((int) exoPlayer.getDuration()/1000);
+    }
+
+    private void display(Fragment fragment, Fragment active, String tag) {
+        mFragmentManager.beginTransaction()
+                .hide(active)
+                .show(fragment)
+                .commit();
     }
 }
 

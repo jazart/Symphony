@@ -10,108 +10,65 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import androidx.annotation.NonNull
-import com.google.android.material.textfield.TextInputLayout
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.EditText
-import android.widget.ProgressBar
-
 import com.jazart.symphony.R
 import com.jazart.symphony.di.App
 import com.jazart.symphony.di.SimpleViewModelFactory
 import com.jazart.symphony.model.Song
+import kotlinx.android.synthetic.main.fragment_upload_dialog.view.*
 
 import java.io.FileInputStream
 import java.io.FileNotFoundException
 import java.util.ArrayList
-import java.util.Objects
-
 
 
 class UploadDialog : DialogFragment(), DialogInterface.OnClickListener {
 
-   private lateinit var mSongViewModel: SongViewModel
-   private lateinit var mArtists: TextInputLayout
-   private lateinit var mSongTitle: TextInputLayout
-   private lateinit var mUploadProgress: ProgressBar
-   private val mSong = Song()
+    private lateinit var songViewModel: SongViewModel
+    private val song = Song()
+    lateinit var dialogView: View
 
-   private val fileSize: String
-       get() {
-            val resolver = requireActivity().contentResolver
-            val projection = arrayOf(MediaStore.Audio.Media.SIZE)
-            val cursor = resolver.query(Uri.parse(mSong.uri), projection, null, null, null)
-            val fileSize: String
-
-            require(cursor != null && cursor.moveToFirst())
-            val size = cursor.getColumnIndex(MediaStore.Audio.Media.SIZE)
-            fileSize = cursor.getString(size)
-            cursor.close()
-
-       return fileSize
-   }
-
-    private val artistsFromUi: List<String>
-        @NonNull
-        get() {
-            var result: MutableList<String> = ArrayList()
-
-            if (mArtists.editText?.text.toString().contains(",")) {
-                val artists = mArtists.editText?.text.toString().split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-                result = artists.toMutableList()
-            } else {
-                result.add(mArtists.editText?.text.toString())
-            }
-            return result
-        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         inject()
-        mSongViewModel = ViewModelProviders.of(this, SimpleViewModelFactory {
+        songViewModel = ViewModelProviders.of(this, SimpleViewModelFactory {
             SongViewModel(activity?.application as App)
         }).get(SongViewModel::class.java)
-        if (arguments != null) {
-            mSong.uri = arguments!!.getString(ARG_URI)
+        arguments?.run {
+            song.uri = getString(ARG_URI)
         }
+
         updateProgress()
     }
 
-    private fun updateProgress() {
-        mSongViewModel.percentageLiveData.observe(this, Observer { progress ->
-                mUploadProgress.progress = progress
-                if (progress == 100) {
-                    mSongViewModel.refreshContent()
-                    dismiss()
-                }
-        })
-    }
 
+    @SuppressLint("InflateParams")
     @NonNull
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        @SuppressLint("InflateParams") val view = LayoutInflater.from(context)
+        dialogView = LayoutInflater.from(context)
                 .inflate(R.layout.fragment_upload_dialog, null)
 
-        mArtists = view.findViewById(R.id.enter_artists)
-        mSongTitle = view.findViewById(R.id.enter_song_title)
-        mUploadProgress = view.findViewById(R.id.upload_progress)
-        view.findViewById<View>(R.id.upload_button).setOnClickListener {
-            val result = artistsFromUi
-            mSong.name = Objects.requireNonNull<EditText>(mSongTitle.editText)?.text.toString()
-            mSong.artists = result
+        dialogView.upload_button.setOnClickListener {
+            val result = artistsFromUi()
+            song.name = dialogView.enter_song_title.editText?.text.toString()
+            song.artists = result
 
-            val size = fileSize
+            val size = fileSize()
             try {
-                mSongViewModel.addSongToStorage(mSong, convertSongUriToFile(), size)
+                songViewModel.addSongToStorage(song, convertSongUriToFile(), size)
             } catch (e: FileNotFoundException) {
                 e.printStackTrace()
             }
+            dialogView.upload_button.visibility = View.GONE
+            dialogView.upload_progress.visibility = View.VISIBLE
         }
         return AlertDialog.Builder(context)
-                .setView(view)
+                .setView(dialogView)
                 .setTitle("Upload")
                 .create()
 
@@ -124,13 +81,13 @@ class UploadDialog : DialogFragment(), DialogInterface.OnClickListener {
     }
 
     override fun onClick(dialogInterface: DialogInterface, i: Int) {
-        val result = artistsFromUi
-        mSong.name = mSongTitle.editText?.text.toString()
-        mSong.artists = result
+        val result = artistsFromUi()
+        song.name = dialogView.enter_song_title?.editText?.text.toString()
+        song.artists = result
         try {
-            val size = fileSize
+            val size = fileSize()
             Log.d("TAG/ UPLOAD", size)
-            mSongViewModel.addSongToStorage(mSong, convertSongUriToFile(), size)
+            songViewModel.addSongToStorage(song, convertSongUriToFile(), size)
         } catch (e: FileNotFoundException) {
             e.printStackTrace()
         }
@@ -140,7 +97,43 @@ class UploadDialog : DialogFragment(), DialogInterface.OnClickListener {
     @Throws(FileNotFoundException::class)
     private fun convertSongUriToFile(): FileInputStream {
         val resolver = requireActivity().contentResolver
-        return resolver.openInputStream(Uri.parse(mSong.uri)) as FileInputStream
+        return resolver.openInputStream(Uri.parse(song.uri)) as FileInputStream
+    }
+
+    private fun fileSize(): String {
+        val resolver = requireActivity().contentResolver
+        val projection = arrayOf(MediaStore.Audio.Media.SIZE)
+        val cursor = resolver.query(Uri.parse(song.uri), projection, null, null, null)
+        val fileSize: String
+
+        require(cursor != null && cursor.moveToFirst())
+        val size = cursor.getColumnIndex(MediaStore.Audio.Media.SIZE)
+        fileSize = cursor.getString(size)
+        cursor.close()
+
+        return fileSize
+    }
+
+    private fun artistsFromUi(): List<String> {
+        var result: MutableList<String> = ArrayList()
+
+        if (dialogView.enter_artists.editText?.text.toString().contains(",")) {
+            val artists = dialogView.enter_artists.editText?.text.toString().split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+            result = artists.toMutableList()
+        } else {
+            result.add(dialogView.enter_artists.editText?.text.toString())
+        }
+        return result
+    }
+
+    private fun updateProgress() {
+        songViewModel.percentageLiveData.observe(this, Observer { progress ->
+            dialogView.upload_progress?.progress = progress
+            if (progress == 100) {
+                songViewModel.refreshContent()
+                dismiss()
+            }
+        })
     }
 
     private fun inject() {
@@ -153,11 +146,11 @@ class UploadDialog : DialogFragment(), DialogInterface.OnClickListener {
         private const val ARG_URI = "1"
 
         fun newInstance(uri: Uri): UploadDialog {
-            val mBundle = Bundle()
-            mBundle.putString(ARG_URI, uri.toString())
-            val upDia = UploadDialog()
-            upDia.arguments = mBundle
-            return upDia
+            val bundle = Bundle()
+            bundle.putString(ARG_URI, uri.toString())
+            val uploadDialog = UploadDialog()
+            uploadDialog.arguments = bundle
+            return uploadDialog
         }
     }
 }

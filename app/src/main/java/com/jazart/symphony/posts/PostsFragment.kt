@@ -14,10 +14,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
 import com.jazart.symphony.R
 import com.jazart.symphony.posts.adapters.PostAdapter
-import kotlinx.android.synthetic.main.my_music_fragment.view.*
+import kotlinx.android.synthetic.main.fragment_posts.*
 
 /**
  * Class displays a list of posts from the current user as well as local users in the area
@@ -25,62 +24,58 @@ import kotlinx.android.synthetic.main.my_music_fragment.view.*
  */
 
 class PostsFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
-    private var mPostAdapter: PostAdapter? = null
-    private lateinit var mPostsViewModel: PostsViewModel
+    private var postAdapter: PostAdapter? = null
+    private lateinit var postsViewModel: PostsViewModel
 
-    private lateinit var swipeRefreshLayout: SwipeRefreshLayout
-    private lateinit var progressBar: ProgressBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mPostsViewModel = ViewModelProviders.of(this).get(PostsViewModel::class.java)
+        postsViewModel = ViewModelProviders.of(this).get(PostsViewModel::class.java)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val v = LayoutInflater.from(context).inflate(R.layout.my_music_fragment, container, false)
-        setup(v)
-        mPostAdapter = PostAdapter(requireContext()) { post, viewId ->
+        return LayoutInflater.from(context).inflate(R.layout.fragment_posts, container, false)
+
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        postAdapter = PostAdapter(requireContext()) { post, viewId ->
             when (viewId) {
-                R.layout.list_item_post -> fragmentManager?.beginTransaction()?.addToBackStack(null)
-                        ?.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                        ?.replace(R.id.frag_container, PostDetailFragment.newInstance(post))
-                        ?.commit()
-                R.id.delete_post_iv -> mPostsViewModel.deletePost(post.id)
+                R.layout.list_item_post ->
+                    childFragmentManager.beginTransaction().apply {
+                        addToBackStack(null)
+                        setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                        replace(R.id.frag_container, PostDetailFragment.newInstance(post))
+                        commit()
+                    }
+                R.id.delete_post_iv -> postsViewModel.deletePost(post.id)
             }
         }
 
-        v.recycler_view.adapter = mPostAdapter
-        v.recycler_view.layoutManager = LinearLayoutManager(context)
+        recycler_view.adapter = postAdapter
+        recycler_view.layoutManager = LinearLayoutManager(context)
 
-        mPostsViewModel.userPostsLiveData
+        postsViewModel.userPostsLiveData
                 .observe(viewLifecycleOwner, Observer { posts ->
                     showProgressBar(true)
-                    mPostAdapter?.posts = posts
-                    mPostAdapter?.notifyDataSetChanged()
+                    postAdapter?.posts = posts
+                    postAdapter?.notifyDataSetChanged()
                     swipeRefreshLayout.isRefreshing = false
                 })
-        return v
     }
-
-    private fun setup(v: View) {
-        swipeRefreshLayout = v.swipeRefreshLayout
-        swipeRefreshLayout.setOnRefreshListener(this)
-        progressBar = v.post_load_progress
-    }
-
 
     private fun loadPosts() {
-        mPostsViewModel.update()
-        mPostAdapter?.notifyDataSetChanged()
+        postsViewModel.update()
+        postAdapter?.notifyDataSetChanged()
         swipeRefreshLayout.isRefreshing = false
     }
 
     private fun showProgressBar(isLoaded: Boolean) {
         if (isLoaded) {
-            view?.post_load_progress?.visibility = View.GONE
+            post_load_progress.visibility = View.GONE
             return
         }
-        view?.post_load_progress?.visibility = View.VISIBLE
+        post_load_progress.visibility = View.VISIBLE
     }
 
     override fun onRefresh() {

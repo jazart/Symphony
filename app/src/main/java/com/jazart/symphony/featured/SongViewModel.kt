@@ -34,7 +34,7 @@ class SongViewModel @Inject constructor(val app: App) : BaseViewModel(), Corouti
 
     var songs: LiveData<List<Song>> = LocationHelperRepo.getInstance().nearbySongs
     val playing get() = _playing
-    val snackbar: LiveData<Result> = Transformations.map(_snackbar) {it}
+    val snackbar: LiveData<Result> = _snackbar.toSingleEvent()
     val percentageLiveData: LiveData<Int> = Transformations.map(_percentLiveData) { progress  ->
             100.times(progress.toInt()).div(songSize)
 

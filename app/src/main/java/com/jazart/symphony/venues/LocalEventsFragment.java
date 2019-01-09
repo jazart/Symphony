@@ -11,15 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
-import com.bumptech.glide.Glide;
 import com.jazart.symphony.R;
 import com.jazart.symphony.di.App;
 
-import javax.inject.Inject;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import retrofit2.Retrofit;
 
 /**
  * Displays local music and art events for the user to see whats going on in
@@ -50,7 +46,7 @@ public class LocalEventsFragment extends Fragment implements SwipeRefreshLayout.
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        final View view = inflater.inflate(R.layout.my_music_fragment, container, false);
+        final View view = inflater.inflate(R.layout.fragment_posts, container, false);
         ButterKnife.bind(this, view);
         return view;
     }
