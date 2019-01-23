@@ -29,7 +29,7 @@ import java.util.ArrayList
 class UploadDialog : DialogFragment(), DialogInterface.OnClickListener {
 
     private lateinit var songViewModel: SongViewModel
-    private val song = Song()
+    private lateinit var song: Song
     lateinit var dialogView: View
 
 
@@ -40,7 +40,7 @@ class UploadDialog : DialogFragment(), DialogInterface.OnClickListener {
             SongViewModel(activity?.application as App)
         }).get(SongViewModel::class.java)
         arguments?.run {
-            song.uri = getString(ARG_URI)
+            getString(ARG_URI)?.let { song.uri = it }
         }
 
         updateProgress()
@@ -145,6 +145,7 @@ class UploadDialog : DialogFragment(), DialogInterface.OnClickListener {
         const val TAG = "UploadDialog"
         private const val ARG_URI = "1"
 
+        @JvmStatic
         fun newInstance(uri: Uri): UploadDialog {
             val bundle = Bundle()
             bundle.putString(ARG_URI, uri.toString())

@@ -8,7 +8,7 @@ open class BaseViewModel
     : ViewModel() {
 
     val locationRepo: LocationHelperRepo by lazy {
-        LocationHelperRepo.getInstance()
+        LocationHelperRepo.instance
     }
     val firebaseRepo: FirebaseRepo by lazy {
         FirebaseRepo.firebaseRepoInstance

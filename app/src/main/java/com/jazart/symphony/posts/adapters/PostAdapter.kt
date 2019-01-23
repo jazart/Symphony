@@ -9,13 +9,13 @@ import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.jazart.symphony.R
-import com.jazart.symphony.posts.UserPost
+import com.jazart.symphony.posts.Post
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.list_item_post.view.*
 
 class PostAdapter(context: Context,
-                  private val clickListener: (UserPost, Int) -> Unit) : RecyclerView.Adapter<PostAdapter.PostHolder>() {
-    var posts: List<UserPost>? = null
+                  private val clickListener: (Post, Int) -> Unit) : RecyclerView.Adapter<PostAdapter.PostHolder>() {
+    var posts: List<Post>? = null
     private val inflater: LayoutInflater = LayoutInflater.from(context)
 
 
@@ -37,12 +37,12 @@ class PostAdapter(context: Context,
 
     inner class PostHolder(override val containerView: View) : RecyclerView.ViewHolder(containerView),
             LayoutContainer {
-        private lateinit var post: UserPost
+        private lateinit var post: Post
         private val clickHandler = View.OnClickListener { view ->
             clickListener(post, view.id)
         }
 
-        fun bind(post: UserPost) {
+        fun bind(post: Post) {
             this.post = post
             itemView.post_title.text = post.title
             itemView.post_body.text = post.body

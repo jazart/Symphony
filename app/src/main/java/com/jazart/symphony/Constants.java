@@ -12,4 +12,5 @@ public class Constants {
 
     public static final String CITY = "city";
     public static final String LOCATION = "location";
+    public static final String NAME = "name";
 }

@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import com.jazart.symphony.R
 import com.jazart.symphony.posts.adapters.PostAdapter
 import kotlinx.android.synthetic.main.fragment_posts.*
@@ -41,13 +42,8 @@ class PostsFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         postAdapter = PostAdapter(requireContext()) { post, viewId ->
             when (viewId) {
-                R.layout.list_item_post ->
-                    childFragmentManager.beginTransaction().apply {
-                        addToBackStack(null)
-                        setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                        replace(R.id.frag_container, PostDetailFragment.newInstance(post))
-                        commit()
-                    }
+                R.id.post_card ->
+                    findNavController().navigate(R.id.postDetailFragment)
                 R.id.delete_post_iv -> postsViewModel.deletePost(post.id)
             }
         }

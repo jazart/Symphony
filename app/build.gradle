@@ -2,7 +2,8 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
-def dagger_version = 2.15
+def dagger_version = 2.20
+def nav_version = "1.0.0-alpha09"
 
 
 android {
@@ -26,6 +27,10 @@ android {
         }
     }
     productFlavors {
+    }
+    compileOptions {
+        sourceCompatibility = '1.8'
+        targetCompatibility = '1.8'
     }
 }
 
@@ -65,8 +70,8 @@ dependencies {
     //gson
     implementation 'com.google.code.gson:gson:2.8.2'
     //view binding butterknife
-    implementation 'com.jakewharton:butterknife:9.0.0-rc1'
-    kapt 'com.jakewharton:butterknife-compiler:9.0.0-rc1'
+    implementation 'com.jakewharton:butterknife:9.0.0-rc2'
+    kapt 'com.jakewharton:butterknife-compiler:9.0.0-rc2'
     //aac
     implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
     //dagger
@@ -108,6 +113,12 @@ dependencies {
     implementation 'com.jakewharton.rxbinding3:rxbinding-viewpager:3.0.0-alpha2'
     implementation 'com.jakewharton.rxbinding3:rxbinding-material:3.0.0-alpha2'
     implementation 'com.jakewharton.rxbinding3:rxbinding:3.0.0-alpha2'
+
+
+    implementation "android.arch.navigation:navigation-fragment-ktx:$nav_version" // use -ktx for Kotlin
+    implementation "android.arch.navigation:navigation-ui-ktx:$nav_version" // use -ktx for Kotlin
+    implementation "android.arch.navigation:navigation-fragment:$nav_version" // use -ktx for Kotlin
+    implementation "android.arch.navigation:navigation-ui:$nav_version" // use -ktx for Kotlin
 
 
 

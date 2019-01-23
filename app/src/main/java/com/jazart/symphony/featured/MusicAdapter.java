@@ -2,6 +2,8 @@ package com.jazart.symphony.featured;
 
 import android.content.Context;
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -16,17 +18,14 @@ import com.jazart.symphony.di.App;
 import com.jazart.symphony.model.Song;
 import com.jazart.symphony.playback.PlayerListener;
 
-import java.util.List;
 
-
-
-public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicHolder> {
-    private List<Song> mSongs;
+public class MusicAdapter extends ListAdapter<Song, MusicAdapter.MusicHolder> {
     private final LayoutInflater mInflater;
 
     private final Player.EventListener eventListener = new PlayerListener();
 
-    MusicAdapter(Context context) {
+    protected MusicAdapter(@NonNull DiffUtil.ItemCallback<Song> diffCallback, Context context) {
+        super(diffCallback);
         mInflater = LayoutInflater.from(context);
         App app = (App) context.getApplicationContext();
         app.component.inject(this);
@@ -35,24 +34,12 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicHolder>
     @NonNull
     @Override
     public MusicHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = mInflater.inflate(R.layout.list_item_music, parent, false);
-        return new MusicHolder(v);
-
+        return new MusicHolder(mInflater.inflate(R.layout.list_item_music, parent, false));
     }
 
     @Override
     public void onBindViewHolder(@NonNull MusicHolder holder, int position) {
-        holder.bind(mSongs.get(position));
-    }
-
-    @Override
-    public int getItemCount() {
-        return mSongs == null ? 0 : mSongs.size();
-    }
-
-    void setSongs(List<Song> songs) {
-        mSongs = songs;
-        notifyDataSetChanged();
+        holder.bind(getItem(position));
     }
 
     static class MusicHolder extends RecyclerView.ViewHolder{

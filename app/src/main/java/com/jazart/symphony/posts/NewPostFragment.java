@@ -53,7 +53,7 @@ public class NewPostFragment extends Fragment {
 
     @OnClick(R.id.button)
     public void submit() {
-        UserPost post = new UserPost.Builder()
+        Post post = new Post.Builder()
                 .title(Objects.requireNonNull(mTitle.getText()).toString())
                 .body(Objects.requireNonNull(mBody.getText()).toString())
                 .build();

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/featuredMusicFragment">
+
+    <fragment
+        android:id="@+id/featuredMusicFragment"
+        android:name="com.jazart.symphony.featured.FeaturedMusicFragment"
+        android:label="FeaturedMusicFragment"
+        tools:layout="@layout/feature_music_fragment"/>
+    <fragment
+        android:id="@+id/postsFragment"
+        android:name="com.jazart.symphony.posts.PostsFragment"
+        android:label="PostsFragment"
+        tools:layout="@layout/fragment_posts">
+        <action
+            android:id="@+id/action_postsFragment_to_postDetailFragment"
+            app:destination="@id/postDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/postDetailFragment"
+        android:name="com.jazart.symphony.posts.PostDetailFragment"
+        android:label="fragment_post_detail"
+        tools:layout="@layout/fragment_post_detail" />
+
+</navigation>

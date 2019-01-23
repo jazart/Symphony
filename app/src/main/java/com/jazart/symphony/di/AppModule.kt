@@ -3,10 +3,7 @@ package com.jazart.symphony.di
 import android.app.Application
 import android.content.Context
 import android.content.res.Resources
-import android.media.AudioAttributes
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.jazart.symphony.MainActivity

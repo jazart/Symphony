@@ -75,7 +75,7 @@ public class PostDetailFragment extends Fragment {
 
     }
 
-    public static PostDetailFragment newInstance(UserPost post) {
+    public static PostDetailFragment newInstance(Post post) {
         PostDetailFragment detailFragment = new PostDetailFragment();
         Bundle bundle = new Bundle();
         Gson gson = new Gson();
@@ -102,8 +102,8 @@ public class PostDetailFragment extends Fragment {
 
         if (getArguments() != null) {
             Gson gson = new Gson();
-            UserPost post = gson.fromJson(getArguments().getString(ARG_POST),
-                    UserPost.class);
+            Post post = gson.fromJson(getArguments().getString(ARG_POST),
+                    Post.class);
 
             mViewModel.loadComments(post.getId());
             mViewModel.getComments().observe(this, new Observer<List<Comment>>() {
@@ -158,7 +158,7 @@ public class PostDetailFragment extends Fragment {
             mPostDetailEditBtn.setVisibility(View.VISIBLE);
         }
     }
-    private void buildUi(UserPost post) {
+    private void buildUi(Post post) {
         mPostBodyTv.setText(post.getBody());
         mPostTitle.setText(post.getTitle());
 

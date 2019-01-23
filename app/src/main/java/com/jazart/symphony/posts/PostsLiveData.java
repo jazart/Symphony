@@ -28,7 +28,7 @@ public class PostsLiveData<T> extends LiveData<T> {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     try {
-                        setValue((T) task.getResult().toObjects(UserPost.class));
+                        setValue((T) task.getResult().toObjects(Post.class));
                     } catch (ClassCastException e) {
                         e.printStackTrace();
                     }

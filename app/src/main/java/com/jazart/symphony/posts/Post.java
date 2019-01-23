@@ -11,7 +11,7 @@ import java.util.Date;
 import java.util.List;
 
 @IgnoreExtraProperties
-public class UserPost {
+public class Post {
 
     @Expose
     @SerializedName("title")
@@ -53,11 +53,11 @@ public class UserPost {
 
 
 
-    public UserPost() {
+    public Post() {
 
     }
 
-    UserPost(UserPost.Builder builder) {
+    Post(Post.Builder builder) {
         mAuthor = builder.mAuthor;
         mBody = builder.mBody;
         mImageUri = builder.mImg;
@@ -194,8 +194,8 @@ public class UserPost {
         }
 
 
-        public UserPost build() {
-            return new UserPost(this);
+        public Post build() {
+            return new Post(this);
         }
 
     }

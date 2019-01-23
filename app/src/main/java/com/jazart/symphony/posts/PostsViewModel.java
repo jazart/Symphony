@@ -24,12 +24,12 @@ public class PostsViewModel extends BaseViewModel {
         super();
         FirebaseAuth auth = FirebaseAuth.getInstance();
         mUser = auth.getCurrentUser();
-        LiveData<List<UserPost>> userPostsLiveData = Objects.requireNonNull(Objects.requireNonNull(getLocationRepo())).getNearbyPosts();
+        LiveData<List<Post>> userPostsLiveData = Objects.requireNonNull(Objects.requireNonNull(getLocationRepo())).getNearbyPosts();
         mComments = new MutableLiveData<>();
         PostsLiveData postsLiveData = getFirebaseRepo().getUserPosts();
     }
 
-    public LiveData<List<UserPost>> getUserPostsLiveData() {
+    public LiveData<List<Post>> getUserPostsLiveData() {
         return Objects.requireNonNull(getLocationRepo()).getNearbyPosts();
     }
 
@@ -41,7 +41,7 @@ public class PostsViewModel extends BaseViewModel {
         refreshContent();
     }
 
-    public void addToDb(@NonNull UserPost post) {
+    public void addToDb(@NonNull Post post) {
         getFirebaseRepo().addPostToDb(post);
     }
 

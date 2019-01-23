@@ -42,4 +42,8 @@
     <string name="search">Search</string>
     <string name="deleted_song">Deleted</string>
     <string name="hidden_song">Hidden</string>
+    <string name="location_permission_req">We need location permissions</string>
+    <string name="channel_name">Location Update</string>
+    <string name="channel_description">Location Notification Chanel</string>
+    <string name="acq_loc">Acquiring location</string>
 </resources>

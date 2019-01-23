@@ -1,40 +1,28 @@
 package com.jazart.symphony.repository
 
 
-import androidx.lifecycle.MutableLiveData
 import android.net.Uri
 import android.util.Log
-import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.storage.ControllableTask
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.UploadTask
 import com.jazart.symphony.Constants
 import com.jazart.symphony.Constants.*
-import com.jazart.symphony.Result
 import com.jazart.symphony.model.Song
 import com.jazart.symphony.posts.Comment
 import com.jazart.symphony.posts.PostsLiveData
-import com.jazart.symphony.posts.UserPost
+import com.jazart.symphony.posts.Post
 import io.reactivex.Observable
 import io.reactivex.ObservableEmitter
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.channels.sendBlocking
-import kotlinx.coroutines.supervisorScope
-import kotlinx.coroutines.withContext
 import java.io.FileInputStream
-import kotlin.coroutines.resume
-import kotlin.coroutines.resumeWithException
-import kotlin.coroutines.suspendCoroutine
 
 
 class FirebaseRepo private constructor(
-        private val currentUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser,
+        internal val currentUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser,
         private val auth: FirebaseAuth = FirebaseAuth.getInstance(),
         private val db: FirebaseFirestore = FirebaseFirestore.getInstance(),
         private val storage: FirebaseStorage = FirebaseStorage.getInstance()) {
@@ -47,7 +35,7 @@ class FirebaseRepo private constructor(
     }
 
 
-    fun addPostToDb(post: UserPost) {
+    fun addPostToDb(post: Post) {
         post.author = currentUser?.uid
         post.profilePic = currentUser?.photoUrl.toString()
         db.collection(POSTS)
@@ -56,7 +44,7 @@ class FirebaseRepo private constructor(
         db.collection(POSTS)
     }
 
-    fun getUserPosts(): PostsLiveData<List<UserPost>> {
+    fun getUserPosts(): PostsLiveData<List<Post>> {
         val query = db.collection(POSTS)
                 .whereEqualTo("author", currentUser?.uid)
                 .orderBy("postDate")
@@ -108,7 +96,7 @@ class FirebaseRepo private constructor(
     private fun addSongToFireStore(songUri: Uri?, song: Song) {
         song.apply {
             uri = "$songUri"
-            author = currentUser?.uid
+            currentUser?.let { author = it.uid }
             name = song.name
             artists = song.artists
         }
