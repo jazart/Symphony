@@ -9,7 +9,6 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.jazart.symphony.MainActivity
 import com.jazart.symphony.featured.FeaturedMusicFragment
 import com.jazart.symphony.featured.MusicAdapter
-import com.jazart.symphony.network.FoursquareConstants
 import com.jazart.symphony.featured.UploadDialog
 import com.jazart.symphony.venues.LocalEventsFragment
 import dagger.Component
@@ -72,7 +71,6 @@ class AppModule(private val app: App) {
     @Singleton
     @Provides
     fun provideRetrofit(client: okhttp3.OkHttpClient): Retrofit = Retrofit.Builder()
-            .baseUrl(FoursquareConstants.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .client(client)
             .build()

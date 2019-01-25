@@ -38,8 +38,6 @@
             android:name=".signup.SignUpActivity"
             android:launchMode="singleTop" />
         <activity android:name=".posts.PostActivity" />
-        <activity android:name=".di.BaseActivity" />
-        <activity android:name=".BaseActivity" />
 
         <service
             android:name=".location.LocationIntentService"

@@ -6,95 +6,6 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/activ_main_root"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:layout_editor_absoluteY="81dp">
-
-
-        <LinearLayout
-
-            android:id="@+id/media_controller"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:background="@android:color/transparent"
-            android:orientation="vertical"
-            android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
-
-            <LinearLayout
-                android:id="@+id/playerControls"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/colorPrimaryDark"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:paddingTop="4dip"
-                android:visibility="gone">
-
-                <ImageButton
-                    android:id="@+id/btnPlay"
-                    style="@android:style/MediaButton.Play"
-                    android:contentDescription="@string/exo_controls_play_description"
-                    android:src="@drawable/ic_play_arrow_24dp" />
-
-                <TextView
-                    android:id="@+id/time_current"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:paddingLeft="4dip"
-                    android:paddingTop="4dip"
-                    android:paddingRight="4dip"
-                    android:text="@string/player_start_time"
-                    android:textColor="@color/colorAccent"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
-
-                <SeekBar
-                    android:id="@+id/mediacontroller_progress"
-                    android:layout_width="0dip"
-                    android:layout_height="32dip"
-                    android:layout_weight="1"
-                    android:theme="@style/SeekTheme" />
-
-                <TextView
-                    android:id="@+id/player_end_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:paddingLeft="4dip"
-                    android:paddingTop="4dip"
-                    android:paddingRight="4dip"
-                    android:text="@string/player_max_time"
-                    android:textColor="@color/colorAccent"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
-
-                <ImageButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="top"
-                    android:layout_marginTop="-7dp"
-                    android:background="@android:color/transparent"
-                    android:contentDescription="@string/player_full_screen"
-                    android:paddingStart="10dip"
-                    android:paddingTop="4dip"
-                    android:paddingEnd="4dip"
-                    android:paddingBottom="4dip" />
-
-            </LinearLayout>
-
-        </LinearLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-
 
     <FrameLayout
         android:id="@+id/frag_container"
@@ -112,35 +23,18 @@
             app:navGraph="@navigation/nav_graph" />
     </FrameLayout>
 
+    <include layout="@layout/player" />
 
-    <com.github.clans.fab.FloatingActionMenu
-        android:id="@+id/fab_menu"
-        android:layout_width="64dp"
-        android:layout_height="231dp"
-        android:layout_gravity="bottom|end"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="60dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:menu_colorNormal="@color/colorAccent">
 
-        <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/fab_upload"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_file_upload_white_24dp"
-            app:fab_colorNormal="@color/colorAccent"
-            app:fab_label="@string/upload_new" />
-
-        <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/fab_new_post"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_edit_white_24dp"
-            app:fab_colorNormal="@color/colorAccent"
-            app:fab_label="@string/post_new" />
-    </com.github.clans.fab.FloatingActionMenu>
-
+    <com.leinardi.android.speeddial.SpeedDialView
+        android:id="@+id/fabMenu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_anchor="@id/navigation"
+        app:layout_anchorGravity="end"
+        app:layout_behavior="@string/speeddial_scrolling_view_snackbar_behavior"
+        app:sdMainFabClosedSrc="@drawable/ic_add_white_24dp"
+        />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/navigation"
@@ -148,9 +42,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
+        app:layout_insetEdge="bottom"
         app:itemIconSize="25dp"
         app:itemIconTint="@drawable/bottom_nav_colors"
-        app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior"
+        app:layout_behavior="com.jazart.symphony.BottomNavigationBehavior"
         app:menu="@menu/navigation">
 
     </com.google.android.material.bottomnavigation.BottomNavigationView>

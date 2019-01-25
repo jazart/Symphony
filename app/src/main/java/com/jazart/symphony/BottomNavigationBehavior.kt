@@ -5,6 +5,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.Gravity
 import android.view.View
+import android.view.ViewGroup
 import android.view.animation.DecelerateInterpolator
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.ViewCompat
@@ -13,6 +14,9 @@ import kotlin.math.max
 import kotlin.math.min
 
 /**
+ *
+ * Extracted code from:
+ *
 MIT License
 Copyright (c) 2018 Valentin Hinov
 Permission is hereby granted, free of charge, to any person obtaining a copy

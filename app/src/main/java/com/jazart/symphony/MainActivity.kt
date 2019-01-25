@@ -17,20 +17,17 @@ import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.appcompat.app.AppCompatActivity
 
 import android.os.Looper
 import android.view.View
-import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.SeekBar
 import android.widget.TextView
 import android.widget.Toast
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 
-import com.github.clans.fab.FloatingActionMenu
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -54,8 +51,10 @@ import androidx.navigation.ui.NavigationUI
 import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.OnClick
+import com.leinardi.android.speeddial.SpeedDialView
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.player.*
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 
@@ -139,11 +138,15 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         checkPermissions()
     }
 
+    override fun onPause() {
+        super.onPause()
+        providerClient.removeLocationUpdates(locationCallback)
+    }
+
     override fun onStop() {
         super.onStop()
         disposables.clear()
         job.cancel()
-        providerClient.removeLocationUpdates(locationCallback)
     }
 
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -169,8 +172,17 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
 
 
     fun onFabClick() {
-        fab_upload.setOnClickListener { setURI() }
-        fab_new_post.setOnClickListener { startActivity(Intent(this@MainActivity, PostActivity::class.java)) }
+        fabMenu.inflate(R.menu.fab_menu)
+        fabMenu.setOnActionSelectedListener { item ->
+            when(item.id) {
+                R.id.new_post -> startActivity(Intent(this@MainActivity, PostActivity::class.java))
+                R.id.upload -> setURI()
+                else -> return@setOnActionSelectedListener false
+            }
+            return@setOnActionSelectedListener false
+        }
+//        fab_upload.setOnClickListener { setURI() }
+//        fab_new_post.setOnClickListener { startActivity(Intent(this@MainActivity, PostActivity::class.java)) }
     }
 
     private fun setURI() {
@@ -198,7 +210,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             if (songPlaying) {
                 exoPlayer!!.playWhenReady = false
                 songPlaying = false
-                btnPlay.setImageResource(android.R.drawable.ic_media_play)
+                btnPlay.setThumbResource(android.R.drawable.ic_media_play)
             } else {
 
                 exoPlayer!!.playWhenReady = true
@@ -211,7 +223,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                 hasSongStarted = true
 
                 songPlaying = true
-                btnPlay.setImageResource(android.R.drawable.ic_media_pause)
+                btnPlay.setThumbResource(android.R.drawable.ic_media_pause)
 
 
             }

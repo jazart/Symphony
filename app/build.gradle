@@ -51,7 +51,9 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha3'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     //fab library
-    implementation 'com.github.clans:fab:1.6.4'
+//    implementation 'com.github.clans:fab:1.6.4'
+    implementation "com.leinardi.android:speed-dial:2.0.0"
+
     //google play services
     implementation 'com.google.android.gms:play-services-auth:16.0.1'
     //firebase
