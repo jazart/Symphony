@@ -10,52 +10,35 @@ import android.media.AudioManager
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
-
-import com.google.android.exoplayer2.util.MimeTypes
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationCallback
-import com.google.android.gms.location.LocationRequest
-import com.google.android.gms.location.LocationResult
-import com.google.android.gms.location.LocationServices
-import androidx.fragment.app.FragmentManager
-import androidx.appcompat.app.AppCompatActivity
-
 import android.os.Looper
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.SeekBar
 import android.widget.TextView
 import android.widget.Toast
-import androidx.coordinatorlayout.widget.CoordinatorLayout
-
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentManager
+import androidx.navigation.Navigation
+import androidx.navigation.ui.NavigationUI
 import com.google.android.exoplayer2.SimpleExoPlayer
+import com.google.android.exoplayer2.util.MimeTypes
+import com.google.android.gms.location.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.jazart.symphony.di.App
+import com.jazart.symphony.featured.UploadDialog
 import com.jazart.symphony.location.LocationIntentService
 import com.jazart.symphony.playback.PlayerBoolean
 import com.jazart.symphony.posts.PostActivity
-import com.jazart.symphony.featured.UploadDialog
 import com.jazart.symphony.signup.SignUpActivity
 import com.tbruyelle.rxpermissions2.RxPermissions
-
-import java.util.Formatter
-import java.util.Locale
-import java.util.Objects
-
-import javax.inject.Inject
-
-import androidx.navigation.Navigation
-import androidx.navigation.ui.NavigationUI
-import butterknife.BindView
-import butterknife.ButterKnife
-import butterknife.OnClick
-import com.leinardi.android.speeddial.SpeedDialView
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.player.*
 import kotlinx.coroutines.*
+import java.util.*
+import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
 /**
@@ -78,7 +61,6 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         get() = job
 
     private var playerSeek: SeekBar? = null
-    private val mFragmentManager: FragmentManager? = null
 
     @Inject
     lateinit var exoPlayer: SimpleExoPlayer
@@ -154,7 +136,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             if (data != null) {
                 val URI = data.data
                 val uploadDialogFragment = UploadDialog.newInstance(Objects.requireNonNull(URI))
-                uploadDialogFragment.show(mFragmentManager!!, UploadDialog.TAG)
+                uploadDialogFragment.show(supportFragmentManager, UploadDialog.TAG)
             }
         }
     }
@@ -174,7 +156,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     fun onFabClick() {
         fabMenu.inflate(R.menu.fab_menu)
         fabMenu.setOnActionSelectedListener { item ->
-            when(item.id) {
+            when (item.id) {
                 R.id.new_post -> startActivity(Intent(this@MainActivity, PostActivity::class.java))
                 R.id.upload -> setURI()
                 else -> return@setOnActionSelectedListener false

@@ -12,9 +12,7 @@ import com.jazart.symphony.repository.LocationHelperRepo
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.*
-import kotlinx.coroutines.channels.Channel
 import java.io.FileInputStream
-import java.util.*
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
@@ -35,8 +33,8 @@ class SongViewModel @Inject constructor(val app: App) : BaseViewModel(), Corouti
     var songs: LiveData<List<Song>> = LocationHelperRepo.instance.nearbySongs
     val playing get() = _playing
     val snackbar: LiveData<Result> = _snackbar.toSingleEvent()
-    val percentageLiveData: LiveData<Int> = Transformations.map(_percentLiveData) { progress  ->
-            100.times(progress.toInt()).div(songSize)
+    val percentageLiveData: LiveData<Int> = Transformations.map(_percentLiveData) { progress ->
+        100.times(progress.toInt()).div(songSize)
 
     }
 
@@ -44,7 +42,7 @@ class SongViewModel @Inject constructor(val app: App) : BaseViewModel(), Corouti
         firebaseRepo
                 .addSongToStorage(song, songStream)
                 .observeOn(Schedulers.io())
-                .doOnNext{ bytesUploaded ->
+                .doOnNext { bytesUploaded ->
                     _percentLiveData.postValue(bytesUploaded)
                 }
                 .subscribeOn(AndroidSchedulers.mainThread())
@@ -53,7 +51,7 @@ class SongViewModel @Inject constructor(val app: App) : BaseViewModel(), Corouti
     }
 
     fun removeSongFromStorage(song: Song) {
-        if(firebaseRepo.remove(song)) {
+        if (firebaseRepo.remove(song)) {
             locationRepo.update()
             return
         }

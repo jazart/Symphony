@@ -48,6 +48,7 @@ class FeaturedMusicFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
         setupSwipeListener()
     }
+
     private fun setupAdapter() {
         musicAdapter = MusicAdapter(object : DiffUtil.ItemCallback<Song>() {
             override fun areContentsTheSame(oldItem: Song, newItem: Song) = oldItem == newItem
@@ -66,6 +67,7 @@ class FeaturedMusicFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     private fun loadSongs() {
         songsLiveData.observe(viewLifecycleOwner, Observer { songs ->
             hideProgress()
+            if (songs.isEmpty()) return@Observer
             musicAdapter.submitList(songs ?: listOf())
             swipeRefreshLayout.isRefreshing = false
         })

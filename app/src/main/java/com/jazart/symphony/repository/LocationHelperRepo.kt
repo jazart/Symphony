@@ -1,22 +1,17 @@
 package com.jazart.symphony.repository
 
+
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.jazart.symphony.Constants
+import com.jazart.symphony.Constants.*
 import com.jazart.symphony.model.Song
 import com.jazart.symphony.model.User
 import com.jazart.symphony.posts.Post
-
-import java.util.ArrayList
-
-
-import com.jazart.symphony.Constants.POSTS
-import com.jazart.symphony.Constants.SONGS
-import com.jazart.symphony.Constants.USERS
+import java.util.*
 
 /**
  * singleton class that serves as a hub for querying and propagating localized data to our other fragment classes
@@ -32,16 +27,6 @@ class LocationHelperRepo private constructor(uId: String) {
     val nearbySongs: LiveData<List<Song>>
     private val db = FirebaseFirestore.getInstance()
 
-//    private val userLocation: String
-//        get() {
-//            if (mUser!!.location != null) {
-//                val geoPoint = mUser!!.location
-//                val latitude = geoPoint.latitude.toString()
-//                val longitude = geoPoint.longitude.toString()
-//                return "$latitude,$longitude"
-//            }
-//            return "Unknown"
-//        }
 
     init {
         mReference = db.collection(USERS).document(uId)
@@ -80,7 +65,6 @@ class LocationHelperRepo private constructor(uId: String) {
             // No changes to the nearby user pool so no need to update the LiveData
             if (task.result?.documentChanges?.size == 0) return@query
             mNearbyUsers.setValue(task.result?.toObjects(User::class.java))
-
         }
     }
 

@@ -25,9 +25,9 @@ import kotlinx.android.synthetic.main.fragment_posts.*
  */
 
 class PostsFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
+
     private var postAdapter: PostAdapter? = null
     private lateinit var postsViewModel: PostsViewModel
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,14 +50,19 @@ class PostsFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
         recycler_view.adapter = postAdapter
         recycler_view.layoutManager = LinearLayoutManager(context)
-
+        swipeRefreshLayout.setOnRefreshListener(this)
         postsViewModel.userPostsLiveData
                 .observe(viewLifecycleOwner, Observer { posts ->
                     showProgressBar(true)
+                    if(posts.isEmpty()) return@Observer
                     postAdapter?.posts = posts
                     postAdapter?.notifyDataSetChanged()
                     swipeRefreshLayout.isRefreshing = false
                 })
+    }
+
+    override fun onRefresh() {
+        loadPosts()
     }
 
     private fun loadPosts() {
@@ -72,9 +77,5 @@ class PostsFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
             return
         }
         post_load_progress.visibility = View.VISIBLE
-    }
-
-    override fun onRefresh() {
-        loadPosts()
     }
 }

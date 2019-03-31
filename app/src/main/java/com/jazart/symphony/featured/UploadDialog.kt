@@ -29,8 +29,8 @@ import java.util.ArrayList
 class UploadDialog : DialogFragment(), DialogInterface.OnClickListener {
 
     private lateinit var songViewModel: SongViewModel
-    private lateinit var song: Song
-    lateinit var dialogView: View
+    private val song = Song()
+    private lateinit var dialogView: View
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
