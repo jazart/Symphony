@@ -17,7 +17,6 @@ import android.widget.SeekBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentManager
 import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
 import com.google.android.exoplayer2.SimpleExoPlayer
@@ -31,37 +30,25 @@ import com.jazart.symphony.featured.UploadDialog
 import com.jazart.symphony.location.LocationIntentService
 import com.jazart.symphony.playback.PlayerBoolean
 import com.jazart.symphony.posts.PostActivity
-import com.jazart.symphony.signup.SignUpActivity
 import com.tbruyelle.rxpermissions2.RxPermissions
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.player.*
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Runnable
 import java.util.*
 import javax.inject.Inject
-import kotlin.coroutines.CoroutineContext
 
 /**
  * Main entry point into the application. Here we create a custom view holder to house our fragments
  * which are shown using bottom navigation tabs. Each tab corresponds to a different fragment in the activity.
  * We also use this class to check if a user is signed in and send them to the sign in / sign up activity.
- * Permissions are checked and intents are built out for requesting data.
- *
- *
- * TODO: Refactor this class into a more passive view and break into manager classes to distribute it's responsibilities.
+ * Permissions are checked and intents are built out for requesting data.*
  */
 
-class MainActivity : AppCompatActivity(), CoroutineScope {
+class MainActivity : AppCompatActivity() {
     var songPlaying = false
     private val disposables = CompositeDisposable()
-
-
-    val job = Job() + Dispatchers.Main
-    override val coroutineContext: CoroutineContext
-        get() = job
-
-    private var playerSeek: SeekBar? = null
-
+    private lateinit var playerSeek: SeekBar
     @Inject
     lateinit var exoPlayer: SimpleExoPlayer
     private val finalTime: Long = 0
@@ -70,37 +57,58 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     private var txtEndTime: TextView? = null
     private var handler: Handler? = null
     private var hasSongStarted = false
-    private lateinit var locationCallback: LocationCallback
+    private val locationCallback: LocationCallback = buildLocationCallback()
     private lateinit var providerClient: FusedLocationProviderClient
     private val permissions: RxPermissions = RxPermissions(this)
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        providerClient = LocationServices.getFusedLocationProviderClient(this)
         setContentView(R.layout.activity_main)
-        buildLocationCallback()
-        onFabClick()
+        providerClient = LocationServices.getFusedLocationProviderClient(this)
         volumeControlStream = AudioManager.STREAM_MUSIC
+        mUser = FirebaseAuth.getInstance().currentUser
         inject()
-        val auth = FirebaseAuth.getInstance()
-        mUser = auth.currentUser
+        createNotificationChannel()
+        setupUi()
+    }
+
+    private fun setupUi() {
         val mediaController = findViewById<LinearLayout>(R.id.media_controller)
         mediaController.visibility = View.VISIBLE
         playerSeek = findViewById(R.id.mediacontroller_progress)
         setupExoPlayerViews()
+        onFabClick()
         val controller = Navigation.findNavController(findViewById(R.id.nav_host))
-        NavigationUI.setupWithNavController(navigation, controller)
-        createNotificationChannel()
+        controller.addOnDestinationChangedListener { _, destination, _ ->
+            if (destination.id == R.id.mainFlow) {
+                updateUi()
+                NavigationUI.setupWithNavController(navigation, controller)
+                checkPermissions()
+            }
+        }
+        if (mUser == null) {
+            controller.navigate(R.id.signupFragment)
+        } else {
+            buildLocationCallback()
+            NavigationUI.setupWithNavController(navigation, controller)
+            updateUi()
+            controller.navigate(R.id.mainFlow)
+        }
     }
 
-    private fun buildLocationCallback() {
-        locationCallback = object : LocationCallback() {
+    private fun updateUi() {
+        navigation.visibility = View.VISIBLE
+        fabMenu.visibility = View.VISIBLE
+        media_controller.visibility = View.VISIBLE
+    }
+
+    private fun buildLocationCallback(): LocationCallback {
+        return object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult?) {
                 super.onLocationResult(locationResult)
                 val intent = Intent(this@MainActivity, LocationIntentService::class.java)
-                intent.putExtra(EXTRA_USER, mUser!!.uid)
-                intent.putExtra("loc", locationResult!!.lastLocation)
+                intent.putExtra(EXTRA_USER, mUser?.uid)
+                intent.putExtra("loc", locationResult?.lastLocation)
                 LocationIntentService.enqueueWork(this@MainActivity, intent)
             }
         }
@@ -108,15 +116,6 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
 
     override fun onStart() {
         super.onStart()
-        if (mUser == null) {
-            val intent = Intent(this, SignUpActivity::class.java)
-            startActivity(intent)
-            finish()
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
         checkPermissions()
     }
 
@@ -128,7 +127,6 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     override fun onStop() {
         super.onStop()
         disposables.clear()
-        job.cancel()
     }
 
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -139,21 +137,22 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                 uploadDialogFragment.show(supportFragmentManager, UploadDialog.TAG)
             }
         }
+        super.onActivityResult(requestCode, resultCode, data)
     }
 
     private fun checkPermissions() {
         disposables.add(permissions.requestEach(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION)
                 .subscribe { permission ->
-                    if (permission.granted) {
+                    if (permission.granted && mUser != null) {
                         startLocationUpdates()
                     } else {
                         Toast.makeText(this, R.string.location_permission_req, Toast.LENGTH_SHORT).show()
                     }
-                })
+                }
+        )
     }
 
-
-    fun onFabClick() {
+    private fun onFabClick() {
         fabMenu.inflate(R.menu.fab_menu)
         fabMenu.setOnActionSelectedListener { item ->
             when (item.id) {
@@ -163,8 +162,6 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             }
             return@setOnActionSelectedListener false
         }
-//        fab_upload.setOnClickListener { setURI() }
-//        fab_new_post.setOnClickListener { startActivity(Intent(this@MainActivity, PostActivity::class.java)) }
     }
 
     private fun setURI() {
@@ -190,12 +187,12 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         }
         btnPlay.setOnClickListener { v ->
             if (songPlaying) {
-                exoPlayer!!.playWhenReady = false
+                exoPlayer.playWhenReady = false
                 songPlaying = false
                 btnPlay.setThumbResource(android.R.drawable.ic_media_play)
             } else {
 
-                exoPlayer!!.playWhenReady = true
+                exoPlayer.playWhenReady = true
 
                 initTxtTime()
                 if (!hasSongStarted) {
@@ -218,10 +215,8 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     }
 
     private fun stringForTime(timeMs: Int): String {
-        val mFormatBuilder: StringBuilder
-        val mFormatter: Formatter
-        mFormatBuilder = StringBuilder()
-        mFormatter = Formatter(mFormatBuilder, Locale.getDefault())
+        val mFormatBuilder = StringBuilder()
+        val mFormatter = Formatter(mFormatBuilder, Locale.getDefault())
         val totalSeconds = timeMs / 1000
 
         val seconds = totalSeconds % 60
@@ -237,21 +232,21 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     }
 
     private fun setProgress() {
-        playerSeek!!.progressDrawable.setColorFilter(resources.getColor(R.color.colorAccent, theme), PorterDuff.Mode.MULTIPLY)
-        playerSeek!!.progress = 0
-        playerSeek!!.max = exoPlayer!!.duration.toInt() / 1000
-        txtCurrentTime!!.text = stringForTime(exoPlayer!!.currentPosition.toInt())
-        txtEndTime!!.text = stringForTime(exoPlayer!!.duration.toInt())
+        playerSeek.progressDrawable.setColorFilter(resources.getColor(R.color.colorAccent, theme), PorterDuff.Mode.MULTIPLY)
+        playerSeek.progress = 0
+        playerSeek.max = exoPlayer.duration.toInt() / 1000
+        txtCurrentTime!!.text = stringForTime(exoPlayer.currentPosition.toInt())
+        txtEndTime!!.text = stringForTime(exoPlayer.duration.toInt())
 
         if (handler == null) handler = Handler()
         handler!!.post(object : Runnable {
             override fun run() {
-                if (exoPlayer != null && songPlaying) {
-                    playerSeek!!.max = exoPlayer!!.duration.toInt() / 1000
-                    val mCurrentPosition = exoPlayer!!.currentPosition.toInt() / 1000
-                    playerSeek!!.progress = mCurrentPosition
-                    txtCurrentTime!!.text = stringForTime(exoPlayer!!.currentPosition.toInt())
-                    txtEndTime!!.text = stringForTime(exoPlayer!!.duration.toInt())
+                if (songPlaying) {
+                    playerSeek.max = exoPlayer.duration.toInt() / 1000
+                    val mCurrentPosition = exoPlayer.currentPosition.toInt() / 1000
+                    playerSeek.progress = mCurrentPosition
+                    txtCurrentTime!!.text = stringForTime(exoPlayer.currentPosition.toInt())
+                    txtEndTime!!.text = stringForTime(exoPlayer.duration.toInt())
 
                     handler!!.postDelayed(this, 1000)
                 }
@@ -259,19 +254,16 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         })
     }
 
-
     private fun initSeekBar() {
-        playerSeek = findViewById(R.id.mediacontroller_progress)
-        playerSeek!!.requestFocus()
-
-        playerSeek!!.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+        playerSeek = findViewById(R.id.mediacontroller_progress) ?: return
+        playerSeek.requestFocus()
+        playerSeek.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                 if (!fromUser) {
 
                     return
                 }
-
-                exoPlayer!!.seekTo((progress * 1000).toLong())
+                exoPlayer.seekTo((progress * 1000).toLong())
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar) {
@@ -282,9 +274,8 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
 
             }
         })
-
-        playerSeek!!.max = 0
-        playerSeek!!.max = exoPlayer!!.duration.toInt() / 1000
+        playerSeek.max = 0
+        playerSeek.max = exoPlayer.duration.toInt() / 1000
     }
 
     private fun createNotificationChannel() {
@@ -302,7 +293,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     @SuppressLint("MissingPermission")
     private fun startLocationUpdates() {
         val request = LocationRequest()
-        //        request.setInterval(900_000L);
+//        request.setInterval(900_000L);
         request.interval = 3000L // Test duration
         providerClient.requestLocationUpdates(request, locationCallback, Looper.myLooper())
     }
@@ -327,4 +318,3 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         val playerCreated = PlayerBoolean()
     }
 }
-

@@ -15,16 +15,20 @@
       },
       "oauth_client": [
         {
-          "client_id": "869046089685-1eja9jhclu8763hdll6ai1gd8s057a8s.apps.googleusercontent.com",
+          "client_id": "869046089685-9da6thfc2pgfi0elpipcfo3hidae6h3q.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.jazart.symphony",
-            "certificate_hash": "3461d7397a9c6ef88325075f16935a7dab4b2f09"
+            "certificate_hash": "a887b7900919cc581e0fec76c68d400412455346"
           }
         },
         {
-          "client_id": "869046089685-h14ulo71gpvoeoh216jr2q0tn9emelqb.apps.googleusercontent.com",
-          "client_type": 3
+          "client_id": "869046089685-pb7vosb2ud9j6q6d1l3h371a2s629keg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.jazart.symphony",
+            "certificate_hash": "97eac043f625f9fca02a8ba8dc5843908d359385"
+          }
         }
       ],
       "api_key": [
@@ -33,20 +37,20 @@
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "869046089685-h14ulo71gpvoeoh216jr2q0tn9emelqb.apps.googleusercontent.com",
+              "client_id": "869046089685-nhpb76tkubtmuplai7p6gg420n5aeuq1.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "869046089685-28d69bm833r2s7vb3f1m9n88n7ql77l5.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "jazart.Symphony"
+              }
             }
           ]
-        },
-        "ads_service": {
-          "status": 2
         }
       }
     }

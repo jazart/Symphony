@@ -23,13 +23,15 @@
             app:navGraph="@navigation/nav_graph" />
     </FrameLayout>
 
-    <include layout="@layout/player" />
+    <include layout="@layout/player"
+        android:visibility="gone"/>
 
 
     <com.leinardi.android.speeddial.SpeedDialView
         android:id="@+id/fabMenu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         app:layout_anchor="@id/navigation"
         app:layout_anchorGravity="end"
         app:layout_behavior="@string/speeddial_scrolling_view_snackbar_behavior"
@@ -42,6 +44,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
+        android:visibility="gone"
         app:layout_insetEdge="bottom"
         app:itemIconSize="25dp"
         app:itemIconTint="@drawable/bottom_nav_colors"

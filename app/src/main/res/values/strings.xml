@@ -4,9 +4,9 @@
     <string name="title_music">Posts</string>
     <string name="title_events">Events</string>
     <string name="upload_new">New Upload</string>
-    <string name="web_client_id">869046089685-h14ulo71gpvoeoh216jr2q0tn9emelqb.apps.googleusercontent.com</string>
+    <string name="web_client_id">869046089685-nhpb76tkubtmuplai7p6gg420n5aeuq1.apps.googleusercontent.com</string>
     <string name="email_password">Email/Password</string>
-    <string name="sign_in">Sign-in</string>
+    <string name="sign_in">Log in to Symphony via: </string>
     <string name="sign_up">Sign-up</string>
     <string name="email">Email</string>
     <string name="password">Password</string>

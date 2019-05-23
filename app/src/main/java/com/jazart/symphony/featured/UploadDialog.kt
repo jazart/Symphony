@@ -11,7 +11,6 @@ import android.os.Bundle
 import android.provider.MediaStore
 import androidx.annotation.NonNull
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.FragmentManager
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -74,11 +73,11 @@ class UploadDialog : DialogFragment(), DialogInterface.OnClickListener {
 
     }
 
-    override fun show(manager: FragmentManager, tag: String) {
-        manager.beginTransaction()
-                .add(this, tag)
-                .commitAllowingStateLoss()
-    }
+//    override fun show(manager: FragmentManager, tag: String) {
+//        manager.beginTransaction()
+//                .add(this, tag)
+//                .commitAllowingStateLoss()
+//    }
 
     override fun onClick(dialogInterface: DialogInterface, i: Int) {
         val result = artistsFromUi()

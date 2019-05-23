@@ -34,9 +34,6 @@
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".signup.SignUpActivity"
-            android:launchMode="singleTop" />
         <activity android:name=".posts.PostActivity" />
 
         <service

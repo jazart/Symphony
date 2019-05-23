@@ -69,7 +69,6 @@ public class LocationIntentService extends JobIntentService {
         }
     }
 
-
     @Override
     protected void onHandleWork(@NonNull Intent intent) {
         userId = intent.getStringExtra(MainActivity.getEXTRA_USER());
