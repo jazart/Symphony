@@ -25,7 +25,9 @@ open class BaseViewModel
     fun getNearbyUsers() {}
 
     fun refreshContent() {
-        locationRepo.update()
+        viewModelScope.launch {
+            locationRepo.update()
+        }
     }
 
     fun load() {

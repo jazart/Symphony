@@ -12,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import androidx.annotation.NonNull
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.jazart.symphony.R
@@ -21,6 +22,7 @@ import com.jazart.symphony.model.Song
 import kotlinx.android.synthetic.main.fragment_upload_dialog.view.*
 import java.io.FileInputStream
 import java.io.FileNotFoundException
+import java.lang.IllegalStateException
 import java.util.*
 
 
@@ -71,11 +73,15 @@ class UploadDialog : DialogFragment(), DialogInterface.OnClickListener {
 
     }
 
-//    override fun show(manager: FragmentManager, tag: String) {
-//        manager.beginTransaction()
-//                .add(this, tag)
-//                .commitAllowingStateLoss()
-//    }
+    override fun show(manager: FragmentManager, tag: String?) {
+        try {
+            manager.beginTransaction()
+                    .add(this, tag)
+                    .commitAllowingStateLoss()
+        } catch (e: IllegalStateException) {
+            super.show(manager, tag)
+        }
+    }
 
     override fun onClick(dialogInterface: DialogInterface, i: Int) {
         val result = artistsFromUi()

@@ -27,7 +27,6 @@ class SwipeController(val context: Context,
         val pos = viewHolder.adapterPosition
         mSongsLiveData.value?.get(pos)?.let { song ->
             songsViewModel.removeSongFromStorage(song)
-            musicAdapter.notifyDataSetChanged()
         }
     }
 

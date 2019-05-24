@@ -3,6 +3,7 @@ package com.jazart.symphony.featured
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
+import androidx.lifecycle.viewModelScope
 import com.jazart.symphony.BaseViewModel
 import com.jazart.symphony.Error
 import com.jazart.symphony.Result
@@ -30,7 +31,7 @@ class SongViewModel @Inject constructor(val app: App) : BaseViewModel(), Corouti
     private val _snackbar = MutableLiveData<Result>()
     private var songSize = 1
 
-    var songs: LiveData<List<Song>>? = LocationHelperRepo.instance.nearbySongs
+    var songs: LiveData<List<Song>> = LocationHelperRepo.instance.nearbySongs
     val playing get() = _playing
     val snackbar: LiveData<Result> = _snackbar.toSingleEvent()
     val percentageLiveData: LiveData<Int> = Transformations.map(_percentLiveData) { progress ->
@@ -52,10 +53,12 @@ class SongViewModel @Inject constructor(val app: App) : BaseViewModel(), Corouti
 
     fun removeSongFromStorage(song: Song) {
         if (firebaseRepo.remove(song)) {
-            locationRepo.update()
+            viewModelScope.launch {
+                locationRepo.update()
+            }
             return
         }
-        launch {
+        viewModelScope.launch {
             _snackbar.postValue(Result.Failure(message = Error.ILLEGAL_ACCESS))
         }
     }

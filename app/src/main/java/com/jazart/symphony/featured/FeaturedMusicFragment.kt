@@ -59,7 +59,7 @@ class FeaturedMusicFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
     private fun loadSongs() {
         songsViewModel.load()
-        songsViewModel.songs?.observe(viewLifecycleOwner, Observer { songs ->
+        songsViewModel.songs.observe(viewLifecycleOwner, Observer { songs ->
             hideProgress()
             musicAdapter.submitList(songs ?: listOf())
             swipeRefreshLayout.isRefreshing = false
