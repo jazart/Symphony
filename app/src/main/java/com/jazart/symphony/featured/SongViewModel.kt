@@ -51,16 +51,17 @@ class SongViewModel @Inject constructor(val app: App) : BaseViewModel(), Corouti
         songSize = size.toInt()
     }
 
-    fun removeSongFromStorage(song: Song) {
+    fun removeSongFromStorage(song: Song): Boolean {
         if (firebaseRepo.remove(song)) {
             viewModelScope.launch {
                 locationRepo.update()
             }
-            return
+            return true
         }
         viewModelScope.launch {
             _snackbar.postValue(Result.Failure(message = Error.ILLEGAL_ACCESS))
         }
+        return false
     }
 
     override fun onCleared() {

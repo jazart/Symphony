@@ -33,12 +33,15 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <ImageView
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/delete_post_iv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                app:srcCompat="@android:drawable/ic_delete"/>
+                android:layout_weight="2"
+                android:backgroundTint="@android:color/white"
+                app:iconTint="@color/colorPrimary"
+                app:rippleColor="@color/colorAccent"
+                app:icon="@drawable/ic_delete_white_32dp" />
 
             <TextView
                 android:id="@+id/post_title"

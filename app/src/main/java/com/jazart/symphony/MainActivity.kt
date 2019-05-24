@@ -139,7 +139,7 @@ class MainActivity : AppCompatActivity() {
             if (data != null) {
                 val uri = data.data ?: return
                 controller.navigate(MainFlowDirections.actionToUploadDialog(uri.toString()))
-//                uploadDialogFragment.show(supportFragmentManager, UploadDialog.TAG)
+
             }
         }
     }

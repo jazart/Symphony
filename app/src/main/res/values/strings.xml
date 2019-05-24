@@ -46,4 +46,6 @@
     <string name="channel_name">Location Update</string>
     <string name="channel_description">Location Notification Chanel</string>
     <string name="acq_loc">Acquiring location</string>
+    <string name="profile">Profile</string>
+    <string name="friends">Friends</string>
 </resources>

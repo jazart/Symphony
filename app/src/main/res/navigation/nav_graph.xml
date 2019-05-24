@@ -29,7 +29,11 @@
             android:id="@+id/featuredMusicFragment"
             android:name="com.jazart.symphony.featured.FeaturedMusicFragment"
             android:label="FeaturedMusicFragment"
-            tools:layout="@layout/feature_music_fragment" />
+            tools:layout="@layout/feature_music_fragment" >
+            <action
+                android:id="@+id/action_featuredMusicFragment_to_profileFragment"
+                app:destination="@id/profileFragment" />
+        </fragment>
         <fragment
             android:id="@+id/postsFragment"
             android:name="com.jazart.symphony.posts.PostsFragment"
@@ -53,6 +57,10 @@
                 android:name="songUri"
                 app:argType="string" />
         </dialog>
+        <fragment
+            android:id="@+id/profileFragment"
+            android:name="com.jazart.symphony.ProfileFragment"
+            android:label="ProfileFragment" />
     </navigation>
     <dialog
         android:id="@+id/termsFragment"

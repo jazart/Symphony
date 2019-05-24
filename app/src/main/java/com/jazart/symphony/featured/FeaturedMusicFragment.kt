@@ -36,6 +36,13 @@ class FeaturedMusicFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
         inject()
         setupAdapter()
         featured_songs_toolbar.inflateMenu(R.menu.featured_music_menu)
+        featured_songs_toolbar.setOnMenuItemClickListener{item ->
+            if(item.itemId == R.id.profileIcon){
+                findNavController().navigate(R.id.profileFragment)
+                return@setOnMenuItemClickListener true
+            }
+            return@setOnMenuItemClickListener false
+        }
         loadSongs()
         setupSnackbarBehavior()
         swipeRefreshLayout.setOnRefreshListener(this)
@@ -59,6 +66,10 @@ class FeaturedMusicFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
     private fun loadSongs() {
         songsViewModel.load()
+        songsViewModel.snackbar.observe(viewLifecycleOwner, Observer { result ->
+            view?.let { Snackbar.make(it, "Song does not belong to you", Snackbar.LENGTH_SHORT).show() }
+            musicAdapter.submitList(songsViewModel.songs.value)
+        })
         songsViewModel.songs.observe(viewLifecycleOwner, Observer { songs ->
             hideProgress()
             musicAdapter.submitList(songs ?: listOf())
