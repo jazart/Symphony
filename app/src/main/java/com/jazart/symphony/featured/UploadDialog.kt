@@ -3,48 +3,46 @@ package com.jazart.symphony.featured
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.Dialog
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import android.content.DialogInterface
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import androidx.annotation.NonNull
-import androidx.fragment.app.DialogFragment
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import androidx.annotation.NonNull
+import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import com.jazart.symphony.R
 import com.jazart.symphony.di.App
 import com.jazart.symphony.di.SimpleViewModelFactory
 import com.jazart.symphony.model.Song
 import kotlinx.android.synthetic.main.fragment_upload_dialog.view.*
-
 import java.io.FileInputStream
 import java.io.FileNotFoundException
-import java.util.ArrayList
+import java.util.*
 
 
 class UploadDialog : DialogFragment(), DialogInterface.OnClickListener {
 
-    private lateinit var songViewModel: SongViewModel
+    private val songViewModel: SongViewModel by viewModels {
+        SimpleViewModelFactory {
+            SongViewModel(activity?.application as App)
+        }
+    }
     private val song = Song()
     private lateinit var dialogView: View
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         inject()
-        songViewModel = ViewModelProviders.of(this, SimpleViewModelFactory {
-            SongViewModel(activity?.application as App)
-        }).get(SongViewModel::class.java)
         arguments?.run {
             getString(ARG_URI)?.let { song.uri = it }
         }
 
         updateProgress()
     }
-
 
     @SuppressLint("InflateParams")
     @NonNull

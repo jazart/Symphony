@@ -3,15 +3,19 @@ package com.jazart.symphony.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
+import androidx.lifecycle.liveData
+import androidx.lifecycle.switchMap
+import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
-import com.jazart.symphony.Constants
 import com.jazart.symphony.Constants.*
 import com.jazart.symphony.model.Song
 import com.jazart.symphony.model.User
 import com.jazart.symphony.posts.Post
+import kotlinx.coroutines.Dispatchers
 import java.util.*
+import kotlin.coroutines.resumeWithException
+import kotlin.coroutines.suspendCoroutine
 
 /**
  * singleton class that serves as a hub for querying and propagating localized data to our other fragment classes
@@ -19,30 +23,32 @@ import java.util.*
  * Here we make several calls to find users in the same city and expose their posts and data to other users
  */
 
-class LocationHelperRepo private constructor(uId: String) {
+class LocationHelperRepo private constructor(private val uId: String) {
     private var mUser: User? = null
-    private val mReference: DocumentReference
-    private val mNearbyUsers: MutableLiveData<List<User>>
-    val nearbyPosts: LiveData<List<Post>>
-    val nearbySongs: LiveData<List<Song>>
+    private val mNearbyUsers = MutableLiveData<List<User>>()
+    var nearbyPosts: LiveData<List<Post>>? = null
+    var nearbySongs: LiveData<List<Song>>? = null
     private val db = FirebaseFirestore.getInstance()
-
-
-    init {
-        mReference = db.collection(USERS).document(uId)
-        mNearbyUsers = MutableLiveData()
-        getUserById()
-
-        nearbySongs = Transformations.switchMap(mNearbyUsers) { this.findNearbySongs(it) }
-
-        nearbyPosts = Transformations.switchMap(mNearbyUsers) { this.findNearbyPosts(it) }
-    }
-
+    private var mReference: DocumentReference = db.collection(USERS).document(uId)
 
     companion object {
         @JvmStatic
         val instance: LocationHelperRepo by lazy {
             LocationHelperRepo(FirebaseRepo.firebaseRepoInstance.currentUser!!.uid)
+        }
+    }
+
+    suspend fun initBackground() {
+        getUserById()
+        nearbySongs = mNearbyUsers.switchMap { users ->
+            liveData(Dispatchers.Default) {
+                emit(findNearbySongs(users))
+            }
+        }
+        nearbyPosts = mNearbyUsers.switchMap { users ->
+            liveData(Dispatchers.Default) {
+                emit(getQueryData<Post>(POSTS))
+            }
         }
     }
 
@@ -59,15 +65,14 @@ class LocationHelperRepo private constructor(uId: String) {
 
     private fun findNearbyUsers() {
         val query = db.collection(USERS).whereEqualTo("city", mUser!!.city)
-                .orderBy(Constants.NAME)
+                .orderBy(NAME)
                 .limit(50)
         query.get().addOnCompleteListener query@{ task ->
-            // No changes to the nearby user pool so no need to update the LiveData
             if (task.result?.documentChanges?.size == 0) return@query
-            mNearbyUsers.setValue(task.result?.toObjects(User::class.java))
+            val nearbyUsers = task.result?.toObjects(User::class.java)
+            mNearbyUsers.value = nearbyUsers
         }
     }
-
 
     private fun findNearbyPosts(nearbyUsers: List<User>): LiveData<List<Post>> {
         val reference = db.collection(POSTS)
@@ -93,45 +98,49 @@ class LocationHelperRepo private constructor(uId: String) {
         return postLiveData
     }
 
-    private fun findNearbySongs(nearbyUsers: List<User>): LiveData<List<Song>> {
+    private suspend fun findNearbySongs(nearbyUsers: List<User>): List<Song> {
         val reference = db.collection(SONGS)
-        val songsLiveData = MutableLiveData<List<Song>>()
-        val songs = ArrayList<Song>()
-
+        val result = mutableListOf<Song>()
         nearbyUsers.forEach { user ->
-            reference.whereEqualTo("author", user.id).limit(10)
-                    .get()
-                    .addOnSuccessListener { task ->
-                        for (j in 0 until task.documents.size) {
-                            val song = task.toObjects(Song::class.java)[j]
-                            song.id = task.documents[j].id
-                            songs.add(song)
-                        }
-                    }
+            result.addAll(
+                    reference.whereEqualTo("author", user.id).limit(10)
+                            .get()
+                            .await()
+                            .toObjects(Song::class.java)
+                            .toList()
+            )
         }
-        songsLiveData.value = songs
-        return songsLiveData
+        return result
     }
 
-//    private fun determineIfUpdateNecessary(): Boolean {
-//        return mUser!!.city == userLocation
-//    }
-
-    private inline fun <reified T> getQueryData(vararg params: String): LiveData<T> {
-        val liveData = MutableLiveData<List<T>>()
-        if (params.isEmpty()) return MutableLiveData()
+    private suspend inline fun <reified T> getQueryData(vararg params: String): List<T> {
         val ref = db.collection(params[0])
-        mNearbyUsers.value
-                ?.forEach { user ->
+        return mNearbyUsers.value
+                ?.flatMap { user ->
                     ref.whereEqualTo("author", user.id)
                             .limit(10)
                             .get()
-                            .addOnSuccessListener { task ->
-                                liveData.value = task.toObjects(T::class.java)
-                            }
-
-                }
-        return MutableLiveData()
+                            .await()
+                            .toObjects(T::class.java)
+                            .toList()
+                } ?: return listOf()
     }
-
 }
+
+suspend fun <T> Task<T>.await(): T {
+    return suspendCoroutine { cont ->
+        addOnSuccessListener { data -> cont.resumeWith(Result.success(data)) }
+        addOnFailureListener { result -> cont.resumeWithException(result) }
+    }
+}
+
+//class LocationMediatorLiveData : MediatorLiveData<List<User>>() {
+//
+//    override fun <S : Any?> addSource(source: LiveData<S>, onChanged: Observer<in S>) {
+//        super.addSource(source, onChanged)
+//        withContext(Dispatchers.Default) {
+//            l
+//        }
+//    }
+//}
+

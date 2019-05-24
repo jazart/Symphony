@@ -85,6 +85,11 @@
                                 <LayoutPositions />
                               </value>
                             </entry>
+                            <entry key="action_signupFragment_to_termsFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
                           </map>
                         </option>
                       </LayoutPositions>

@@ -6,9 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.Nullable
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.*
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -24,29 +23,22 @@ import kotlinx.android.synthetic.main.feature_music_fragment.*
 
 class FeaturedMusicFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     private lateinit var musicAdapter: MusicAdapter
-    private lateinit var songsViewModel: SongViewModel
-    private lateinit var songsLiveData: LiveData<List<Song>>
+    private val songsViewModel by viewModels<SongViewModel> {
+        SimpleViewModelFactory { SongViewModel(app()) }
+    }
 
     @Nullable
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val v = LayoutInflater.from(context).inflate(R.layout.feature_music_fragment, container, false)
-        inject()
-
-        songsViewModel = ViewModelProviders.of(this, SimpleViewModelFactory {
-            SongViewModel(app())
-        }).get(SongViewModel::class.java)
-        songsLiveData = songsViewModel.songs
-        return v
+        return LayoutInflater.from(context).inflate(R.layout.feature_music_fragment, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        inject()
         setupAdapter()
         featured_songs_toolbar.inflateMenu(R.menu.featured_music_menu)
         loadSongs()
-
         setupSnackbarBehavior()
         swipeRefreshLayout.setOnRefreshListener(this)
-
         setupSwipeListener()
     }
 
@@ -60,15 +52,15 @@ class FeaturedMusicFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     }
 
     private fun setupSwipeListener() {
-        val swipeController = SwipeController(requireContext(), songsViewModel, songsLiveData, musicAdapter)
-        val itemTouchHelper = ItemTouchHelper(swipeController)
-        itemTouchHelper.attachToRecyclerView(featured_songs)
+        val swipeController = songsViewModel.songs?.let { SwipeController(requireContext(), songsViewModel, it, musicAdapter) }
+        val itemTouchHelper = swipeController?.let { ItemTouchHelper(it) }
+        itemTouchHelper?.attachToRecyclerView(featured_songs)
     }
 
     private fun loadSongs() {
-        songsLiveData.observe(viewLifecycleOwner, Observer { songs ->
+        songsViewModel.load()
+        songsViewModel.songs?.observe(viewLifecycleOwner, Observer { songs ->
             hideProgress()
-            if (songs.isEmpty()) return@Observer
             musicAdapter.submitList(songs ?: listOf())
             swipeRefreshLayout.isRefreshing = false
         })
@@ -98,4 +90,5 @@ class FeaturedMusicFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
         app().component.inject(this)
     }
 }
+
 

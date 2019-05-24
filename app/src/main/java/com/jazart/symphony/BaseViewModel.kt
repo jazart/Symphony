@@ -1,8 +1,10 @@
 package com.jazart.symphony
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.jazart.symphony.repository.FirebaseRepo
 import com.jazart.symphony.repository.LocationHelperRepo
+import kotlinx.coroutines.launch
 
 open class BaseViewModel
     : ViewModel() {
@@ -24,5 +26,11 @@ open class BaseViewModel
 
     fun refreshContent() {
         locationRepo.update()
+    }
+
+    fun load() {
+        viewModelScope.launch {
+            locationRepo.initBackground()
+        }
     }
 }
