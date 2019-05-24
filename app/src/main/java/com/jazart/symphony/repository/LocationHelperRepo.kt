@@ -4,6 +4,7 @@ package com.jazart.symphony.repository
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.tasks.Task
+import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.jazart.symphony.Constants.*
@@ -22,10 +23,10 @@ import kotlin.coroutines.suspendCoroutine
 class LocationHelperRepo private constructor(uId: String) {
     private var mUser: User? = null
     private val mNearbyUsers = MutableLiveData<List<User>>()
-    private var _nearbyPosts = MutableLiveData<List<Post>>()
-    private var _nearbySongs = MutableLiveData<List<Song>>()
-    var nearbyPosts: LiveData<List<Post>> = _nearbyPosts
-    var nearbySongs: LiveData<List<Song>> = _nearbySongs
+    private val _nearbyPosts = MutableLiveData<List<Post>>()
+    private val _nearbySongs = MutableLiveData<List<Song>>()
+    val nearbyPosts: LiveData<List<Post>> = _nearbyPosts
+    val nearbySongs: LiveData<List<Song>> = _nearbySongs
     private val db = FirebaseFirestore.getInstance()
     private val mReference: DocumentReference = db.collection(USERS).document(uId)
 

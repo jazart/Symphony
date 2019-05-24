@@ -15,6 +15,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.navArgs
 import com.jazart.symphony.R
 import com.jazart.symphony.di.App
 import com.jazart.symphony.di.SimpleViewModelFactory
@@ -33,16 +34,14 @@ class UploadDialog : DialogFragment(), DialogInterface.OnClickListener {
             SongViewModel(activity?.application as App)
         }
     }
+    private val args: UploadDialogArgs by navArgs()
     private val song = Song()
     private lateinit var dialogView: View
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         inject()
-        arguments?.run {
-            getString(ARG_URI)?.let { song.uri = it }
-        }
-
+        song.uri = args.songUri
         updateProgress()
     }
 

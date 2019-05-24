@@ -12,15 +12,19 @@
         tools:layout="@layout/signup_fragment">
         <action
             android:id="@+id/action_signupFragment_to_featuredMusicFragment"
-            app:destination="@id/mainFlow" />
+            app:destination="@id/main_flow" />
         <action
             android:id="@+id/action_signupFragment_to_termsFragment"
             app:destination="@id/termsFragment" />
     </fragment>
 
     <navigation
-        android:id="@+id/mainFlow"
+        android:id="@+id/main_flow"
         app:startDestination="@id/featuredMusicFragment">
+
+        <action
+            android:id="@+id/action_to_uploadDialog"
+            app:destination="@id/uploadDialog"/>
         <fragment
             android:id="@+id/featuredMusicFragment"
             android:name="com.jazart.symphony.featured.FeaturedMusicFragment"
@@ -40,6 +44,15 @@
             android:name="com.jazart.symphony.posts.PostDetailFragment"
             android:label="fragment_post_detail"
             tools:layout="@layout/fragment_post_detail" />
+        <dialog
+            android:id="@+id/uploadDialog"
+            android:name="com.jazart.symphony.featured.UploadDialog"
+            android:label="UploadDialog"
+            tools:layout="@layout/fragment_upload_dialog">
+            <argument
+                android:name="songUri"
+                app:argType="string" />
+        </dialog>
     </navigation>
     <dialog
         android:id="@+id/termsFragment"

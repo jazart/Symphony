@@ -17,6 +17,7 @@ import android.widget.SeekBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
 import com.google.android.exoplayer2.SimpleExoPlayer
@@ -30,6 +31,7 @@ import com.jazart.symphony.featured.UploadDialog
 import com.jazart.symphony.location.LocationIntentService
 import com.jazart.symphony.playback.PlayerBoolean
 import com.jazart.symphony.posts.PostActivity
+import com.jazart.symphony.signup.SignupFragmentDirections
 import com.tbruyelle.rxpermissions2.RxPermissions
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_main.*
@@ -60,6 +62,7 @@ class MainActivity : AppCompatActivity() {
     private val locationCallback: LocationCallback = buildLocationCallback()
     private lateinit var providerClient: FusedLocationProviderClient
     private val permissions: RxPermissions = RxPermissions(this)
+    private lateinit var controller: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,9 +81,9 @@ class MainActivity : AppCompatActivity() {
         playerSeek = findViewById(R.id.mediacontroller_progress)
         setupExoPlayerViews()
         onFabClick()
-        val controller = Navigation.findNavController(findViewById(R.id.nav_host))
+        controller = Navigation.findNavController(findViewById(R.id.nav_host))
         controller.addOnDestinationChangedListener { _, destination, _ ->
-            if (destination.id == R.id.mainFlow) {
+            if (destination.id == R.id.main_flow) {
                 updateUi()
                 NavigationUI.setupWithNavController(navigation, controller)
                 checkPermissions()
@@ -92,7 +95,7 @@ class MainActivity : AppCompatActivity() {
             buildLocationCallback()
             NavigationUI.setupWithNavController(navigation, controller)
             updateUi()
-            controller.navigate(R.id.mainFlow)
+            controller.navigate(R.id.main_flow)
         }
     }
 
@@ -130,14 +133,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
         if (requestCode == URI_REQUEST) {
             if (data != null) {
-                val URI = data.data
-                val uploadDialogFragment = UploadDialog.newInstance(Objects.requireNonNull(URI))
-                uploadDialogFragment.show(supportFragmentManager, UploadDialog.TAG)
+                val uri = data.data ?: return
+                controller.navigate(MainFlowDirections.actionToUploadDialog(uri.toString()))
+//                uploadDialogFragment.show(supportFragmentManager, UploadDialog.TAG)
             }
         }
-        super.onActivityResult(requestCode, resultCode, data)
     }
 
     private fun checkPermissions() {

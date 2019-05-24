@@ -8,50 +8,29 @@
             <LayoutPositions>
               <option name="myPositions">
                 <map>
-                  <entry key="mainFlow">
+                  <entry key="main_flow">
                     <value>
                       <LayoutPositions>
-                        <option name="myPosition">
-                          <Point>
-                            <option name="x" value="256" />
-                            <option name="y" value="121" />
-                          </Point>
-                        </option>
                         <option name="myPositions">
                           <map>
+                            <entry key="action_to_uploadDialog">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
                             <entry key="featuredMusicFragment">
                               <value>
-                                <LayoutPositions>
-                                  <option name="myPosition">
-                                    <Point>
-                                      <option name="x" value="12" />
-                                      <option name="y" value="12" />
-                                    </Point>
-                                  </option>
-                                </LayoutPositions>
+                                <LayoutPositions />
                               </value>
                             </entry>
                             <entry key="postDetailFragment">
                               <value>
-                                <LayoutPositions>
-                                  <option name="myPosition">
-                                    <Point>
-                                      <option name="x" value="256" />
-                                      <option name="y" value="368" />
-                                    </Point>
-                                  </option>
-                                </LayoutPositions>
+                                <LayoutPositions />
                               </value>
                             </entry>
                             <entry key="postsFragment">
                               <value>
                                 <LayoutPositions>
-                                  <option name="myPosition">
-                                    <Point>
-                                      <option name="x" value="12" />
-                                      <option name="y" value="368" />
-                                    </Point>
-                                  </option>
                                   <option name="myPositions">
                                     <map>
                                       <entry key="action_postsFragment_to_postDetailFragment">
@@ -64,6 +43,11 @@
                                 </LayoutPositions>
                               </value>
                             </entry>
+                            <entry key="uploadDialog">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
                           </map>
                         </option>
                       </LayoutPositions>
@@ -72,12 +56,6 @@
                   <entry key="signupFragment">
                     <value>
                       <LayoutPositions>
-                        <option name="myPosition">
-                          <Point>
-                            <option name="x" value="12" />
-                            <option name="y" value="12" />
-                          </Point>
-                        </option>
                         <option name="myPositions">
                           <map>
                             <entry key="action_signupFragment_to_featuredMusicFragment">
@@ -97,14 +75,7 @@
                   </entry>
                   <entry key="termsFragment">
                     <value>
-                      <LayoutPositions>
-                        <option name="myPosition">
-                          <Point>
-                            <option name="x" value="224" />
-                            <option name="y" value="253" />
-                          </Point>
-                        </option>
-                      </LayoutPositions>
+                      <LayoutPositions />
                     </value>
                   </entry>
                 </map>

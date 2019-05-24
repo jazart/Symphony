@@ -15,7 +15,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -108,7 +107,7 @@ public class SignupFragment extends Fragment {
                         // Sign in success, update UI with the signed-in user's information
                         Log.d(TAG, "signInWithCredential:success");
                         addToDb();
-                        NavHostFragment.findNavController(this).navigate(R.id.mainFlow);
+                        NavHostFragment.findNavController(this).navigate(R.id.main_flow);
                     } else {
                         // If sign in fails, display a message to the user.
                         Log.w(TAG, "signInWithCredential:failure", task.getException());
