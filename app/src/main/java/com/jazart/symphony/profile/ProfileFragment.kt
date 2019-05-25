@@ -1,5 +1,6 @@
-package com.jazart.symphony
+package com.jazart.symphony.profile
 
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +8,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
+import com.jazart.symphony.R
+import com.jazart.symphony.posts.PostsFragment
 import kotlinx.android.synthetic.main.profile_fragment.*
 
 class ProfileFragment : Fragment() {
@@ -19,6 +24,15 @@ class ProfileFragment : Fragment() {
         val adapter = fragmentManager?.let { ProfileAdapter(it) } ?: return
         profileViewPager.adapter = adapter
         profileTabLayout.setupWithViewPager(profileViewPager)
+        loadProfilePic(Uri.parse("google.com"))
+    }
+
+    private fun loadProfilePic(uri: Uri) {
+        Glide.with(this)
+                .load(uri)
+                .apply(RequestOptions().circleCrop().placeholder(resources.getDrawable(R.drawable.ic_account_circle_black_24dp, null)))
+                .into(profilePicture)
+
     }
 
 }
@@ -33,11 +47,12 @@ internal class ProfileAdapter(fm: FragmentManager) :
             else -> throw IllegalArgumentException()
         }
     }
+
     override fun getItem(position: Int): Fragment =
             when (position) {
-                0 -> Fragment()
-                1 -> Fragment()
-                2 -> Fragment()
+                0 -> UserSongsFragment()
+                1 -> PostsFragment()
+                2 -> UserFriendsFragment()
                 else -> throw IllegalArgumentException()
             }
 

@@ -59,7 +59,7 @@
         </dialog>
         <fragment
             android:id="@+id/profileFragment"
-            android:name="com.jazart.symphony.ProfileFragment"
+            android:name="com.jazart.symphony.profile.ProfileFragment"
             android:label="ProfileFragment" />
     </navigation>
     <dialog

@@ -25,10 +25,14 @@ class LocationHelperRepo private constructor(uId: String) {
     private val mNearbyUsers = MutableLiveData<List<User>>()
     private val _nearbyPosts = MutableLiveData<List<Post>>()
     private val _nearbySongs = MutableLiveData<List<Song>>()
+    private val _userSongs = MutableLiveData<List<Song>>()
     val nearbyPosts: LiveData<List<Post>> = _nearbyPosts
     val nearbySongs: LiveData<List<Song>> = _nearbySongs
+    val userSongs: LiveData<List<Song>> = _userSongs
+
     private val db = FirebaseFirestore.getInstance()
     private val mReference: DocumentReference = db.collection(USERS).document(uId)
+
 
     companion object {
         @JvmStatic
@@ -50,6 +54,9 @@ class LocationHelperRepo private constructor(uId: String) {
     private suspend fun getUserById() {
         mUser = mReference.get().await().toObject(User::class.java)
         findNearbyUsers()
+    }
+    suspend fun loadUserSongs() {
+        _userSongs.postValue(getQueryUserData())
     }
 
     private suspend fun findNearbyUsers() {
@@ -76,6 +83,13 @@ class LocationHelperRepo private constructor(uId: String) {
                         docPojo
                     }
         } ?: return listOf()
+    }
+    private suspend fun getQueryUserData(): List<Song>{
+        val ref = db.collection(SONGS)
+        return ref.whereEqualTo(AUTHOR, mUser?.id)
+                .limit(10)
+                .get()
+                .await().toObjects(Song::class.java)
     }
 
 }

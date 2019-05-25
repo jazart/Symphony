@@ -24,7 +24,7 @@ public class MusicAdapter extends ListAdapter<Song, MusicAdapter.MusicHolder> {
 
     private final Player.EventListener eventListener = new PlayerListener();
 
-    protected MusicAdapter(@NonNull DiffUtil.ItemCallback<Song> diffCallback, Context context) {
+    public MusicAdapter(@NonNull DiffUtil.ItemCallback<Song> diffCallback, Context context) {
         super(diffCallback);
         mInflater = LayoutInflater.from(context);
         App app = (App) context.getApplicationContext();
