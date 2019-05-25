@@ -15,18 +15,17 @@
             style="@style/Widget.MaterialComponents.TabLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="top"
-            app:tabBackground="@color/colorPrimaryDark">
+            android:layout_gravity="top">
 
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Songs" />
+                android:text="@string/songs" />
 
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Posts" />
+                android:text="@string/posts" />
 
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"

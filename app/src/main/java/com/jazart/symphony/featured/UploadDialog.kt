@@ -93,7 +93,6 @@ class UploadDialog : DialogFragment(), DialogInterface.OnClickListener {
         } catch (e: FileNotFoundException) {
             e.printStackTrace()
         }
-
     }
 
     @Throws(FileNotFoundException::class)
@@ -143,17 +142,4 @@ class UploadDialog : DialogFragment(), DialogInterface.OnClickListener {
         app.component.inject(this)
     }
 
-    companion object {
-        const val TAG = "UploadDialog"
-        private const val ARG_URI = "1"
-
-        @JvmStatic
-        fun newInstance(uri: Uri): UploadDialog {
-            val bundle = Bundle()
-            bundle.putString(ARG_URI, uri.toString())
-            val uploadDialog = UploadDialog()
-            uploadDialog.arguments = bundle
-            return uploadDialog
-        }
-    }
 }

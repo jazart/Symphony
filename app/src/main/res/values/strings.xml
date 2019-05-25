@@ -48,4 +48,6 @@
     <string name="acq_loc">Acquiring location</string>
     <string name="profile">Profile</string>
     <string name="friends">Friends</string>
+    <string name="posts">Posts</string>
+    <string name="songs">Songs</string>
 </resources>

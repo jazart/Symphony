@@ -59,9 +59,9 @@ class FeaturedMusicFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     }
 
     private fun setupSwipeListener() {
-        val swipeController = songsViewModel.songs?.let { SwipeController(requireContext(), songsViewModel, it, musicAdapter) }
-        val itemTouchHelper = swipeController?.let { ItemTouchHelper(it) }
-        itemTouchHelper?.attachToRecyclerView(featured_songs)
+        val swipeController = SwipeController(requireContext(), songsViewModel, songsViewModel.songs, musicAdapter)
+        val itemTouchHelper = ItemTouchHelper(swipeController)
+        itemTouchHelper.attachToRecyclerView(featured_songs)
     }
 
     private fun loadSongs() {
