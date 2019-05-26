@@ -15,7 +15,6 @@ import com.jazart.symphony.di.app
 import com.jazart.symphony.featured.MusicAdapter
 import com.jazart.symphony.featured.SongViewModel
 import com.jazart.symphony.model.Song
-import kotlinx.android.synthetic.main.feature_music_fragment.*
 import kotlinx.android.synthetic.main.fragment_posts.*
 
 class UserSongsFragment : Fragment() {
@@ -35,7 +34,10 @@ class UserSongsFragment : Fragment() {
         recycler_view.adapter = adapter
         recycler_view.layoutManager = LinearLayoutManager(requireContext())
         viewModel.loadUserSongs()
-        viewModel.userSongs.observe(viewLifecycleOwner, Observer { adapter.submitList(it) })
+        viewModel.userSongs.observe(viewLifecycleOwner, Observer { songs ->
+            adapter.submitList(songs)
+            post_load_progress.visibility = View.GONE
+        })
     }
 
 

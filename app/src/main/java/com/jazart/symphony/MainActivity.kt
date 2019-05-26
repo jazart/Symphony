@@ -27,11 +27,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.jazart.symphony.di.App
-import com.jazart.symphony.featured.UploadDialog
 import com.jazart.symphony.location.LocationIntentService
 import com.jazart.symphony.playback.PlayerBoolean
 import com.jazart.symphony.posts.PostActivity
-import com.jazart.symphony.signup.SignupFragmentDirections
 import com.tbruyelle.rxpermissions2.RxPermissions
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_main.*
@@ -72,6 +70,10 @@ class MainActivity : AppCompatActivity() {
         mUser = FirebaseAuth.getInstance().currentUser
         inject()
         createNotificationChannel()
+        savedInstanceState?.apply {
+            controller.restoreState(getBundle(NAV_BACK_STACK))
+            return
+        }
         setupUi()
     }
 
@@ -135,13 +137,15 @@ class MainActivity : AppCompatActivity() {
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == URI_REQUEST) {
-            if (data != null) {
-                val uri = data.data ?: return
-                controller.navigate(MainFlowDirections.actionToUploadDialog(uri.toString()))
-
-            }
+        if (requestCode == URI_REQUEST && data != null) {
+            val uri = data.data ?: return
+            controller.navigate(MainFlowDirections.actionToUploadDialog(uri.toString()))
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putBundle(NAV_BACK_STACK, controller.saveState())
+        super.onSaveInstanceState(outState)
     }
 
     private fun checkPermissions() {
@@ -320,5 +324,7 @@ class MainActivity : AppCompatActivity() {
 
         @JvmStatic
         val playerCreated = PlayerBoolean()
+
+        const val NAV_BACK_STACK = "nav backstack"
     }
 }
