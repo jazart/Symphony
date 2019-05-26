@@ -30,6 +30,7 @@ import com.jazart.symphony.di.App
 import com.jazart.symphony.location.LocationIntentService
 import com.jazart.symphony.playback.PlayerBoolean
 import com.jazart.symphony.posts.PostActivity
+import com.jazart.symphony.signup.SignupFragmentDirections
 import com.tbruyelle.rxpermissions2.RxPermissions
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_main.*
@@ -70,14 +71,10 @@ class MainActivity : AppCompatActivity() {
         mUser = FirebaseAuth.getInstance().currentUser
         inject()
         createNotificationChannel()
-        savedInstanceState?.apply {
-            controller.restoreState(getBundle(NAV_BACK_STACK))
-            return
-        }
-        setupUi()
+        setupUi(savedInstanceState?.getBoolean(IS_NAV_STATE_SAVED) ?: false)
     }
 
-    private fun setupUi() {
+    private fun setupUi(isNavStateSaved: Boolean) {
         val mediaController = findViewById<LinearLayout>(R.id.media_controller)
         mediaController.visibility = View.VISIBLE
         playerSeek = findViewById(R.id.mediacontroller_progress)
@@ -94,10 +91,9 @@ class MainActivity : AppCompatActivity() {
         if (mUser == null) {
             controller.navigate(R.id.signupFragment)
         } else {
-            buildLocationCallback()
             NavigationUI.setupWithNavController(navigation, controller)
             updateUi()
-            controller.navigate(R.id.main_flow)
+            if(!isNavStateSaved) controller.navigate(SignupFragmentDirections.actionSignupFragmentToFeaturedMusicFragment())
         }
     }
 
@@ -144,7 +140,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        outState.putBundle(NAV_BACK_STACK, controller.saveState())
+        outState.putBoolean(IS_NAV_STATE_SAVED, true)
         super.onSaveInstanceState(outState)
     }
 
@@ -325,6 +321,6 @@ class MainActivity : AppCompatActivity() {
         @JvmStatic
         val playerCreated = PlayerBoolean()
 
-        const val NAV_BACK_STACK = "nav backstack"
+        const val IS_NAV_STATE_SAVED = "saved state?"
     }
 }

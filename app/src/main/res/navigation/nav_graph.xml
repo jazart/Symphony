@@ -12,7 +12,9 @@
         tools:layout="@layout/signup_fragment">
         <action
             android:id="@+id/action_signupFragment_to_featuredMusicFragment"
-            app:destination="@id/main_flow" />
+            app:destination="@id/main_flow"
+            app:popUpTo="@+id/signupFragment"
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_signupFragment_to_termsFragment"
             app:destination="@id/termsFragment" />
@@ -33,6 +35,9 @@
             <action
                 android:id="@+id/action_featuredMusicFragment_to_profileFragment"
                 app:destination="@id/profileFragment" />
+            <action
+                android:id="@+id/action_featuredMusicFragment_to_postsFragment"
+                app:destination="@id/postsFragment" />
         </fragment>
         <fragment
             android:id="@+id/postsFragment"
@@ -42,6 +47,9 @@
             <action
                 android:id="@+id/action_postsFragment_to_postDetailFragment"
                 app:destination="@id/postDetailFragment" />
+            <action
+                android:id="@+id/action_postsFragment_to_featuredMusicFragment"
+                app:destination="@id/featuredMusicFragment" />
         </fragment>
         <fragment
             android:id="@+id/postDetailFragment"
@@ -60,7 +68,8 @@
         <fragment
             android:id="@+id/profileFragment"
             android:name="com.jazart.symphony.profile.ProfileFragment"
-            android:label="ProfileFragment" />
+            android:label="ProfileFragment"
+            tools:layout="@layout/profile_fragment"/>
     </navigation>
     <dialog
         android:id="@+id/termsFragment"

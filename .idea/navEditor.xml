@@ -29,12 +29,17 @@
                                 <LayoutPositions>
                                   <option name="myPosition">
                                     <Point>
-                                      <option name="x" value="256" />
-                                      <option name="y" value="12" />
+                                      <option name="x" value="267" />
+                                      <option name="y" value="16" />
                                     </Point>
                                   </option>
                                   <option name="myPositions">
                                     <map>
+                                      <entry key="action_featuredMusicFragment_to_postsFragment">
+                                        <value>
+                                          <LayoutPositions />
+                                        </value>
+                                      </entry>
                                       <entry key="action_featuredMusicFragment_to_profileFragment">
                                         <value>
                                           <LayoutPositions />
@@ -50,7 +55,7 @@
                                 <LayoutPositions>
                                   <option name="myPosition">
                                     <Point>
-                                      <option name="x" value="256" />
+                                      <option name="x" value="744" />
                                       <option name="y" value="368" />
                                     </Point>
                                   </option>
@@ -62,12 +67,17 @@
                                 <LayoutPositions>
                                   <option name="myPosition">
                                     <Point>
-                                      <option name="x" value="12" />
+                                      <option name="x" value="500" />
                                       <option name="y" value="368" />
                                     </Point>
                                   </option>
                                   <option name="myPositions">
                                     <map>
+                                      <entry key="action_postsFragment_to_featuredMusicFragment">
+                                        <value>
+                                          <LayoutPositions />
+                                        </value>
+                                      </entry>
                                       <entry key="action_postsFragment_to_postDetailFragment">
                                         <value>
                                           <LayoutPositions />
@@ -138,8 +148,8 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="256" />
-                            <option name="y" value="150" />
+                            <option name="x" value="343" />
+                            <option name="y" value="210" />
                           </Point>
                         </option>
                       </LayoutPositions>
