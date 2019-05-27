@@ -25,9 +25,11 @@ class LocationHelperRepo private constructor(uId: String) {
     private var mUser: User? = null
     private val mNearbyUsers = MutableLiveData<List<User>>()
     private val _nearbyPosts = MutableLiveData<List<Post>>()
+    private val _userPosts = MutableLiveData<List<Post>>()
     private val _nearbySongs = MutableLiveData<List<Song>>()
     private val _userSongs = MutableLiveData<List<Song>>()
     val nearbyPosts: LiveData<List<Post>> = _nearbyPosts
+    val userPosts: LiveData<List<Post>> = _userPosts
     val nearbySongs: LiveData<List<Song>> = _nearbySongs
     val userSongs: LiveData<List<Song>> = _userSongs
 
@@ -56,15 +58,18 @@ class LocationHelperRepo private constructor(uId: String) {
         mUser = mReference.get().await().toObject(User::class.java)
         findNearbyUsers()
     }
-    suspend fun loadUserSongs() {
-        _userSongs.postValue(getQueryUserData())
+    suspend fun loadUserData() {
+        _userPosts.postValue(getQueryUserData(POSTS))
+        _userSongs.postValue(getQueryUserData(SONGS))
     }
 
     private suspend fun findNearbyUsers() {
         val query = db.collection(USERS).whereEqualTo(CITY, mUser?.city)
                 .orderBy(NAME)
                 .limit(50)
-        mNearbyUsers.value = query.get().await().toObjects(User::class.java)
+        mNearbyUsers.value = query.get().await().toObjects(User::class.java).filter { user ->
+            user.id != mUser?.id
+        }
     }
 
     private suspend inline fun <reified T> getQueryData(vararg params: String): List<T> {
@@ -85,12 +90,12 @@ class LocationHelperRepo private constructor(uId: String) {
                     }
         } ?: return listOf()
     }
-    private suspend fun getQueryUserData(): List<Song>{
-        val ref = db.collection(SONGS)
+    private suspend inline fun <reified T> getQueryUserData(collection :String): List<T>{
+        val ref = db.collection(collection)
         return ref.whereEqualTo(AUTHOR, mUser?.id)
                 .limit(10)
                 .get()
-                .await().toObjects(Song::class.java)
+                .await().toObjects(T::class.java)
     }
 
 }

@@ -73,7 +73,7 @@ class SongViewModel @Inject constructor(val app: App) : BaseViewModel(), Corouti
 
     fun loadUserSongs() {
         viewModelScope.launch {
-            locationRepo.loadUserSongs()
+            locationRepo.loadUserData()
         }
     }
 }

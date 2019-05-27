@@ -53,6 +53,8 @@
             <action
                 android:id="@+id/action_postsFragment_to_featuredMusicFragment"
                 app:destination="@id/featuredMusicFragment" />
+            <argument android:name="location"
+                app:argType="com.jazart.symphony.posts.PostPage"/>
         </fragment>
         <fragment
             android:id="@+id/postDetailFragment"

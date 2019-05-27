@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.jazart.symphony.R
@@ -28,6 +29,7 @@ class PostsFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
     private var postAdapter: PostAdapter? = null
     private val postsViewModel: PostsViewModel by viewModels { SimpleViewModelFactory { PostsViewModel() } }
+    private val location : PostsFragmentArgs by navArgs()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_posts, container, false)
@@ -45,13 +47,27 @@ class PostsFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
         recycler_view.adapter = postAdapter
         recycler_view.layoutManager = LinearLayoutManager(context)
         swipeRefreshLayout.setOnRefreshListener(this)
-        postsViewModel.userPostsLiveData
-                .observe(viewLifecycleOwner, Observer { posts ->
-                    showProgressBar(true)
-                    postAdapter?.posts = posts
-                    postAdapter?.notifyDataSetChanged()
-                    swipeRefreshLayout.isRefreshing = false
-                })
+        when (location){
+            PostsFragmentArgs.-> {
+                postsViewModel.nearbyPostsLiveData
+                        .observe(viewLifecycleOwner, Observer { posts ->
+                            showProgressBar(true)
+                            postAdapter?.posts = posts
+                            postAdapter?.notifyDataSetChanged()
+                            swipeRefreshLayout.isRefreshing = false
+                        })
+            }
+            PostPage.PRIVATE -> {
+                postsViewModel.userPostsLiveData
+                        .observe(viewLifecycleOwner, Observer { posts ->
+                            showProgressBar(true)
+                            postAdapter?.posts = posts
+                            postAdapter?.notifyDataSetChanged()
+                            swipeRefreshLayout.isRefreshing = false
+                        })
+            }
+        }
+
     }
 
     override fun onRefresh() {
@@ -70,4 +86,13 @@ class PostsFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
         }
         post_load_progress.visibility = View.VISIBLE
     }
+
+    companion object {
+        val POST_PAGE_LOCATION = PostPage.PUBLIC
+
+    }
+}
+enum class PostPage{
+    PUBLIC,
+    PRIVATE
 }

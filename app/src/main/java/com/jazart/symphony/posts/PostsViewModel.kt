@@ -21,7 +21,8 @@ class PostsViewModel : BaseViewModel() {
     private val _addPostResult: MutableLiveData<Result> = MutableLiveData()
 
     val addPostResult: LiveData<Result> = _addPostResult
-    val userPostsLiveData: LiveData<List<Post>> = locationRepo.nearbyPosts
+    val userPostsLiveData: LiveData<List<Post>> = locationRepo.userPosts
+    val nearbyPostsLiveData: LiveData<List<Post>> = locationRepo.nearbyPosts
     val comments: LiveData<List<Comment>> = commentsLiveData
     val userProfilePic: Uri?
         get() = mUser!!.photoUrl

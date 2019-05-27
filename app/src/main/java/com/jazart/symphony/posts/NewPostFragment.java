@@ -60,7 +60,7 @@ public class NewPostFragment extends Fragment {
         mPostsViewModel.getAddPostResult().observe(getViewLifecycleOwner(), result -> {
             if (getView() == null) return;
             if (result instanceof Result.Success) {
-                NavHostFragment.findNavController(NewPostFragmentDirections.actionToPostDetailFragment(new Bundle()));
+                NavHostFragment.findNavController(this).navigate(NewPostFragmentDirections.actionNewPostFragmentToPostDetailFragment());
                 Snackbar.make(getView(), "Post added!", Snackbar.LENGTH_SHORT).show();
 
             } else {
