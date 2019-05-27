@@ -13,6 +13,7 @@ import androidx.fragment.app.FragmentStatePagerAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.jazart.symphony.R
+import com.jazart.symphony.posts.PostPage
 import com.jazart.symphony.posts.PostsFragment
 import kotlinx.android.synthetic.main.profile_fragment.*
 
@@ -34,7 +35,6 @@ class ProfileFragment : Fragment() {
                 .load(uri)
                 .apply(RequestOptions().circleCrop().placeholder(resources.getDrawable(R.drawable.ic_account_circle_black_24dp, null)))
                 .into(profilePicture)
-
     }
 
 }
@@ -53,7 +53,7 @@ private class ProfileAdapter(fm: FragmentManager) :
     override fun getItem(position: Int): Fragment =
             when (position) {
                 0 -> UserSongsFragment()
-                1 -> PostsFragment()
+                1 -> PostsFragment.newInstance(PostPage.PRIVATE)
                 2 -> UserFriendsFragment()
                 else -> throw IllegalArgumentException()
             }

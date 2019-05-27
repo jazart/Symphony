@@ -81,12 +81,8 @@ class LocationHelperRepo private constructor(uId: String) {
                     .await()
                     .documents
                     .map { doc ->
-                        val postId = doc.id
                         val docPojo = doc.toObject(T::class.java) ?: return listOf()
-                        if (docPojo is Post) {
-                            docPojo.id = postId
-                        }
-                        docPojo
+                        assignItemId(docPojo, doc.id)
                     }
         } ?: return listOf()
     }
@@ -95,9 +91,20 @@ class LocationHelperRepo private constructor(uId: String) {
         return ref.whereEqualTo(AUTHOR, mUser?.id)
                 .limit(10)
                 .get()
-                .await().toObjects(T::class.java)
+                .await()
+                .documents
+                .map { doc ->
+                    val docPojo = doc.toObject(T::class.java) ?: return listOf()
+                    assignItemId(docPojo, doc.id)
+                }
     }
 
+    private inline fun <reified T> assignItemId(item: T, id: String): T {
+        if(item is Post) {
+            item.id = id
+        }
+        return item
+    }
 }
 
 suspend fun <T> Task<T>.await(): T {

@@ -46,8 +46,8 @@ class PostsViewModel : BaseViewModel() {
         }
     }
 
-    fun deletePost(postId: String) {
-        firebaseRepo.deletePost(postId)
+    fun deletePost(postId: String?) {
+        if(postId != null) firebaseRepo.deletePost(postId)
         refreshContent()
     }
 

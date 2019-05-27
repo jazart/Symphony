@@ -1,6 +1,8 @@
 package com.jazart.symphony.posts;
 
 import android.net.Uri;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import com.google.firebase.firestore.Exclude;
 import com.google.firebase.firestore.IgnoreExtraProperties;
@@ -11,7 +13,17 @@ import java.util.Date;
 import java.util.List;
 
 @IgnoreExtraProperties
-public class Post {
+public class Post implements Parcelable {
+
+    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+        public Post createFromParcel(Parcel in) {
+            return new Post(in);
+        }
+
+        public Post[] newArray(int size) {
+            return new Post[size];
+        }
+    };
 
     @Expose
     @SerializedName("title")
@@ -66,6 +78,16 @@ public class Post {
         mProfilePic = builder.mProfilePic;
         mAuthorName = builder.mAuthorName;
         mLikes = builder.mLikes;
+    }
+
+    Post(Parcel in) {
+        mAuthor = in.readString();
+        mAuthorName = in.readString();
+        mBody = in.readString();
+        mTitle = in.readString();
+        mLikes = in.readInt();
+        mPostDate = (Date) in.readSerializable();
+        mId = in.readString();
     }
 
     public String getTitle() {
@@ -146,6 +168,22 @@ public class Post {
 
     public void setId(String id) {
         mId = id;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.mLikes);
+        dest.writeString(this.mAuthor);
+        dest.writeString(this.mId);
+        dest.writeString(this.mAuthorName);
+        dest.writeString(this.mBody);
+        dest.writeString(this.mTitle);
+        dest.writeSerializable(this.mPostDate);
     }
 
     public static class Builder {

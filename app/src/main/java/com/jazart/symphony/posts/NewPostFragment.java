@@ -39,6 +39,7 @@ public class NewPostFragment extends Fragment {
     TextInputEditText mBody;
 
     private PostsViewModel mPostsViewModel;
+    private Post post;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -60,9 +61,8 @@ public class NewPostFragment extends Fragment {
         mPostsViewModel.getAddPostResult().observe(getViewLifecycleOwner(), result -> {
             if (getView() == null) return;
             if (result instanceof Result.Success) {
-                NavHostFragment.findNavController(this).navigate(NewPostFragmentDirections.actionNewPostFragmentToPostDetailFragment());
+                NavHostFragment.findNavController(this).navigate(NewPostFragmentDirections.actionNewPostFragmentToPostDetailFragment(post));
                 Snackbar.make(getView(), "Post added!", Snackbar.LENGTH_SHORT).show();
-
             } else {
                 Snackbar.make(getView(), "Unable to add your post. Please try again.", Snackbar.LENGTH_SHORT).show();
             }
@@ -71,7 +71,7 @@ public class NewPostFragment extends Fragment {
 
     @OnClick(R.id.button)
     public void submit() {
-        Post post = new Post.Builder()
+        post = new Post.Builder()
                 .title(Objects.requireNonNull(mTitle.getText()).toString())
                 .body(Objects.requireNonNull(mBody.getText()).toString())
                 .build();

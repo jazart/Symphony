@@ -53,14 +53,15 @@
             <action
                 android:id="@+id/action_postsFragment_to_featuredMusicFragment"
                 app:destination="@id/featuredMusicFragment" />
-            <argument android:name="location"
-                app:argType="com.jazart.symphony.posts.PostPage"/>
         </fragment>
         <fragment
             android:id="@+id/postDetailFragment"
             android:name="com.jazart.symphony.posts.PostDetailFragment"
             android:label="fragment_post_detail"
-            tools:layout="@layout/fragment_post_detail" />
+            tools:layout="@layout/fragment_post_detail" >
+            <argument android:name="post"
+                app:argType="com.jazart.symphony.posts.Post" />
+        </fragment>
         <dialog
             android:id="@+id/uploadDialog"
             android:name="com.jazart.symphony.featured.UploadDialog"
@@ -74,7 +75,11 @@
             android:id="@+id/profileFragment"
             android:name="com.jazart.symphony.profile.ProfileFragment"
             android:label="ProfileFragment"
-            tools:layout="@layout/profile_fragment"/>
+            tools:layout="@layout/profile_fragment">
+            <action
+                android:id="@+id/action_profileFragment_to_postDetailFragment"
+                app:destination="@id/postDetailFragment" />
+        </fragment>
         <fragment
             android:id="@+id/newPostFragment"
             android:name="com.jazart.symphony.posts.NewPostFragment"

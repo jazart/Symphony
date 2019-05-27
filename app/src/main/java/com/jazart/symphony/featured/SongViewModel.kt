@@ -22,7 +22,7 @@ import kotlin.coroutines.CoroutineContext
  * Used for helping the user
  */
 
-class SongViewModel @Inject constructor(val app: App) : BaseViewModel(), CoroutineScope {
+class SongViewModel constructor(val app: App) : BaseViewModel(), CoroutineScope {
     override val coroutineContext: CoroutineContext
         get() = job + Dispatchers.Main
     private val job = Job()
@@ -72,6 +72,12 @@ class SongViewModel @Inject constructor(val app: App) : BaseViewModel(), Corouti
     }
 
     fun loadUserSongs() {
+        viewModelScope.launch {
+            locationRepo.loadUserData()
+        }
+    }
+
+    fun refreshUserSongs() {
         viewModelScope.launch {
             locationRepo.loadUserData()
         }

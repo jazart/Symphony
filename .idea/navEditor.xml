@@ -34,8 +34,8 @@
                                 <LayoutPositions>
                                   <option name="myPosition">
                                     <Point>
-                                      <option name="x" value="267" />
-                                      <option name="y" value="16" />
+                                      <option name="x" value="500" />
+                                      <option name="y" value="368" />
                                     </Point>
                                   </option>
                                   <option name="myPositions">
@@ -60,9 +60,18 @@
                                 <LayoutPositions>
                                   <option name="myPosition">
                                     <Point>
-                                      <option name="x" value="24" />
-                                      <option name="y" value="314" />
+                                      <option name="x" value="744" />
+                                      <option name="y" value="12" />
                                     </Point>
+                                  </option>
+                                  <option name="myPositions">
+                                    <map>
+                                      <entry key="action_newPostFragment_to_postDetailFragment">
+                                        <value>
+                                          <LayoutPositions />
+                                        </value>
+                                      </entry>
+                                    </map>
                                   </option>
                                 </LayoutPositions>
                               </value>
@@ -72,7 +81,7 @@
                                 <LayoutPositions>
                                   <option name="myPosition">
                                     <Point>
-                                      <option name="x" value="744" />
+                                      <option name="x" value="988" />
                                       <option name="y" value="368" />
                                     </Point>
                                   </option>
@@ -84,8 +93,8 @@
                                 <LayoutPositions>
                                   <option name="myPosition">
                                     <Point>
-                                      <option name="x" value="500" />
-                                      <option name="y" value="368" />
+                                      <option name="x" value="256" />
+                                      <option name="y" value="389" />
                                     </Point>
                                   </option>
                                   <option name="myPositions">
@@ -110,9 +119,18 @@
                                 <LayoutPositions>
                                   <option name="myPosition">
                                     <Point>
-                                      <option name="x" value="500" />
-                                      <option name="y" value="12" />
+                                      <option name="x" value="744" />
+                                      <option name="y" value="368" />
                                     </Point>
+                                  </option>
+                                  <option name="myPositions">
+                                    <map>
+                                      <entry key="action_profileFragment_to_postDetailFragment">
+                                        <value>
+                                          <LayoutPositions />
+                                        </value>
+                                      </entry>
+                                    </map>
                                   </option>
                                 </LayoutPositions>
                               </value>

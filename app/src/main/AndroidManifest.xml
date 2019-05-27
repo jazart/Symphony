@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.jazart.symphony">
+    package="com.jazart.symphony"
+    tools:ignore="MissingLeanbackLauncher">
 
     <uses-feature
         android:name="android.hardware.location.gps"
@@ -9,6 +10,9 @@
         tools:ignore="UnsupportedTvHardware" />
     <uses-feature
         android:name="android.software.leanback"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.touchscreen"
         android:required="false" />
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />

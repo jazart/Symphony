@@ -18,6 +18,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.jazart.symphony.R
 import com.jazart.symphony.di.SimpleViewModelFactory
 import com.jazart.symphony.posts.adapters.PostAdapter
+import com.jazart.symphony.profile.ProfileFragmentDirections
 import kotlinx.android.synthetic.main.fragment_posts.*
 
 /**
@@ -29,7 +30,7 @@ class PostsFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
     private var postAdapter: PostAdapter? = null
     private val postsViewModel: PostsViewModel by viewModels { SimpleViewModelFactory { PostsViewModel() } }
-    private val location : PostsFragmentArgs by navArgs()
+    private var pageType: PostPage = PostPage.PUBLIC
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_posts, container, false)
@@ -39,7 +40,11 @@ class PostsFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
         postAdapter = PostAdapter(requireContext()) { post, viewId ->
             when (viewId) {
                 R.id.post_card ->
-                    findNavController().navigate(R.id.postDetailFragment)
+                    if(pageType == PostPage.PUBLIC) {
+                        findNavController().navigate(PostsFragmentDirections.actionPostsFragmentToPostDetailFragment(post))
+                    } else {
+                        findNavController().navigate(ProfileFragmentDirections.actionProfileFragmentToPostDetailFragment(post))
+                    }
                 R.id.delete_post_iv -> postsViewModel.deletePost(post.id)
             }
         }
@@ -47,27 +52,24 @@ class PostsFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
         recycler_view.adapter = postAdapter
         recycler_view.layoutManager = LinearLayoutManager(context)
         swipeRefreshLayout.setOnRefreshListener(this)
-        when (location){
-            PostsFragmentArgs.-> {
-                postsViewModel.nearbyPostsLiveData
-                        .observe(viewLifecycleOwner, Observer { posts ->
-                            showProgressBar(true)
-                            postAdapter?.posts = posts
-                            postAdapter?.notifyDataSetChanged()
-                            swipeRefreshLayout.isRefreshing = false
-                        })
-            }
-            PostPage.PRIVATE -> {
-                postsViewModel.userPostsLiveData
-                        .observe(viewLifecycleOwner, Observer { posts ->
-                            showProgressBar(true)
-                            postAdapter?.posts = posts
-                            postAdapter?.notifyDataSetChanged()
-                            swipeRefreshLayout.isRefreshing = false
-                        })
-            }
+        pageType = arguments?.getSerializable(PAGE_TYPE) as PostPage? ?: pageType
+        if (pageType == PostPage.PUBLIC) {
+            postsViewModel.nearbyPostsLiveData
+                    .observe(viewLifecycleOwner, Observer { posts ->
+                        showProgressBar(true)
+                        postAdapter?.posts = posts
+                        postAdapter?.notifyDataSetChanged()
+                        swipeRefreshLayout.isRefreshing = false
+                    })
+        } else {
+            postsViewModel.userPostsLiveData
+                    .observe(viewLifecycleOwner, Observer { posts ->
+                        showProgressBar(true)
+                        postAdapter?.posts = posts
+                        postAdapter?.notifyDataSetChanged()
+                        swipeRefreshLayout.isRefreshing = false
+                    })
         }
-
     }
 
     override fun onRefresh() {
@@ -88,11 +90,15 @@ class PostsFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     }
 
     companion object {
-        val POST_PAGE_LOCATION = PostPage.PUBLIC
-
+        const val PAGE_TYPE = "page type"
+        fun newInstance(pageType: PostPage): Fragment = PostsFragment().apply {
+            arguments = Bundle().apply { putSerializable(PAGE_TYPE, pageType) }
+        }
     }
+
 }
-enum class PostPage{
+
+enum class PostPage {
     PUBLIC,
     PRIVATE
 }

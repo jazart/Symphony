@@ -95,28 +95,24 @@ public class PostDetailFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_post_detail, container, false);
         ButterKnife.bind(this, view);
+        return view;
+    }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         if (getArguments() != null) {
-            Gson gson = new Gson();
-            Post post = gson.fromJson(getArguments().getString(ARG_POST),
-                    Post.class);
-
-            mViewModel.loadComments(post.getId());
-            mViewModel.getComments().observe(this, new Observer<List<Comment>>() {
-                @Override
-                public void onChanged(@Nullable List<Comment> comments) {
-                    mCommentAdapter.setComments(comments);
-                    mCommentAdapter.notifyDataSetChanged();
-                    mCommentsRecyclerview.setAdapter(mCommentAdapter);
-                }
+            Post post = PostDetailFragmentArgs.fromBundle(getArguments()).getPost();
+            if(post.getId() != null) mViewModel.loadComments(post.getId());
+            mViewModel.getComments().observe(this, comments -> {
+                mCommentAdapter.setComments(comments);
+                mCommentAdapter.notifyDataSetChanged();
+                mCommentsRecyclerview.setAdapter(mCommentAdapter);
             });
             mCommentAdapter = new CommentAdapter(getContext());
             buildUi(post);
         }
-
-        return view;
     }
-
 
     @OnClick({R.id.post_detail_edit_btn, R.id.post_detail_comment_btn, R.id.comment_send_btn})
     public void onBtnClick(View view) {
