@@ -35,13 +35,18 @@ class FirebaseRepo private constructor(
     }
 
 
-    fun addPostToDb(post: Post) {
+    suspend fun addPostToDb(post: Post): Boolean {
         post.author = currentUser?.uid
         post.profilePic = currentUser?.photoUrl.toString()
-        db.collection(POSTS)
-                .add(post).addOnCompleteListener {}
-                .addOnFailureListener {}
-        db.collection(POSTS)
+        try {
+            db.collection(POSTS)
+                    .add(post)
+                    .await()
+            return true
+        } catch (e: Exception) {
+            Log.e("FireBaseRepo", "Add Post Failure", e)
+            return false
+        }
     }
 
     fun getUserPosts(): PostsLiveData<List<Post>> {

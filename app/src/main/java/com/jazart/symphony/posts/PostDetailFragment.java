@@ -38,7 +38,6 @@ public class PostDetailFragment extends Fragment {
 
     private static final String ARG_POST = "com.jazart.symphony.userPost";
 
-
     private PostsViewModel mViewModel;
     @BindView(R.id.post_detail_image)
     ImageView mPostDetailImage;
@@ -89,8 +88,6 @@ public class PostDetailFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(PostsViewModel.class);
-
-
     }
 
     @Nullable
@@ -98,7 +95,6 @@ public class PostDetailFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_post_detail, container, false);
         ButterKnife.bind(this, view);
-
 
         if (getArguments() != null) {
             Gson gson = new Gson();
@@ -132,16 +128,6 @@ public class PostDetailFragment extends Fragment {
             case R.id.post_detail_edit_btn:
                 break;
             case R.id.comment_send_btn:
-//                if(mCommentTil.getEditText().getText() == null) {
-//                    // error toast
-//                    break;
-//                }
-//                Comment comment = new Comment();
-//                comment.setContent(mCommentEt.getText().toString());
-//                comment.setAuthorName(mPost.getAuthorName());
-//                comment.profilePic(Uri.parse(mPost.getProfilePic()));
-//                mViewModel.addComment(comment, "33");
-                //add comment to post detail vm;
         }
     }
 

@@ -9,12 +9,14 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.fragment.NavHostFragment;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.jazart.symphony.R;
+import com.jazart.symphony.Result;
 
 import java.util.Objects;
 
@@ -49,8 +51,22 @@ public class NewPostFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_new_post, container, false);
         ButterKnife.bind(this, v);
-
         return v;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        mPostsViewModel.getAddPostResult().observe(getViewLifecycleOwner(), result -> {
+            if (getView() == null) return;
+            if (result instanceof Result.Success) {
+                NavHostFragment.findNavController(NewPostFragmentDirections.actionToPostDetailFragment(new Bundle()));
+                Snackbar.make(getView(), "Post added!", Snackbar.LENGTH_SHORT).show();
+
+            } else {
+                Snackbar.make(getView(), "Unable to add your post. Please try again.", Snackbar.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @OnClick(R.id.button)

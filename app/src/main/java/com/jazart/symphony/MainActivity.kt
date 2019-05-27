@@ -29,7 +29,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.jazart.symphony.di.App
 import com.jazart.symphony.location.LocationIntentService
 import com.jazart.symphony.playback.PlayerBoolean
-import com.jazart.symphony.posts.PostActivity
 import com.jazart.symphony.signup.SignupFragmentDirections
 import com.tbruyelle.rxpermissions2.RxPermissions
 import io.reactivex.disposables.CompositeDisposable
@@ -93,7 +92,7 @@ class MainActivity : AppCompatActivity() {
         } else {
             NavigationUI.setupWithNavController(navigation, controller)
             updateUi()
-            if(!isNavStateSaved) controller.navigate(SignupFragmentDirections.actionSignupFragmentToFeaturedMusicFragment())
+            if (!isNavStateSaved) controller.navigate(SignupFragmentDirections.actionSignupFragmentToFeaturedMusicFragment())
         }
     }
 
@@ -160,7 +159,7 @@ class MainActivity : AppCompatActivity() {
         fabMenu.inflate(R.menu.fab_menu)
         fabMenu.setOnActionSelectedListener { item ->
             when (item.id) {
-                R.id.new_post -> startActivity(Intent(this@MainActivity, PostActivity::class.java))
+                R.id.new_post -> controller.navigate(MainFlowDirections.actionToNewPostFragment())
                 R.id.upload -> setURI()
                 else -> return@setOnActionSelectedListener false
             }
