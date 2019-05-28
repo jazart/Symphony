@@ -6,7 +6,7 @@ import com.jazart.symphony.repository.FirebaseRepo
 import com.jazart.symphony.repository.LocationHelperRepo
 import kotlinx.coroutines.launch
 
-open class BaseViewModel
+abstract class BaseViewModel
     : ViewModel() {
 
     val locationRepo: LocationHelperRepo by lazy {

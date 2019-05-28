@@ -40,7 +40,7 @@ class ProfileFragment : Fragment() {
 }
 
 private class ProfileAdapter(fm: FragmentManager) :
-        FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+        FragmentStatePagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
     override fun getPageTitle(position: Int): CharSequence? {
         return when (position) {
             0 -> "Songs"
@@ -57,6 +57,10 @@ private class ProfileAdapter(fm: FragmentManager) :
                 2 -> UserFriendsFragment()
                 else -> throw IllegalArgumentException()
             }
+
+    override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
+        super.destroyItem(container, position, `object`)
+    }
 
     override fun getCount() = 3
 }

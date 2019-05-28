@@ -101,7 +101,7 @@ class LocationHelperRepo private constructor(uId: String) {
 
     private inline fun <reified T> assignItemId(item: T, id: String): T {
         if(item is Post) {
-            item.id = id
+             item.id = id
         }
         return item
     }
