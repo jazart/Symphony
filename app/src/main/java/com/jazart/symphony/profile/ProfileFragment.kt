@@ -18,6 +18,7 @@ import com.jazart.symphony.posts.PostsFragment
 import kotlinx.android.synthetic.main.profile_fragment.*
 
 class ProfileFragment : Fragment() {
+    var data = ProfileFragmentArgs.fromBundle(arguments!!).user
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.profile_fragment, container, false)
     }

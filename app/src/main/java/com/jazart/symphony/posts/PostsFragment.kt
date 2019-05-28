@@ -46,6 +46,11 @@ class PostsFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
                         findNavController().navigate(ProfileFragmentDirections.actionProfileFragmentToPostDetailFragment(post))
                     }
                 R.id.delete_post_iv -> postsViewModel.deletePost(post.id)
+
+                R.id.post_profile_pic -> {
+                    findNavController().navigate(PostsFragmentDirections.actionPostsFragmentToProfileFragment(post.id))
+
+                }
             }
         }
 

@@ -22,7 +22,6 @@ import kotlinx.android.synthetic.main.fragment_posts.swipeRefreshLayout
 
 class UserSongsFragment : Fragment() {
     private val viewModel: SongViewModel by viewModels { SimpleViewModelFactory { SongViewModel(app()) } }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_posts, container, false)
     }
