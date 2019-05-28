@@ -15,6 +15,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.bumptech.glide.Glide
 import com.jazart.symphony.R
 import com.jazart.symphony.di.SimpleViewModelFactory
 import com.jazart.symphony.posts.adapters.PostAdapter
@@ -26,7 +27,7 @@ import kotlinx.android.synthetic.main.fragment_posts.*
  * Pulls information from the location helper class to display the data
  */
 
-class PostsFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
+class PostsFragment : Fragment() {
 
     private var postAdapter: PostAdapter? = null
     private val postsViewModel: PostsViewModel by viewModels { SimpleViewModelFactory { PostsViewModel() } }
@@ -37,7 +38,7 @@ class PostsFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        postAdapter = PostAdapter(requireContext()) { post, viewId ->
+        postAdapter = PostAdapter(requireContext(), Glide.with(this)) { post, viewId ->
             when (viewId) {
                 R.id.post_card ->
                     if(pageType == PostPage.PUBLIC) {
@@ -49,36 +50,36 @@ class PostsFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
                 R.id.post_profile_pic -> {
                     findNavController().navigate(PostsFragmentDirections.actionPostsFragmentToProfileFragment(post.id))
-
                 }
             }
         }
+        setupUi()
+    }
 
+    private fun setupUi() {
+        postsViewModel.load()
         recycler_view.adapter = postAdapter
         recycler_view.layoutManager = LinearLayoutManager(context)
-        swipeRefreshLayout.setOnRefreshListener(this)
+        swipeRefreshLayout.setOnRefreshListener { loadPosts() }
         pageType = arguments?.getSerializable(PAGE_TYPE) as PostPage? ?: pageType
         if (pageType == PostPage.PUBLIC) {
             postsViewModel.nearbyPostsLiveData
                     .observe(viewLifecycleOwner, Observer { posts ->
-                        showProgressBar(true)
-                        postAdapter?.posts = posts
-                        postAdapter?.notifyDataSetChanged()
-                        swipeRefreshLayout.isRefreshing = false
+                        displayPosts(posts)
                     })
         } else {
             postsViewModel.userPostsLiveData
                     .observe(viewLifecycleOwner, Observer { posts ->
-                        showProgressBar(true)
-                        postAdapter?.posts = posts
-                        postAdapter?.notifyDataSetChanged()
-                        swipeRefreshLayout.isRefreshing = false
+                        displayPosts(posts)
                     })
         }
     }
 
-    override fun onRefresh() {
-        loadPosts()
+    private fun displayPosts(posts: List<Post>?) {
+        showProgressBar(true)
+        postAdapter?.posts = posts
+        postAdapter?.notifyDataSetChanged()
+        swipeRefreshLayout.isRefreshing = false
     }
 
     private fun loadPosts() {

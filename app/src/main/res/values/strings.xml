@@ -24,7 +24,7 @@
     and is only stored on the server as a means to make the app location aware. No location logging is enabled and
     only your most recent location is stored on our systems. Previous entries are removed on each location update.
     For more about privacy please see:
-        <a href="https://firebase.google.com/terms/data-processing-terms">
+        <a href="https://symphony-app.flycricket.io/privacy.html">
         Privacy Policy</a>
     </string>
 

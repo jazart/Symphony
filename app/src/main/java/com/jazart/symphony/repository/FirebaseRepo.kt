@@ -14,7 +14,6 @@ import com.jazart.symphony.Constants
 import com.jazart.symphony.Constants.*
 import com.jazart.symphony.model.Song
 import com.jazart.symphony.posts.Comment
-import com.jazart.symphony.posts.PostsLiveData
 import com.jazart.symphony.posts.Post
 import io.reactivex.Observable
 import io.reactivex.ObservableEmitter
@@ -47,13 +46,6 @@ class FirebaseRepo private constructor(
             Log.e("FireBaseRepo", "Add Post Failure", e)
             return false
         }
-    }
-
-    fun getUserPosts(): PostsLiveData<List<Post>> {
-        val query = db.collection(POSTS)
-                .whereEqualTo("author", currentUser?.uid)
-                .orderBy("postDate")
-        return PostsLiveData(query)
     }
 
     fun deletePost(postId: String) {
