@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/friend_card"
+    style="@style/CardViewTheme"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:layout_marginStart="8dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginEnd="8dp"
+    android:layout_marginBottom="8dp"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="2dp"
+    app:strokeColor="@color/colorAccent"
+    app:strokeWidth="1dp"
+    tools:ignore="ContentDescription">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/friend_profile_pic"
+            android:layout_width="50dp"
+            android:layout_height="45dp"
+            android:background="@drawable/selectable_item_rect_theme"
+            android:focusable="true"
+            android:visibility="visible"
+            app:layout_constraintEnd_toStartOf="pa"
+            tools:layout_editor_absoluteY="8dp" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/friend_name"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:ellipsize="end"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:textAppearance="@android:style/TextAppearance.Material.Body2"
+            app:layout_constraintStart_toEndOf="@id/friend_profile_pic"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:layout_editor_absoluteY="30dp" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

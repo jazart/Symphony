@@ -1,23 +1,28 @@
 package com.jazart.symphony.posts.adapters
 
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.net.Uri
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.bumptech.glide.Glide
+import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.RequestManager
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.target.Target
 import com.jazart.symphony.R
 import com.jazart.symphony.posts.Post
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.list_item_post.view.*
 
 class PostAdapter(context: Context,
+                  private val glide: RequestManager,
                   private val clickListener: (Post, Int) -> Unit) : RecyclerView.Adapter<PostAdapter.PostHolder>() {
     var posts: List<Post>? = null
     private val inflater: LayoutInflater = LayoutInflater.from(context)
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostHolder {
         val v = inflater.inflate(R.layout.list_item_post, parent, false)
@@ -48,14 +53,13 @@ class PostAdapter(context: Context,
             itemView.post_body.text = post.body
             itemView.setOnClickListener(clickHandler)
             itemView.delete_post_iv.setOnClickListener(clickHandler)
-            if (post.profilePic != null) {
-                Glide.with(itemView.context)
-                        .load(Uri.parse(post.profilePic))
-                        .apply(RequestOptions()
-                                .circleCrop())
-                        .into(itemView.post_profile_pic)
-            }
+            itemView.post_profile_pic.setOnClickListener(clickHandler)
+            glide.load(Uri.parse(post.profilePic))
+                    .apply(RequestOptions()
+                            .placeholder(containerView.context.resources.getDrawable(R.drawable.ic_account_circle_black_24dp, null))
+                            .circleCrop())
+                    .into(itemView.post_profile_pic)
+                    .onLoadFailed(containerView.context.resources.getDrawable(R.drawable.ic_account_circle_black_24dp, null))
         }
-
     }
 }

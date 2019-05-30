@@ -33,18 +33,8 @@ public class TermsFragment extends DialogFragment {
         mTerms.setMovementMethod(LinkMovementMethod.getInstance());
         return new AlertDialog.Builder(requireContext())
                 .setView(v)
-                .setNegativeButton(getString(R.string.terms_decline), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        sendResult(Activity.RESULT_CANCELED);
-                    }
-                })
-                .setPositiveButton(getString(R.string.terms_accept), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        sendResult(Activity.RESULT_OK);
-                    }
-                })
+                .setNegativeButton(getString(R.string.terms_decline), (dialog, which) -> sendResult(Activity.RESULT_CANCELED))
+                .setPositiveButton(getString(R.string.terms_accept), (dialog, which) -> sendResult(Activity.RESULT_OK))
                 .setTitle("Terms")
                 .create();
     }

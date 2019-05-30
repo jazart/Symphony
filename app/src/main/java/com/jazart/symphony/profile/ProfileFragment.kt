@@ -12,12 +12,14 @@ import androidx.fragment.app.FragmentPagerAdapter
 import androidx.fragment.app.FragmentStatePagerAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.google.firebase.auth.FirebaseAuth
 import com.jazart.symphony.R
 import com.jazart.symphony.posts.PostPage
 import com.jazart.symphony.posts.PostsFragment
 import kotlinx.android.synthetic.main.profile_fragment.*
 
 class ProfileFragment : Fragment() {
+    val data = arguments?.let { ProfileFragmentArgs.fromBundle(it).user }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.profile_fragment, container, false)
     }
@@ -27,13 +29,13 @@ class ProfileFragment : Fragment() {
         val adapter = ProfileAdapter(childFragmentManager)
         profileViewPager.adapter = adapter
         profileTabLayout.setupWithViewPager(profileViewPager)
-        loadProfilePic(Uri.parse("google.com"))
+        loadProfilePic(FirebaseAuth.getInstance().currentUser?.photoUrl)
     }
 
-    private fun loadProfilePic(uri: Uri) {
+    private fun loadProfilePic(uri: Uri?) {
         Glide.with(this)
                 .load(uri)
-                .apply(RequestOptions().circleCrop().placeholder(resources.getDrawable(R.drawable.ic_account_circle_black_24dp, null)))
+                .apply(RequestOptions().circleCrop().fallback(resources.getDrawable(R.drawable.ic_account_circle_black_24dp, null)))
                 .into(profilePicture)
     }
 

@@ -1,15 +1,6 @@
 package com.jazart.symphony.posts;
 
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,11 +8,18 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 import com.jazart.symphony.R;
 import com.jazart.symphony.posts.adapters.CommentAdapter;
-
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -69,6 +67,8 @@ public class PostDetailFragment extends Fragment {
     ImageButton mCommentSendBtn;
 
     private boolean isCommenting;
+    private Post mPost;
+    private final String POST_ID = "post id";
 
     public PostDetailFragment() {
 
@@ -101,17 +101,15 @@ public class PostDetailFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if (getArguments() != null) {
-            Post post = PostDetailFragmentArgs.fromBundle(getArguments()).getPost();
-            if(post.getId() != null) mViewModel.loadComments(post.getId());
-            mViewModel.getComments().observe(this, comments -> {
-                mCommentAdapter.setComments(comments);
-                mCommentAdapter.notifyDataSetChanged();
-                mCommentsRecyclerview.setAdapter(mCommentAdapter);
-            });
-            mCommentAdapter = new CommentAdapter(getContext());
-            buildUi(post);
-        }
+        mPost = savedInstanceState != null ? savedInstanceState.getParcelable(POST_ID)
+                : PostDetailFragmentArgs.fromBundle(getArguments()).getPost();
+        buildUi(mPost);
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putParcelable(POST_ID, mPost);
+        super.onSaveInstanceState(outState);
     }
 
     @OnClick({R.id.post_detail_edit_btn, R.id.post_detail_comment_btn, R.id.comment_send_btn})
@@ -140,11 +138,17 @@ public class PostDetailFragment extends Fragment {
             mPostDetailEditBtn.setVisibility(View.VISIBLE);
         }
     }
+
     private void buildUi(Post post) {
+        if (mPost.getId() != null) mViewModel.loadComments(mPost.getId());
+        mViewModel.getComments().observe(this, comments -> {
+            mCommentAdapter.setComments(comments);
+            mCommentAdapter.notifyDataSetChanged();
+            mCommentsRecyclerview.setAdapter(mCommentAdapter);
+        });
+        mCommentAdapter = new CommentAdapter(getContext());
         mPostBodyTv.setText(post.getBody());
         mPostTitle.setText(post.getTitle());
-
-
         mCommentsRecyclerview.setNestedScrollingEnabled(false);
         mCommentsRecyclerview.setLayoutManager(new LinearLayoutManager(getContext()));
     }

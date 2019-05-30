@@ -86,7 +86,8 @@ class LocationHelperRepo private constructor(uId: String) {
                     }
         } ?: return listOf()
     }
-    private suspend inline fun <reified T> getQueryUserData(collection :String): List<T>{
+
+    private suspend inline fun <reified T> getQueryUserData(collection :String): List<T> {
         val ref = db.collection(collection)
         return ref.whereEqualTo(AUTHOR, mUser?.id)
                 .limit(10)
@@ -101,7 +102,7 @@ class LocationHelperRepo private constructor(uId: String) {
 
     private inline fun <reified T> assignItemId(item: T, id: String): T {
         if(item is Post) {
-             item.id = id
+            item.id = id
         }
         return item
     }
