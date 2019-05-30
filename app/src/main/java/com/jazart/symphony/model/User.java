@@ -1,6 +1,8 @@
 package com.jazart.symphony.model;
 
 
+import android.net.Uri;
+
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.GeoPoint;
 import com.google.gson.annotations.SerializedName;
@@ -32,6 +34,9 @@ public class User {
 
     @SerializedName("city")
     private String mCity;
+
+    @SerializedName("photo")
+    private Uri photoURI;
 
     public User() {
 
@@ -106,4 +111,11 @@ public class User {
         mCity = city;
     }
 
+    public Uri getPhotoURI() {
+        return photoURI;
+    }
+
+    public void setPhotoURI(Uri photoURI) {
+        this.photoURI = photoURI;
+    }
 }
