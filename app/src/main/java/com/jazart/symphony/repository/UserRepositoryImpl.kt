@@ -4,49 +4,24 @@ import android.net.ConnectivityManager
 import com.jazart.symphony.model.User
 import javax.inject.Inject
 
-class UserRepositoryImpl @Inject constructor(private val connection: ConnectivityManager,
-                                             private val memory: InMemoryUserDataSource,
-                                             private val disk: FirebaseOfflineDataSource,
-                                             private val network: FirebaseOnlineDataSource,
-                                             private val fetchStragety: FetchStrategy = FetchStrategy.NETWORK) : UserRepository {
+class UserRepositoryImpl @Inject constructor(connection: ConnectivityManager,
+                                             memory: InMemoryDataSource<User>,
+                                             private val disk: FirebaseOfflineUserDataSource,
+                                             private val network: FirebaseOnlineUserDataSource,
+                                             fetchStrategy: FetchStrategy = FetchStrategy.NETWORK_FIRST) :
+        AbstractRepository<User>(connection, memory), UserRepository {
 
     override suspend fun getUserById(id: String): User? {
-        if (!isNetworkSuitable()) {
-            val user = disk.getUserById(id)
-            if(user != null) {
-                memory.putInUserCache(user)
-                return user
-            } else {
-                return memory.getUserById(id)
-            }
-        } else {
-            val user = network.getUserById(id)
-            memory.putInUserCache(user)
-            return user
-        }
+        return super.load(id, { disk.getUserById(id) }, { network.getUserById(id) })
     }
 
     override suspend fun getUserFriends(id: String): List<User> {
-        if (!isNetworkSuitable()) {
-            val friends = disk.getUserFriends(id)
-            if(friends.isEmpty()) {
-                memory.putInFriendCache(id, friends)
-                return friends
-            } else {
-                return memory.getUserFriends(id)
-            }
-        } else {
-            val friends = network.getUserFriends(id)
-            memory.putInFriendCache(id, friends)
-            return friends
-        }
+        return super.loadMany(id, { disk.getUserFriends(id) }, { network.getUserFriends(id) })
     }
 
-    private fun isNetworkSuitable(): Boolean {
-        return !connection.isActiveNetworkMetered || connection.isDefaultNetworkActive
-    }
+
 }
 
 enum class FetchStrategy {
-    NETWORK, DISK, RAM
+    NETWORK_FIRST, DISK_FIRST, MEMORY_FIRST, NETWORK_ONLY, DEVICE_ONLY
 }

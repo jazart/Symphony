@@ -17,6 +17,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.jazart.symphony.R;
 import com.jazart.symphony.Result;
+import com.jazart.symphony.Status;
 
 import java.util.Objects;
 
@@ -60,7 +61,8 @@ public class NewPostFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         mPostsViewModel.getAddPostResult().observe(getViewLifecycleOwner(), result -> {
             if (getView() == null) return;
-            if (result instanceof Result.Success) {
+            Boolean isSuccessful = result.consume();
+            if (isSuccessful != null && isSuccessful) {
                 NavHostFragment.findNavController(this).navigate(NewPostFragmentDirections.actionNewPostFragmentToPostDetailFragment(post));
                 Snackbar.make(getView(), "Post added!", Snackbar.LENGTH_SHORT).show();
             } else {

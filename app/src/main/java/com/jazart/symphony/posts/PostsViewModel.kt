@@ -8,7 +8,10 @@ import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.jazart.symphony.BaseViewModel
+import com.jazart.symphony.Error
+import com.jazart.symphony.Event
 import com.jazart.symphony.Result
+import com.jazart.symphony.Status
 import kotlinx.coroutines.launch
 
 /**
@@ -18,9 +21,9 @@ import kotlinx.coroutines.launch
 class PostsViewModel : BaseViewModel() {
     private val mUser: FirebaseUser?
     private val commentsLiveData: MutableLiveData<List<Comment>> = MutableLiveData()
-    private val _addPostResult: MutableLiveData<Result> = MutableLiveData()
+    private val _addPostResult: MutableLiveData<Event<Boolean>> = MutableLiveData()
 
-    val addPostResult: LiveData<Result> = _addPostResult
+    val addPostResult: LiveData<Event<Boolean>> = _addPostResult
     val userPostsLiveData: LiveData<List<Post>> = locationRepo.userPosts
     val nearbyPostsLiveData: LiveData<List<Post>> = locationRepo.nearbyPosts
     val comments: LiveData<List<Comment>> = commentsLiveData
@@ -39,9 +42,9 @@ class PostsViewModel : BaseViewModel() {
     fun addToDb(post: Post) {
         viewModelScope.launch {
             if(firebaseRepo.addPostToDb(post)) {
-                _addPostResult.value = Result.Success
+                _addPostResult.value = Event(true)
             } else {
-                _addPostResult.value = Result.Failure(message = null)
+                _addPostResult.value = Event(false)
             }
         }
     }

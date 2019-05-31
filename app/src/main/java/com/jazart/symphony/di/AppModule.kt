@@ -1,8 +1,10 @@
 package com.jazart.symphony.di
 
 import android.app.Application
+import android.app.Service
 import android.content.Context
 import android.content.res.Resources
+import android.net.ConnectivityManager
 import androidx.fragment.app.Fragment
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
@@ -11,6 +13,7 @@ import com.jazart.symphony.featured.FeaturedMusicFragment
 import com.jazart.symphony.featured.MusicAdapter
 import com.jazart.symphony.featured.UploadDialog
 import com.jazart.symphony.venues.LocalEventsFragment
+import com.squareup.leakcanary.LeakCanary
 import dagger.Component
 import dagger.Module
 import dagger.Provides
@@ -19,16 +22,16 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Inject
 import javax.inject.Singleton
-import com.squareup.leakcanary.LeakCanary
 
 class App : Application() {
     lateinit var component: AppComponent
 
-    @Inject lateinit var player: SimpleExoPlayer
+    @Inject
+    lateinit var player: SimpleExoPlayer
 
     override fun onCreate() {
         super.onCreate()
-        if(LeakCanary.isInAnalyzerProcess(this)) return
+        if (LeakCanary.isInAnalyzerProcess(this)) return
         LeakCanary.install(this)
         component = DaggerAppComponent.builder().run {
             appModule(AppModule(this@App))
@@ -51,6 +54,12 @@ class AppModule(private val app: App) {
 
     @Singleton
     @Provides
+    fun provideConnectivity(context: Context): ConnectivityManager {
+        return context.getSystemService(Service.CONNECTIVITY_SERVICE) as ConnectivityManager
+    }
+
+    @Singleton
+    @Provides
     fun provideResources(): Resources = app.resources
 
     @Provides
@@ -61,11 +70,11 @@ class AppModule(private val app: App) {
             DefaultRenderersFactory(app.applicationContext),
             DefaultTrackSelector(),
             DefaultLoadControl()).apply {
-            audioAttributes = com.google.android.exoplayer2.audio.AudioAttributes.Builder().run {
-                setUsage(C.USAGE_MEDIA)
-                setContentType(C.CONTENT_TYPE_MUSIC)
-                build()
-            }
+        audioAttributes = com.google.android.exoplayer2.audio.AudioAttributes.Builder().run {
+            setUsage(C.USAGE_MEDIA)
+            setContentType(C.CONTENT_TYPE_MUSIC)
+            build()
+        }
     }
 
     @Singleton

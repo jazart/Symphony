@@ -6,7 +6,7 @@ import com.google.firebase.firestore.Source
 import com.jazart.symphony.Constants
 import com.jazart.symphony.model.User
 
-class FirebaseOfflineDataSource : UserRepository {
+class FirebaseOfflineUserDataSource : UserRepository {
 
     private val db: FirebaseFirestore
         @Synchronized

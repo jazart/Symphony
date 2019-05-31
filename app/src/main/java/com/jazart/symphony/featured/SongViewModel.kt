@@ -4,9 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.viewModelScope
-import com.jazart.symphony.BaseViewModel
-import com.jazart.symphony.Error
-import com.jazart.symphony.Result
+import com.jazart.symphony.*
 import com.jazart.symphony.di.App
 import com.jazart.symphony.model.Song
 import com.jazart.symphony.repository.LocationHelperRepo
@@ -28,13 +26,13 @@ class SongViewModel constructor(val app: App) : BaseViewModel(), CoroutineScope 
     private val job = Job()
     private val _playing = MutableLiveData<Boolean>()
     private val _percentLiveData = MutableLiveData<Long>()
-    private val _snackbar = MutableLiveData<Result>()
+    private val _snackbar = MutableLiveData<Event<Status>>()
     private var songSize = 1
 
     var songs: LiveData<List<Song>> = LocationHelperRepo.instance.nearbySongs
     var userSongs: LiveData<List<Song>> = LocationHelperRepo.instance.userSongs
     val playing get() = _playing
-    val snackbar: LiveData<Result> = _snackbar.toSingleEvent()
+    val snackbar: LiveData<Event<Status>> = _snackbar.toSingleEvent()
     val percentageLiveData: LiveData<Int> = Transformations.map(_percentLiveData) { progress ->
         100.times(progress.toInt()).div(songSize)
 
@@ -60,7 +58,7 @@ class SongViewModel constructor(val app: App) : BaseViewModel(), CoroutineScope 
             return true
         }
         viewModelScope.launch {
-            _snackbar.postValue(Result.Failure(message = Error.ILLEGAL_ACCESS))
+            _snackbar.postValue(Event(Status.Failure))
         }
         return false
     }

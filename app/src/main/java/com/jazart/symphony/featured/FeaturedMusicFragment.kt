@@ -16,6 +16,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.snackbar.Snackbar
 import com.jazart.symphony.R
 import com.jazart.symphony.Result
+import com.jazart.symphony.Status
 import com.jazart.symphony.di.SimpleViewModelFactory
 import com.jazart.symphony.di.app
 import com.jazart.symphony.model.Song
@@ -89,8 +90,8 @@ class FeaturedMusicFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     private fun setupSnackbarBehavior() {
         songsViewModel.snackbar.observe(viewLifecycleOwner, Observer { event ->
             requireActivity().currentFocus?.let {
-                when (event) {
-                    is Result.Success -> Snackbar.make(it, getString(R.string.deleted_song), Snackbar.LENGTH_SHORT)
+                when (event.consume()) {
+                    is Status.Success -> Snackbar.make(it, getString(R.string.deleted_song), Snackbar.LENGTH_SHORT)
                     else -> Snackbar.make(it, getString(R.string.hidden_song), Snackbar.LENGTH_SHORT)
                 }.show()
             }
