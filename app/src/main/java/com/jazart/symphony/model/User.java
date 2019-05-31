@@ -8,6 +8,7 @@ import com.google.firebase.firestore.GeoPoint;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
+import java.util.List;
 
 public class User {
 
@@ -21,7 +22,7 @@ public class User {
     private Date mDateJoined = new Date();
 
     @SerializedName("friends")
-    private User[] mFriends;
+    private List<String> mFriends;
 
     @SerializedName("numSongs")
     private int mNumSongs;
@@ -71,11 +72,11 @@ public class User {
         mDateJoined = dateJoined;
     }
 
-    public User[] getFriends() {
+    public List<String> getFriends() {
         return mFriends;
     }
 
-    public void setFriends(User[] friends) {
+    public void setFriends(List<String> friends) {
         mFriends = friends;
     }
 
