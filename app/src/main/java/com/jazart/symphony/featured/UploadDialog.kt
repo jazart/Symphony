@@ -25,14 +25,14 @@ import java.io.FileInputStream
 import java.io.FileNotFoundException
 import java.lang.IllegalStateException
 import java.util.*
+import javax.inject.Inject
 
 
 class UploadDialog : DialogFragment(), DialogInterface.OnClickListener {
 
+    @Inject lateinit var factory: SimpleViewModelFactory
     private val songViewModel: SongViewModel by viewModels {
-        SimpleViewModelFactory {
-            SongViewModel(activity?.application as App)
-        }
+        factory
     }
     private val args: UploadDialogArgs by navArgs()
     private val song = Song()

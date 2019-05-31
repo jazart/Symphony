@@ -3,8 +3,9 @@ package com.jazart.symphony.repository
 import android.net.ConnectivityManager
 import com.jazart.symphony.posts.Post
 import javax.inject.Inject
+import javax.inject.Singleton
 
-class RepositoryImpl @Inject constructor(connection: ConnectivityManager,
+@Singleton class RepositoryImpl @Inject constructor(connection: ConnectivityManager,
                                          memory: InMemoryDataSource<Post>,
                                          private val disk: FirebaseOfflinePostDataSource,
                                          private val network: FirebaseOnlinePostDataSource,
@@ -13,6 +14,10 @@ class RepositoryImpl @Inject constructor(connection: ConnectivityManager,
 
     override suspend fun loadPostById(id: String): Post? {
         return super.load(id, { disk.loadPostById(id) }, { network.loadPostById(id) })
+    }
+
+    override suspend fun loadPostsByUserId(id: String): List<Post> {
+        return super.loadMany(id, {disk.loadPostsByUserId(id)}, {network.loadPostsByUserId(id)})
     }
 
 }
@@ -37,13 +42,13 @@ abstract class AbstractRepository<T>(private val connection: ConnectivityManager
     }
 
     protected suspend fun loadMany(id: String, loadFromDisk: suspend () -> List<T>, loadFromNetwork: suspend () -> List<T>): List<T> {
-        if (!isNetworkSuitable()) {
-            val resource = loadFromDisk()
-            if (resource.isEmpty()) {
-                memory.putList(id, resource)
+        var bool = true
+        if (bool) {
+            val resource = memory.getList(id)
+            if (resource.isNotEmpty()) {
                 return resource
             } else {
-                return memory.getList(id) ?: return emptyList()
+                return memory.putList(id, loadFromDisk())
             }
         } else {
             val resource = loadFromNetwork()

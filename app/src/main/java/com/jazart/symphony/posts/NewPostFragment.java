@@ -18,8 +18,13 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.jazart.symphony.R;
 import com.jazart.symphony.Result;
 import com.jazart.symphony.Status;
+import com.jazart.symphony.di.AppModule;
+import com.jazart.symphony.di.AppModuleKt;
+import com.jazart.symphony.di.SimpleViewModelFactory;
 
 import java.util.Objects;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -39,13 +44,15 @@ public class NewPostFragment extends Fragment {
     @BindView(R.id.new_post_body)
     TextInputEditText mBody;
 
+    @Inject
+    SimpleViewModelFactory mFactory;
     private PostsViewModel mPostsViewModel;
     private Post post;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPostsViewModel = ViewModelProviders.of(this).get(PostsViewModel.class);
+        mPostsViewModel = ViewModelProviders.of(this, mFactory).get(PostsViewModel.class);
     }
 
     @Nullable
@@ -59,6 +66,7 @@ public class NewPostFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        AppModuleKt.app(this).component.inject(this);
         mPostsViewModel.getAddPostResult().observe(getViewLifecycleOwner(), result -> {
             if (getView() == null) return;
             Boolean isSuccessful = result.consume();

@@ -17,15 +17,18 @@ import com.google.android.material.snackbar.Snackbar
 import com.jazart.symphony.R
 import com.jazart.symphony.Result
 import com.jazart.symphony.Status
+import com.jazart.symphony.di.Injectable
 import com.jazart.symphony.di.SimpleViewModelFactory
 import com.jazart.symphony.di.app
 import com.jazart.symphony.model.Song
 import kotlinx.android.synthetic.main.feature_music_fragment.*
+import javax.inject.Inject
 
-class FeaturedMusicFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
+class FeaturedMusicFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, Injectable {
+    @Inject lateinit var factory: SimpleViewModelFactory
     private lateinit var musicAdapter: MusicAdapter
     private val songsViewModel by viewModels<SongViewModel> {
-        SimpleViewModelFactory { SongViewModel(app()) }
+        factory
     }
 
     @Nullable

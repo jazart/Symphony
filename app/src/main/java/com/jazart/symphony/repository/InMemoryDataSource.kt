@@ -1,6 +1,9 @@
 package com.jazart.symphony.repository
 
-class InMemoryDataSource<T> {
+import javax.inject.Inject
+import javax.inject.Singleton
+
+@Singleton class InMemoryDataSource<T> @Inject constructor()  {
     private val inMemoryCache = mutableMapOf<String, T>()
     private val inMemoryList = mutableMapOf<String, List<T>>()
 
@@ -9,7 +12,7 @@ class InMemoryDataSource<T> {
 
     private fun flush() {
         inMemoryCache.clear()
-
+        inMemoryList.clear()
     }
 
     fun put(id: String, post: T?) {
@@ -18,11 +21,12 @@ class InMemoryDataSource<T> {
 
     fun get(id: String) = inMemoryCache[id]
 
-    fun putList(id: String, post: List<T>) {
-        if (inMemoryCache.size != MAX_CAPACITY && post.isEmpty()) inMemoryList[id] = post
+    fun putList(id: String, post: List<T>): List<T> {
+        if (inMemoryCache.size != MAX_CAPACITY && post.isNotEmpty()) inMemoryList[id] = post
+        return post
     }
 
-    fun getList(id: String) = inMemoryList[id]
+    fun getList(id: String) = inMemoryList[id] ?: emptyList()
 
     companion object {
         private const val MAX_CAPACITY = 100

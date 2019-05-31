@@ -19,10 +19,13 @@ import com.jazart.symphony.model.Song
 import kotlinx.android.synthetic.main.feature_music_fragment.*
 import kotlinx.android.synthetic.main.fragment_posts.*
 import kotlinx.android.synthetic.main.fragment_posts.swipeRefreshLayout
+import javax.inject.Inject
 
-class UserSongsFragment : Fragment() {
-    private val viewModel: SongViewModel by viewModels { SimpleViewModelFactory { SongViewModel(app()) } }
+class UserSongsFragment : Fragment()  {
+    @Inject lateinit var factory: SimpleViewModelFactory
+    private val viewModel: SongViewModel by viewModels {factory}
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        app().component.inject(this)
         return inflater.inflate(R.layout.fragment_posts, container, false)
     }
 

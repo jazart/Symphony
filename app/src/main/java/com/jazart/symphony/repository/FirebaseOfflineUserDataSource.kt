@@ -5,8 +5,9 @@ import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.google.firebase.firestore.Source
 import com.jazart.symphony.Constants
 import com.jazart.symphony.model.User
+import javax.inject.Inject
 
-class FirebaseOfflineUserDataSource : UserRepository {
+class FirebaseOfflineUserDataSource @Inject constructor(): UserRepository {
 
     private val db: FirebaseFirestore
         @Synchronized

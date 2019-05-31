@@ -19,7 +19,6 @@ class UserRepositoryImpl @Inject constructor(connection: ConnectivityManager,
         return super.loadMany(id, { disk.getUserFriends(id) }, { network.getUserFriends(id) })
     }
 
-
 }
 
 enum class FetchStrategy {

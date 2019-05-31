@@ -20,7 +20,7 @@ import kotlin.coroutines.CoroutineContext
  * Used for helping the user
  */
 
-class SongViewModel constructor(val app: App) : BaseViewModel(), CoroutineScope {
+class SongViewModel @Inject constructor(val app: App) : BaseViewModel(), CoroutineScope {
     override val coroutineContext: CoroutineContext
         get() = job + Dispatchers.Main
     private val job = Job()

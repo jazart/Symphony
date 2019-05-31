@@ -3,8 +3,9 @@ package com.jazart.symphony.repository
 import com.google.firebase.firestore.Source
 import com.jazart.symphony.Constants
 import com.jazart.symphony.model.User
+import javax.inject.Inject
 
-class FirebaseOnlineUserDataSource : AbstractFirebaseDataSource(), UserRepository {
+class FirebaseOnlineUserDataSource @Inject constructor() : AbstractFirebaseDataSource(), UserRepository {
 
 
     override suspend fun getUserById(id: String): User? {
