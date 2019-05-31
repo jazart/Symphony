@@ -1,3 +1,4 @@
+package com.jazart.symphony.repository
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Source
 import com.jazart.symphony.Constants
