@@ -9,14 +9,12 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.jazart.symphony.R
 import com.jazart.symphony.di.SimpleViewModelFactory
 import com.jazart.symphony.di.app
 import com.jazart.symphony.featured.MusicAdapter
 import com.jazart.symphony.featured.SongViewModel
-import com.jazart.symphony.model.Song
-import kotlinx.android.synthetic.main.feature_music_fragment.*
+import entities.Song
 import kotlinx.android.synthetic.main.fragment_posts.*
 import kotlinx.android.synthetic.main.fragment_posts.swipeRefreshLayout
 import javax.inject.Inject

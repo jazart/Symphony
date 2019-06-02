@@ -15,12 +15,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.snackbar.Snackbar
 import com.jazart.symphony.R
-import com.jazart.symphony.Result
-import com.jazart.symphony.Status
+import com.jazart.symphony.common.Status
 import com.jazart.symphony.di.Injectable
 import com.jazart.symphony.di.SimpleViewModelFactory
 import com.jazart.symphony.di.app
-import com.jazart.symphony.model.Song
+import entities.Song
 import kotlinx.android.synthetic.main.feature_music_fragment.*
 import javax.inject.Inject
 

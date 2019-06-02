@@ -16,9 +16,6 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.jazart.symphony.R;
-import com.jazart.symphony.Result;
-import com.jazart.symphony.Status;
-import com.jazart.symphony.di.AppModule;
 import com.jazart.symphony.di.AppModuleKt;
 import com.jazart.symphony.di.SimpleViewModelFactory;
 
@@ -29,6 +26,8 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import entities.Post;
+import entities.User;
 
 
 public class NewPostFragment extends Fragment {
@@ -81,10 +80,7 @@ public class NewPostFragment extends Fragment {
 
     @OnClick(R.id.button)
     public void submit() {
-        post = new Post.Builder()
-                .title(Objects.requireNonNull(mTitle.getText()).toString())
-                .body(Objects.requireNonNull(mBody.getText()).toString())
-                .build();
+        post = new Post(mTitle.getText().toString(), mBody.getText().toString());
         mPostsViewModel.addToDb(post);
     }
 

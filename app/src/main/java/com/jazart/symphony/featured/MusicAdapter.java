@@ -15,7 +15,7 @@ import android.widget.TextView;
 import com.google.android.exoplayer2.Player;
 import com.jazart.symphony.R;
 import com.jazart.symphony.di.App;
-import com.jazart.symphony.model.Song;
+import entities.Song;
 import com.jazart.symphony.playback.PlayerListener;
 
 

@@ -10,7 +10,7 @@ import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.jazart.symphony.R
-import com.jazart.symphony.model.Song
+import entities.Song
 
 class SwipeController(val context: Context,
                       private val songsViewModel: SongViewModel,

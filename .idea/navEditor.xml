@@ -109,6 +109,11 @@
                                           <LayoutPositions />
                                         </value>
                                       </entry>
+                                      <entry key="action_postsFragment_to_profileFragment">
+                                        <value>
+                                          <LayoutPositions />
+                                        </value>
+                                      </entry>
                                     </map>
                                   </option>
                                 </LayoutPositions>

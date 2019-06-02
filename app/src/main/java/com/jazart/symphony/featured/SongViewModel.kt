@@ -4,9 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.viewModelScope
-import com.jazart.symphony.*
+import com.jazart.symphony.common.BaseViewModel
+import com.jazart.symphony.common.Event
+import com.jazart.symphony.common.Status
 import com.jazart.symphony.di.App
-import com.jazart.symphony.model.Song
+import entities.Song
 import com.jazart.symphony.repository.LocationHelperRepo
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers

@@ -10,11 +10,11 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.UploadTask
-import com.jazart.symphony.Constants
-import com.jazart.symphony.Constants.*
-import com.jazart.symphony.model.Song
-import com.jazart.symphony.posts.Comment
-import com.jazart.symphony.posts.Post
+import com.jazart.symphony.common.Constants
+import com.jazart.symphony.common.Constants.*
+import entities.Comment
+import entities.Post
+import entities.Song
 import io.reactivex.Observable
 import io.reactivex.ObservableEmitter
 import java.io.FileInputStream
@@ -35,11 +35,10 @@ class FirebaseRepo private constructor(
 
 
     suspend fun addPostToDb(post: Post): Boolean {
-        post.author = currentUser?.uid
-        post.profilePic = currentUser?.photoUrl.toString()
+        val dbPost = post.copy(author = currentUser?.uid ?: return false, profilePic = currentUser.photoUrl.toString())
         try {
             db.collection(POSTS)
-                    .add(post)
+                    .add(dbPost)
                     .await()
             return true
         } catch (e: Exception) {

@@ -48,7 +48,7 @@
         app:layout_insetEdge="bottom"
         app:itemIconSize="25dp"
         app:itemIconTint="@drawable/bottom_nav_colors"
-        app:layout_behavior="com.jazart.symphony.BottomNavigationBehavior"
+        app:layout_behavior="com.jazart.symphony.common.BottomNavigationBehavior"
         app:menu="@menu/navigation">
 
     </com.google.android.material.bottomnavigation.BottomNavigationView>

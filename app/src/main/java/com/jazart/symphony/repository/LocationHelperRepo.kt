@@ -1,16 +1,14 @@
 package com.jazart.symphony.repository
 
 
-import android.net.ConnectivityManager
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.*
-import com.jazart.symphony.Constants.*
-import com.jazart.symphony.model.Song
-import com.jazart.symphony.model.User
-import com.jazart.symphony.posts.Post
-import javax.inject.Inject
+import com.jazart.symphony.common.Constants.*
+import entities.Song
+import entities.User
+import entities.Post
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
@@ -90,10 +88,6 @@ class LocationHelperRepo private constructor(uId: String) {
 
     private suspend inline fun <reified T> getQueryUserData(collection: String): List<T> {
         val ref = db.collection(collection)
-        val res = ref.whereEqualTo(AUTHOR, mUser?.id)
-                .limit(10)
-                .await<Boolean>()
-
         return ref.whereEqualTo(AUTHOR, mUser?.id)
                 .limit(10)
                 .get()
@@ -105,9 +99,10 @@ class LocationHelperRepo private constructor(uId: String) {
                 }
     }
 
-    private inline fun <reified T> assignItemId(item: T, id: String): T {
+    private inline fun <reified T> assignItemId(item: T, dbId: String): T {
         if (item is Post) {
-            item.id = id
+            val post = item.copy(id = dbId)
+            return post as T
         }
         return item
     }

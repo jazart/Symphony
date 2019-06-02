@@ -29,9 +29,13 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.auth.UserProfileChangeRequest;
-import com.jazart.symphony.MainActivity;
+import com.jazart.symphony.common.MainActivity;
 import com.jazart.symphony.R;
-import com.jazart.symphony.model.User;
+
+import java.util.ArrayList;
+import java.util.Date;
+
+import entities.User;
 
 
 /**
@@ -62,6 +66,7 @@ public class SignupFragment extends Fragment {
         return inflater.inflate(R.layout.signup_fragment, container, false);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -123,7 +128,7 @@ public class SignupFragment extends Fragment {
         FirebaseUser user = auth.getCurrentUser();
         assert user != null;
         MainActivity.getSDb().collection("users").document(user.getUid())
-                .set(new User(user));
+                .set(new User(user.getUid(), user.getDisplayName(), new Date(), new ArrayList<>(), 0, "", user.getPhotoUrl().toString()));
     }
 
     private void setUpUser(FirebaseUser user, String name, Uri photoUrl) {

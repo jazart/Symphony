@@ -12,15 +12,14 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bumptech.glide.Glide
 import com.jazart.symphony.R
 import com.jazart.symphony.di.SimpleViewModelFactory
 import com.jazart.symphony.di.app
 import com.jazart.symphony.posts.adapters.PostAdapter
 import com.jazart.symphony.profile.ProfileFragmentDirections
+import entities.Post
 import kotlinx.android.synthetic.main.fragment_posts.*
 import javax.inject.Inject
 

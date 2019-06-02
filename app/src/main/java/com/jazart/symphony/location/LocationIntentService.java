@@ -8,18 +8,12 @@ import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
-import android.os.Looper;
 import android.widget.Toast;
 
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationCallback;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationResult;
-import com.google.android.gms.location.LocationServices;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.GeoPoint;
-import com.jazart.symphony.Constants;
-import com.jazart.symphony.MainActivity;
+import com.jazart.symphony.common.Constants;
+import com.jazart.symphony.common.MainActivity;
 import com.jazart.symphony.R;
 
 import java.io.IOException;
@@ -31,7 +25,7 @@ import androidx.annotation.NonNull;
 import androidx.core.app.JobIntentService;
 import androidx.core.app.NotificationCompat;
 
-import static com.jazart.symphony.Constants.USERS;
+import static com.jazart.symphony.common.Constants.USERS;
 
 /**
  * Service that runs when the app first starts up. This service gets the user's current location

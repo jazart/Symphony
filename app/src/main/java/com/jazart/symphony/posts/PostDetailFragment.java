@@ -28,13 +28,14 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import entities.Post;
+import kotlinx.android.parcel.Parcelize;
 
 //import com.jazart.symphony.posts.adapters.CommentAdapter;
 /*
 This class loads a detail view of a post with the post title and a list of comments.
 Viewmodel used to pull and push data to the PostViewmodel class
  */
-
 
 public class PostDetailFragment extends Fragment {
 
@@ -110,14 +111,14 @@ public class PostDetailFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mViewModel = ViewModelProviders.of(this, mFactory).get(PostsViewModel.class);
-        mPost = savedInstanceState != null ? savedInstanceState.getParcelable(POST_ID)
+        mPost = savedInstanceState != null ? (Post) savedInstanceState.getSerializable(POST_ID)
                     : PostDetailFragmentArgs.fromBundle(getArguments()).getPost();
         buildUi(mPost);
     }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
-        outState.putParcelable(POST_ID, mPost);
+        outState.putSerializable(POST_ID, mPost);
         super.onSaveInstanceState(outState);
     }
 
