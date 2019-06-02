@@ -4,6 +4,6 @@ import entities.Song
 
 interface SongRepository {
 
-    fun findSongById(id: String): Song?
-    fun findSongsByUserId(id: String): List<Song>
+    suspend fun findSongById(id: String): Song?
+    suspend fun findSongsByUserId(id: String): List<Song>
 }

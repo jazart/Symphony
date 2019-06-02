@@ -2,12 +2,8 @@ package com.jazart.symphony.posts
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import android.net.Uri
 import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
-
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.jazart.symphony.common.BaseViewModel
 import com.jazart.symphony.common.Event
 import entities.Comment
@@ -20,7 +16,7 @@ import javax.inject.Inject
  * Here we get data from the database and have them wrapped in livedata objects for a more reactive interface
  */
 class PostsViewModel @Inject constructor(val repo: com.jazart.data.repo.PostRepository) : BaseViewModel() {
-    private val mUser: FirebaseUser?
+
     private val commentsLiveData: MutableLiveData<List<Comment>> = MutableLiveData()
     private val _addPostResult: MutableLiveData<Event<Boolean>> = MutableLiveData()
 
@@ -31,13 +27,6 @@ class PostsViewModel @Inject constructor(val repo: com.jazart.data.repo.PostRepo
     }
     val nearbyPostsLiveData: LiveData<List<Post>> = locationRepo.nearbyPosts
     val comments: LiveData<List<Comment>> = commentsLiveData
-    val userProfilePic: Uri?
-        get() = mUser!!.photoUrl
-
-    init {
-        val auth = FirebaseAuth.getInstance()
-        mUser = auth.currentUser
-    }
 
     fun update() {
         refreshContent()
@@ -45,7 +34,7 @@ class PostsViewModel @Inject constructor(val repo: com.jazart.data.repo.PostRepo
 
     fun addToDb(post: Post) {
         viewModelScope.launch {
-            if(firebaseRepo.addPostToDb(post)) {
+            if (firebaseRepo.addPostToDb(post)) {
                 _addPostResult.value = Event(true)
             } else {
                 _addPostResult.value = Event(false)
@@ -54,7 +43,7 @@ class PostsViewModel @Inject constructor(val repo: com.jazart.data.repo.PostRepo
     }
 
     fun deletePost(postId: String?) {
-        if(postId != null) firebaseRepo.deletePost(postId)
+        if (postId != null) firebaseRepo.deletePost(postId)
         refreshContent()
     }
 

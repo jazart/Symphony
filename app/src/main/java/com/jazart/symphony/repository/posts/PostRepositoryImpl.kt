@@ -8,11 +8,11 @@ import entities.Post
 import javax.inject.Inject
 import javax.inject.Singleton
 
-@Singleton class RepositoryImpl @Inject constructor(connection: ConnectivityManager,
-                                                    memory: InMemoryDataSource<Post>,
-                                                    private val disk: FirebaseOfflinePostDataSource,
-                                                    private val network: FirebaseOnlinePostDataSource,
-                                                    fetchStrategy: FetchStrategy = FetchStrategy.NETWORK_FIRST) : AbstractRepository<Post>(
+@Singleton class PostRepositoryImpl @Inject constructor(connection: ConnectivityManager,
+                                                        memory: InMemoryDataSource<Post>,
+                                                        private val disk: FirebaseOfflinePostDataSource,
+                                                        private val network: FirebaseOnlinePostDataSource,
+                                                        fetchStrategy: FetchStrategy = FetchStrategy.NETWORK_FIRST) : AbstractRepository<Post>(
         connection, memory), PostRepository {
 
     override suspend fun loadPostById(id: String): Post? {

@@ -10,21 +10,28 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Source
 import com.jazart.data.repo.PostRepository
 import com.jazart.symphony.common.MainActivity
 import com.jazart.symphony.featured.FeaturedMusicFragment
 import com.jazart.symphony.featured.MusicAdapter
 import com.jazart.symphony.featured.SongViewModel
 import com.jazart.symphony.featured.UploadDialog
-import com.jazart.symphony.posts.*
+import com.jazart.symphony.location.LocationIntentService
+import com.jazart.symphony.posts.NewPostFragment
+import com.jazart.symphony.posts.PostDetailFragment
+import com.jazart.symphony.posts.PostsFragment
+import com.jazart.symphony.posts.PostsViewModel
 import com.jazart.symphony.profile.ProfileFragment
 import com.jazart.symphony.profile.UserFriendsFragment
 import com.jazart.symphony.profile.UserSongsFragment
-import com.jazart.symphony.repository.*
+import com.jazart.symphony.repository.InMemoryDataSource
 import com.jazart.symphony.repository.posts.FirebaseOfflinePostDataSource
 import com.jazart.symphony.repository.posts.FirebaseOnlinePostDataSource
-import com.jazart.symphony.repository.posts.RepositoryImpl
+import com.jazart.symphony.repository.posts.PostRepositoryImpl
 import com.jazart.symphony.repository.users.FetchStrategy
+import com.jazart.symphony.signup.SignupFragment
 import com.jazart.symphony.venues.LocalEventsFragment
 import com.squareup.leakcanary.LeakCanary
 import dagger.*
@@ -114,9 +121,15 @@ class AppModule(private val app: App) {
     fun provideStrategy(): FetchStrategy = FetchStrategy.NETWORK_FIRST
 
     @Provides
+    fun provideSource(): Source = Source.SERVER
+
+    @Provides
+    fun provideFireStore(): FirebaseFirestore = FirebaseFirestore.getInstance()
+
+    @Provides
     fun providePostRepository(connection: ConnectivityManager, memory: InMemoryDataSource<Post>,
                               disk: FirebaseOfflinePostDataSource, network: FirebaseOnlinePostDataSource): PostRepository {
-        return RepositoryImpl(connection, memory, disk, network)
+        return PostRepositoryImpl(connection, memory, disk, network)
     }
 }
 
@@ -162,6 +175,8 @@ interface AppComponent {
     fun inject(fragment: UserFriendsFragment)
     fun inject(fragment: ProfileFragment)
     fun inject(fragment: NewPostFragment)
+    fun inject(fragment: SignupFragment)
+    fun inject(service: LocationIntentService)
 
 
 }

@@ -1,7 +1,5 @@
 package com.jazart.symphony.repository.posts
 
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.google.firebase.firestore.Source
 import com.jazart.data.repo.PostRepository
 import com.jazart.symphony.common.Constants
@@ -12,22 +10,17 @@ import entities.Post
 import javax.inject.Inject
 import javax.inject.Singleton
 
-@Singleton class FirebaseOfflinePostDataSource @Inject constructor(): AbstractFirebaseDataSource(), PostRepository {
+@Singleton
+class FirebaseOfflinePostDataSource @Inject constructor(source: Source) : AbstractFirebaseDataSource(source), PostRepository {
+
+    constructor(): this(Source.CACHE)
 
     override suspend fun loadPostById(id: String): Post? {
-        return db.collection(Constants.POSTS).document(id).get(Source.CACHE).await().toObject(Post::class.java)
+        return db.collection(Constants.POSTS).document(id).get(source).await().toObject(Post::class.java)
     }
 
     override suspend fun loadPostsByUserId(id: String): List<Post> {
-        return db.collection(Constants.POSTS).whereEqualTo(AUTHOR, id).get(Source.CACHE).await().toObjects(Post::class.java)
-    }
-
-    override suspend fun configureDb() {
-        db.enableNetwork().await()
-        FirebaseFirestore.getInstance()
-        db.firestoreSettings = FirebaseFirestoreSettings.Builder()
-                .setCacheSizeBytes(FirebaseFirestoreSettings.CACHE_SIZE_UNLIMITED)
-                .build()
+        return db.collection(Constants.POSTS).whereEqualTo(AUTHOR, id).get(source).await().toObjects(Post::class.java)
     }
 
 }
