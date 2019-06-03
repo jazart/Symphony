@@ -4,15 +4,17 @@ import android.net.ConnectivityManager
 import com.jazart.data.repo.PostRepository
 import com.jazart.symphony.repository.InMemoryDataSource
 import com.jazart.symphony.repository.users.FetchStrategy
+import dagger.Reusable
 import entities.Post
 import javax.inject.Inject
 import javax.inject.Singleton
 
-@Singleton class PostRepositoryImpl @Inject constructor(connection: ConnectivityManager,
-                                                        memory: InMemoryDataSource<Post>,
-                                                        private val disk: FirebaseOfflinePostDataSource,
-                                                        private val network: FirebaseOnlinePostDataSource,
-                                                        fetchStrategy: FetchStrategy = FetchStrategy.NETWORK_FIRST) : AbstractRepository<Post>(
+@Reusable
+class PostRepositoryImpl @Inject constructor(connection: ConnectivityManager,
+                                             @Singleton memory: InMemoryDataSource<Post>,
+                                             private val disk: FirebaseOfflinePostDataSource,
+                                             private val network: FirebaseOnlinePostDataSource,
+                                             fetchStrategy: FetchStrategy = FetchStrategy.NETWORK_FIRST) : AbstractRepository<Post>(
         connection, memory), PostRepository {
 
     override suspend fun loadPostById(id: String): Post? {
@@ -20,13 +22,13 @@ import javax.inject.Singleton
     }
 
     override suspend fun loadPostsByUserId(id: String): List<Post> {
-        return super.loadMany(id, {disk.loadPostsByUserId(id)}, {network.loadPostsByUserId(id)})
+        return super.loadMany(id, { disk.loadPostsByUserId(id) }, { network.loadPostsByUserId(id) })
     }
 
 }
 
 abstract class AbstractRepository<T>(private val connection: ConnectivityManager,
-                                                         private val memory: InMemoryDataSource<T>) {
+                                     private val memory: InMemoryDataSource<T>) {
 
     protected suspend fun load(id: String, loadFromDisk: suspend () -> T?, loadFromNetwork: suspend () -> T?): T? {
         if (!isNetworkSuitable()) {
@@ -45,6 +47,7 @@ abstract class AbstractRepository<T>(private val connection: ConnectivityManager
     }
 
     protected suspend fun loadMany(id: String, loadFromDisk: suspend () -> List<T>, loadFromNetwork: suspend () -> List<T>): List<T> {
+        // Flag for dev purposes
         var bool = true
         if (bool) {
             val resource = memory.getList(id)
@@ -61,6 +64,6 @@ abstract class AbstractRepository<T>(private val connection: ConnectivityManager
     }
 
     private fun isNetworkSuitable(): Boolean {
-        return !connection.isActiveNetworkMetered || connection.isDefaultNetworkActive
+        return connection.isDefaultNetworkActive or !connection.isActiveNetworkMetered
     }
 }

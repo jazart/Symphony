@@ -16,10 +16,8 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.jazart.symphony.R;
-import com.jazart.symphony.di.AppModuleKt;
+import com.jazart.symphony.di.AppKt;
 import com.jazart.symphony.di.SimpleViewModelFactory;
-
-import java.util.Objects;
 
 import javax.inject.Inject;
 
@@ -27,7 +25,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import entities.Post;
-import entities.User;
 
 
 public class NewPostFragment extends Fragment {
@@ -51,12 +48,13 @@ public class NewPostFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPostsViewModel = ViewModelProviders.of(this, mFactory).get(PostsViewModel.class);
+        AppKt.app(this).component.inject(this);
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+        mPostsViewModel = ViewModelProviders.of(this, mFactory).get(PostsViewModel.class);
         View v = inflater.inflate(R.layout.fragment_new_post, container, false);
         ButterKnife.bind(this, v);
         return v;
@@ -65,7 +63,6 @@ public class NewPostFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        AppModuleKt.app(this).component.inject(this);
         mPostsViewModel.getAddPostResult().observe(getViewLifecycleOwner(), result -> {
             if (getView() == null) return;
             Boolean isSuccessful = result.consume();

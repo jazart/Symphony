@@ -6,12 +6,14 @@ import com.jazart.symphony.common.Constants.AUTHOR
 import com.jazart.symphony.common.Constants.POSTS
 import com.jazart.symphony.repository.AbstractFirebaseDataSource
 import com.jazart.symphony.repository.await
+import dagger.Reusable
 import entities.Post
 import javax.inject.Inject
 import javax.inject.Singleton
 
-@Singleton
-class FirebaseOnlinePostDataSource @Inject constructor(source: Source) : AbstractFirebaseDataSource(source), PostRepository {
+@Reusable
+class FirebaseOnlinePostDataSource constructor(source: Source) : AbstractFirebaseDataSource(source), PostRepository {
+    @Inject
     constructor() : this(Source.SERVER)
 
     override suspend fun loadPostById(id: String): Post? {

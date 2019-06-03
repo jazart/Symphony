@@ -32,7 +32,7 @@ import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.jazart.symphony.R;
 import com.jazart.symphony.common.MainActivity;
-import com.jazart.symphony.di.AppModuleKt;
+import com.jazart.symphony.di.AppKt;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -59,7 +59,7 @@ public class SignupFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        AppModuleKt.app(this).component.inject(this);
+        AppKt.app(this).component.inject(this);
         auth = FirebaseAuth.getInstance();
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.web_client_id))

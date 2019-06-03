@@ -6,12 +6,14 @@ import com.jazart.symphony.common.Constants.AUTHOR
 import com.jazart.symphony.common.Constants.SONGS
 import com.jazart.symphony.repository.AbstractFirebaseDataSource
 import com.jazart.symphony.repository.await
+import dagger.Reusable
 import entities.Song
 import javax.inject.Inject
 import javax.inject.Singleton
 
-@Singleton
-class FirebaseOfflineSongDataSource @Inject constructor(source: Source) : AbstractFirebaseDataSource(source), SongRepository {
+@Reusable
+class FirebaseOfflineSongDataSource constructor(source: Source) : AbstractFirebaseDataSource(source), SongRepository {
+    @Inject
     constructor() : this(Source.CACHE)
 
     override suspend fun findSongById(id: String): Song? {

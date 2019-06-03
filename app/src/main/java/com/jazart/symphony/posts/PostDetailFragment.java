@@ -19,7 +19,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 import com.jazart.symphony.R;
-import com.jazart.symphony.di.AppModuleKt;
+import com.jazart.symphony.di.AppKt;
 import com.jazart.symphony.di.SimpleViewModelFactory;
 import com.jazart.symphony.posts.adapters.CommentAdapter;
 
@@ -29,7 +29,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import entities.Post;
-import kotlinx.android.parcel.Parcelize;
 
 //import com.jazart.symphony.posts.adapters.CommentAdapter;
 /*
@@ -95,7 +94,7 @@ public class PostDetailFragment extends Fragment {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-        AppModuleKt.app(this).component.inject(this);
+        AppKt.app(this).component.inject(this);
         super.onCreate(savedInstanceState);
     }
 
@@ -112,7 +111,7 @@ public class PostDetailFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         mViewModel = ViewModelProviders.of(this, mFactory).get(PostsViewModel.class);
         mPost = savedInstanceState != null ? (Post) savedInstanceState.getSerializable(POST_ID)
-                    : PostDetailFragmentArgs.fromBundle(getArguments()).getPost();
+                : PostDetailFragmentArgs.fromBundle(getArguments()).getPost();
         buildUi(mPost);
     }
 

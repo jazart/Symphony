@@ -5,12 +5,14 @@ import com.jazart.data.repo.UserRepository
 import com.jazart.symphony.common.Constants
 import com.jazart.symphony.repository.AbstractFirebaseDataSource
 import com.jazart.symphony.repository.await
+import dagger.Reusable
 import entities.User
 import javax.inject.Inject
 import javax.inject.Singleton
 
-@Singleton
-class FirebaseOnlineUserDataSource @Inject constructor(source: Source) : AbstractFirebaseDataSource(source), UserRepository {
+@Reusable
+class FirebaseOnlineUserDataSource constructor(source: Source) : AbstractFirebaseDataSource(source), UserRepository {
+    @Inject
     constructor() : this(Source.SERVER)
 
     override suspend fun getUserById(id: String): User? {

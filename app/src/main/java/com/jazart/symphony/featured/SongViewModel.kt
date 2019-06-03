@@ -66,7 +66,6 @@ class SongViewModel @Inject constructor(val app: App) : BaseViewModel(), Corouti
     }
 
     override fun onCleared() {
-        app.player.release()
         coroutineContext.cancel()
         super.onCleared()
     }
