@@ -1,20 +1,15 @@
 package com.jazart.symphony.posts.adapters
 
 import android.content.Context
-import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
-import com.bumptech.glide.load.DataSource
-import com.bumptech.glide.load.engine.GlideException
-import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
-import com.bumptech.glide.request.target.Target
 import com.jazart.symphony.R
-import com.jazart.symphony.posts.Post
+import entities.Post
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.list_item_post.view.*
 
@@ -54,7 +49,7 @@ class PostAdapter(context: Context,
             itemView.setOnClickListener(clickHandler)
             itemView.delete_post_iv.setOnClickListener(clickHandler)
             itemView.post_profile_pic.setOnClickListener(clickHandler)
-            glide.load(Uri.parse(post.profilePic))
+            glide.load(post.profilePic)
                     .apply(RequestOptions()
                             .placeholder(containerView.context.resources.getDrawable(R.drawable.ic_account_circle_black_24dp, null))
                             .circleCrop())

@@ -63,7 +63,7 @@
             android:label="fragment_post_detail"
             tools:layout="@layout/fragment_post_detail" >
             <argument android:name="post"
-                app:argType="com.jazart.symphony.posts.Post" />
+                app:argType="entities.Post" />
         </fragment>
         <dialog
             android:id="@+id/uploadDialog"

@@ -15,16 +15,19 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.snackbar.Snackbar
 import com.jazart.symphony.R
-import com.jazart.symphony.Result
+import com.jazart.symphony.common.Status
+import com.jazart.symphony.di.Injectable
 import com.jazart.symphony.di.SimpleViewModelFactory
 import com.jazart.symphony.di.app
-import com.jazart.symphony.model.Song
+import entities.Song
 import kotlinx.android.synthetic.main.feature_music_fragment.*
+import javax.inject.Inject
 
-class FeaturedMusicFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
+class FeaturedMusicFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, Injectable {
+    @Inject lateinit var factory: SimpleViewModelFactory
     private lateinit var musicAdapter: MusicAdapter
     private val songsViewModel by viewModels<SongViewModel> {
-        SimpleViewModelFactory { SongViewModel(app()) }
+        factory
     }
 
     @Nullable
@@ -89,8 +92,8 @@ class FeaturedMusicFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     private fun setupSnackbarBehavior() {
         songsViewModel.snackbar.observe(viewLifecycleOwner, Observer { event ->
             requireActivity().currentFocus?.let {
-                when (event) {
-                    is Result.Success -> Snackbar.make(it, getString(R.string.deleted_song), Snackbar.LENGTH_SHORT)
+                when (event.consume()) {
+                    is Status.Success -> Snackbar.make(it, getString(R.string.deleted_song), Snackbar.LENGTH_SHORT)
                     else -> Snackbar.make(it, getString(R.string.hidden_song), Snackbar.LENGTH_SHORT)
                 }.show()
             }

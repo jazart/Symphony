@@ -1,4 +1,4 @@
-package com.jazart.symphony;
+package com.jazart.symphony.common;
 
 import com.google.android.exoplayer2.util.ParsableNalUnitBitArray;
 

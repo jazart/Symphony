@@ -8,19 +8,15 @@ import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
-import android.os.Looper;
 import android.widget.Toast;
 
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationCallback;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationResult;
-import com.google.android.gms.location.LocationServices;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
-import com.jazart.symphony.Constants;
-import com.jazart.symphony.MainActivity;
+import com.jazart.symphony.common.Constants;
+import com.jazart.symphony.common.MainActivity;
 import com.jazart.symphony.R;
+import com.jazart.symphony.di.App;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -31,7 +27,9 @@ import androidx.annotation.NonNull;
 import androidx.core.app.JobIntentService;
 import androidx.core.app.NotificationCompat;
 
-import static com.jazart.symphony.Constants.USERS;
+import javax.inject.Inject;
+
+import static com.jazart.symphony.common.Constants.USERS;
 
 /**
  * Service that runs when the app first starts up. This service gets the user's current location
@@ -44,6 +42,9 @@ public class LocationIntentService extends JobIntentService {
     public final String TAG = "LocationIntentService";
     private String userId;
 
+    @Inject
+    FirebaseFirestore db;
+
     public LocationIntentService() {
         super();
     }
@@ -55,6 +56,7 @@ public class LocationIntentService extends JobIntentService {
     @Override
     public void onCreate() {
         super.onCreate();
+        ((App) getApplication()).component.inject(this);
         Notification notification = new NotificationCompat.Builder(this, getString(R.string.channel_name))
                 .setCategory(NotificationCompat.CATEGORY_SERVICE)
                 .setOngoing(false)
@@ -84,7 +86,7 @@ public class LocationIntentService extends JobIntentService {
     }
 
     private void addToDb(Location location, String city, String userId) {
-        DocumentReference reference = MainActivity.getSDb().collection(USERS).document(userId);
+        DocumentReference reference = db.collection(USERS).document(userId);
         reference
                 .update(Constants.LOCATION, new GeoPoint(location.getLatitude(), location.getLongitude()))
                 .addOnFailureListener(e -> Toast.makeText(LocationIntentService.this, "Cannot log location", Toast.LENGTH_SHORT)

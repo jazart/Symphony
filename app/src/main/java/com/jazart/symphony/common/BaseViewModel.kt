@@ -1,4 +1,4 @@
-package com.jazart.symphony
+package com.jazart.symphony.common
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

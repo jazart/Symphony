@@ -19,11 +19,16 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 import com.jazart.symphony.R;
+import com.jazart.symphony.di.AppKt;
+import com.jazart.symphony.di.SimpleViewModelFactory;
 import com.jazart.symphony.posts.adapters.CommentAdapter;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import entities.Post;
 
 //import com.jazart.symphony.posts.adapters.CommentAdapter;
 /*
@@ -31,12 +36,15 @@ This class loads a detail view of a post with the post title and a list of comme
 Viewmodel used to pull and push data to the PostViewmodel class
  */
 
-
 public class PostDetailFragment extends Fragment {
 
     private static final String ARG_POST = "com.jazart.symphony.userPost";
 
     private PostsViewModel mViewModel;
+
+    @Inject
+    SimpleViewModelFactory mFactory;
+
     @BindView(R.id.post_detail_image)
     ImageView mPostDetailImage;
 
@@ -86,8 +94,8 @@ public class PostDetailFragment extends Fragment {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
+        AppKt.app(this).component.inject(this);
         super.onCreate(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(PostsViewModel.class);
     }
 
     @Nullable
@@ -101,14 +109,15 @@ public class PostDetailFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mPost = savedInstanceState != null ? savedInstanceState.getParcelable(POST_ID)
-                    : PostDetailFragmentArgs.fromBundle(getArguments()).getPost();
+        mViewModel = ViewModelProviders.of(this, mFactory).get(PostsViewModel.class);
+        mPost = savedInstanceState != null ? (Post) savedInstanceState.getSerializable(POST_ID)
+                : PostDetailFragmentArgs.fromBundle(getArguments()).getPost();
         buildUi(mPost);
     }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
-        outState.putParcelable(POST_ID, mPost);
+        outState.putSerializable(POST_ID, mPost);
         super.onSaveInstanceState(outState);
     }
 

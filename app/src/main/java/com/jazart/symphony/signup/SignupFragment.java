@@ -29,9 +29,17 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.auth.UserProfileChangeRequest;
-import com.jazart.symphony.MainActivity;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.jazart.symphony.R;
-import com.jazart.symphony.model.User;
+import com.jazart.symphony.common.MainActivity;
+import com.jazart.symphony.di.AppKt;
+
+import java.util.ArrayList;
+import java.util.Date;
+
+import javax.inject.Inject;
+
+import entities.User;
 
 
 /**
@@ -45,9 +53,13 @@ public class SignupFragment extends Fragment {
     private FirebaseAuth auth;
     private GoogleSignInClient signInClient;
 
+    @Inject
+    FirebaseFirestore db;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        AppKt.app(this).component.inject(this);
         auth = FirebaseAuth.getInstance();
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.web_client_id))
@@ -62,6 +74,7 @@ public class SignupFragment extends Fragment {
         return inflater.inflate(R.layout.signup_fragment, container, false);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -122,8 +135,8 @@ public class SignupFragment extends Fragment {
     private void addToDb() {
         FirebaseUser user = auth.getCurrentUser();
         assert user != null;
-        MainActivity.getSDb().collection("users").document(user.getUid())
-                .set(new User(user));
+        db.collection("users").document(user.getUid())
+                .set(new User(user.getUid(), user.getDisplayName(), new Date(), new ArrayList<>(), 0, "", user.getPhotoUrl().toString()));
     }
 
     private void setUpUser(FirebaseUser user, String name, Uri photoUrl) {

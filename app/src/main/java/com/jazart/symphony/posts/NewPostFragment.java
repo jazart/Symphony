@@ -16,13 +16,15 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.jazart.symphony.R;
-import com.jazart.symphony.Result;
+import com.jazart.symphony.di.AppKt;
+import com.jazart.symphony.di.SimpleViewModelFactory;
 
-import java.util.Objects;
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import entities.Post;
 
 
 public class NewPostFragment extends Fragment {
@@ -38,18 +40,21 @@ public class NewPostFragment extends Fragment {
     @BindView(R.id.new_post_body)
     TextInputEditText mBody;
 
+    @Inject
+    SimpleViewModelFactory mFactory;
     private PostsViewModel mPostsViewModel;
     private Post post;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPostsViewModel = ViewModelProviders.of(this).get(PostsViewModel.class);
+        AppKt.app(this).component.inject(this);
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+        mPostsViewModel = ViewModelProviders.of(this, mFactory).get(PostsViewModel.class);
         View v = inflater.inflate(R.layout.fragment_new_post, container, false);
         ButterKnife.bind(this, v);
         return v;
@@ -60,7 +65,8 @@ public class NewPostFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         mPostsViewModel.getAddPostResult().observe(getViewLifecycleOwner(), result -> {
             if (getView() == null) return;
-            if (result instanceof Result.Success) {
+            Boolean isSuccessful = result.consume();
+            if (isSuccessful != null && isSuccessful) {
                 NavHostFragment.findNavController(this).navigate(NewPostFragmentDirections.actionNewPostFragmentToPostDetailFragment(post));
                 Snackbar.make(getView(), "Post added!", Snackbar.LENGTH_SHORT).show();
             } else {
@@ -71,10 +77,7 @@ public class NewPostFragment extends Fragment {
 
     @OnClick(R.id.button)
     public void submit() {
-        post = new Post.Builder()
-                .title(Objects.requireNonNull(mTitle.getText()).toString())
-                .body(Objects.requireNonNull(mBody.getText()).toString())
-                .build();
+        post = new Post(mTitle.getText().toString(), mBody.getText().toString());
         mPostsViewModel.addToDb(post);
     }
 

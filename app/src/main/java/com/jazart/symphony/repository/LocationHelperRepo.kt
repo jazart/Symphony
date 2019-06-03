@@ -4,13 +4,11 @@ package com.jazart.symphony.repository
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.tasks.Task
-import com.google.firebase.firestore.CollectionReference
-import com.google.firebase.firestore.DocumentReference
-import com.google.firebase.firestore.FirebaseFirestore
-import com.jazart.symphony.Constants.*
-import com.jazart.symphony.model.Song
-import com.jazart.symphony.model.User
-import com.jazart.symphony.posts.Post
+import com.google.firebase.firestore.*
+import com.jazart.symphony.common.Constants.*
+import entities.Song
+import entities.User
+import entities.Post
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
@@ -58,6 +56,7 @@ class LocationHelperRepo private constructor(uId: String) {
         mUser = mReference.get().await().toObject(User::class.java)
         findNearbyUsers()
     }
+
     suspend fun loadUserData() {
         _userPosts.postValue(getQueryUserData(POSTS))
         _userSongs.postValue(getQueryUserData(SONGS))
@@ -87,7 +86,7 @@ class LocationHelperRepo private constructor(uId: String) {
         } ?: return listOf()
     }
 
-    private suspend inline fun <reified T> getQueryUserData(collection :String): List<T> {
+    private suspend inline fun <reified T> getQueryUserData(collection: String): List<T> {
         val ref = db.collection(collection)
         return ref.whereEqualTo(AUTHOR, mUser?.id)
                 .limit(10)
@@ -100,9 +99,10 @@ class LocationHelperRepo private constructor(uId: String) {
                 }
     }
 
-    private inline fun <reified T> assignItemId(item: T, id: String): T {
-        if(item is Post) {
-             item.id = id
+    private inline fun <reified T> assignItemId(item: T, dbId: String): T {
+        if (item is Post) {
+            val post = item.copy(id = dbId)
+            return post as T
         }
         return item
     }
@@ -112,5 +112,16 @@ suspend fun <T> Task<T>.await(): T {
     return suspendCoroutine { cont ->
         addOnSuccessListener { data -> cont.resumeWith(Result.success(data)) }
         addOnFailureListener { result -> cont.resumeWithException(result) }
+
+    }
+}
+
+suspend fun <T> Query.await(): Boolean {
+    return suspendCoroutine { cont ->
+        addSnapshotListener { snapshot, exception ->
+            if (exception != null) cont.resumeWithException(exception)
+            if (snapshot == null) cont.resume(false)
+            cont.resumeWith(Result.success(snapshot!!.metadata.isFromCache))
+        }
     }
 }

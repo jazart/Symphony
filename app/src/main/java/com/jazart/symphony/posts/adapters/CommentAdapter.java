@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.jazart.symphony.R;
-import com.jazart.symphony.posts.Comment;
+import entities.Comment;
 
 import java.util.List;
 

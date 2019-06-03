@@ -19,20 +19,20 @@ import androidx.navigation.fragment.navArgs
 import com.jazart.symphony.R
 import com.jazart.symphony.di.App
 import com.jazart.symphony.di.SimpleViewModelFactory
-import com.jazart.symphony.model.Song
+import entities.Song
 import kotlinx.android.synthetic.main.fragment_upload_dialog.view.*
 import java.io.FileInputStream
 import java.io.FileNotFoundException
 import java.lang.IllegalStateException
 import java.util.*
+import javax.inject.Inject
 
 
 class UploadDialog : DialogFragment(), DialogInterface.OnClickListener {
 
+    @Inject lateinit var factory: SimpleViewModelFactory
     private val songViewModel: SongViewModel by viewModels {
-        SimpleViewModelFactory {
-            SongViewModel(activity?.application as App)
-        }
+        factory
     }
     private val args: UploadDialogArgs by navArgs()
     private val song = Song()
