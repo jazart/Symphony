@@ -8,8 +8,18 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="320dp"
+        android:layout_height="240dp"
         android:layout_gravity="top">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/appCompatTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginBottom="14dp"
+            android:background="@android:color/white"
+            app:layout_constraintBottom_toTopOf="@+id/appCompatTextView3"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="Yeet" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/profilePicture"
@@ -23,63 +33,37 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TableLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/appCompatTextView2"
+            android:layout_width="wrap_content"
+            android:layout_height="19dp"
+            android:layout_marginEnd="3dp"
+            android:layout_marginBottom="16dp"
+
+            android:background="@android:color/white"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/profilePicture"
-            tools:layout_editor_absoluteX="8dp"
-            tools:layout_editor_absoluteY="182dp">
+            app:layout_constraintEnd_toEndOf="parent"
+            android:text="Yeet" />
 
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/appCompatTextView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@android:color/white"
-                    tools:text="Yeet" />
+            android:layout_marginBottom="16dp"
+            android:background="@android:color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="Yeet" />
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@android:color/white"
-                    tools:text="Yeet" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@android:color/white"
-                    tools:text="Yeet" />
-
-
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@android:color/white"
-                    tools:text="Yeet" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@android:color/white"
-                    tools:text="Yeet" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@android:color/white"
-                    tools:text="Yeet" />
-            </TableRow>
-
-        </TableLayout>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:background="@android:color/white"
+            android:text="Yeet"
+            app:layout_constraintBottom_toTopOf="@+id/appCompatTextView2"
+            app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
