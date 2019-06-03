@@ -35,7 +35,7 @@ class ProfileFragment : Fragment() {
     private fun loadProfilePic(uri: Uri?) {
         Glide.with(this)
                 .load(uri)
-                .apply(RequestOptions().circleCrop().fallback(resources.getDrawable(R.drawable.ic_account_circle_black_24dp, null)))
+                .apply(RequestOptions().circleCrop().placeholder(resources.getDrawable(R.drawable.ic_account_circle_black_24dp, null)))
                 .into(profilePicture)
     }
 
