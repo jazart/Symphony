@@ -50,4 +50,10 @@
     <string name="friends">Friends</string>
     <string name="posts">Posts</string>
     <string name="songs">Songs</string>
+    <string name="username">Username</string>
+    <string name="member_since">Member since: %s</string>
+    <string name="song_count">%d Songs</string>
+    <string name="likes_count">%d Likes</string>
+    <string name="member_standard">Standard Member</string>
+    <string name="back_action">Back</string>
 </resources>

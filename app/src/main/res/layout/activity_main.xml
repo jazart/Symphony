@@ -23,10 +23,6 @@
             app:navGraph="@navigation/nav_graph" />
     </FrameLayout>
 
-    <!--<include layout="@layout/player"-->
-        <!--android:visibility="gone"/>-->
-
-
     <com.leinardi.android.speeddial.SpeedDialView
         android:id="@+id/fabMenu"
         android:layout_width="wrap_content"

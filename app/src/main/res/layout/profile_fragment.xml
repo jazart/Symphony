@@ -1,133 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/profileFragmentRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimaryDark">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="280dp"
-        android:layout_gravity="top">
+        android:layout_height="300dp">
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/profilePicture"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            app:layout_constraintBottom_toTopOf="@id/songCount"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.26999998" />
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/username"
-            android:layout_width="117dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="8dp"
-            android:text="Yeet"
-            android:textAlignment="center"
-            android:textColor="@color/colorAccent"
-            android:textSize="18sp"
-            app:layout_constraintEnd_toStartOf="@+id/likes"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/joinDate"
-            app:layout_constraintTop_toBottomOf="@id/profilePicture" />
+            <include
+                layout="@layout/profile_header_view"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_gravity="center_vertical" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/joinDate"
-            android:layout_width="117dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:text="Yeet"
-            android:textColor="@color/colorAccent"
-            android:textSize="18sp"
-            app:layout_constraintBottom_toTopOf="@+id/songCount"
-            app:layout_constraintEnd_toStartOf="@+id/username"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent" />
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/profileTabLayout"
+                style="@style/Widget.MaterialComponents.TabLayout"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:layout_gravity="bottom"
+                app:tabBackground="@color/colorPrimaryDark"
+                app:tabIndicatorColor="@color/colorAccent"
+                app:tabIndicatorHeight="4dp"
+                app:tabTextColor="#FFFFFF">
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/songCount"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginBottom="8dp"
-            android:text="Yeet"
-            android:textColor="@color/colorAccent"
-            android:textSize="18sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/accountType"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent" />
+                <com.google.android.material.tabs.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/songs" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/likes"
-            android:layout_width="117dp"
-            android:layout_height="wrap_content"
-            android:text="Yeet"
-            android:textAlignment="textEnd"
-            android:textColor="@color/colorAccent"
-            android:textSize="18sp"
-            app:layout_constraintBottom_toTopOf="@id/accountType"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/username" />
+                <com.google.android.material.tabs.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/posts" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/accountType"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            android:text="Yeet"
-            android:textAlignment="textEnd"
-            android:textColor="@color/colorAccent"
-            android:textSize="18sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/songCount" />
+                <com.google.android.material.tabs.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/friends" />
+            </com.google.android.material.tabs.TabLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <Toolbar
+                style="@style/ToolbarStyle"
+                android:id="@+id/profileToolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:layout_gravity="top"
+                app:layout_collapseMode="parallax" />
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/profileViewPager"
         android:layout_width="match_parent"
-        android:layout_height="500dp"
-        android:layout_gravity="bottom"
-        android:background="@android:color/white">
-
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/profileTabLayout"
-            style="@style/Widget.MaterialComponents.TabLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top"
-            app:tabBackground="@color/colorPrimaryDark"
-            app:tabIndicatorColor="@color/colorAccent"
-            app:tabIndicatorHeight="4dp"
-            app:tabTextColor="#FFFFFF">
-
-            <com.google.android.material.tabs.TabItem
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/songs" />
-
-            <com.google.android.material.tabs.TabItem
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/posts" />
-
-            <com.google.android.material.tabs.TabItem
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/friends" />
-
-        </com.google.android.material.tabs.TabLayout>
-    </androidx.viewpager.widget.ViewPager>
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

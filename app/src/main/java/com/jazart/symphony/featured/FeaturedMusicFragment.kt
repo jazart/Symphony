@@ -32,7 +32,7 @@ class FeaturedMusicFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, 
 
     @Nullable
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return LayoutInflater.from(context).inflate(R.layout.feature_music_fragment, container, false)
+        return inflater.inflate(R.layout.feature_music_fragment, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -58,6 +58,7 @@ class FeaturedMusicFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, 
             override fun areItemsTheSame(oldItem: Song, newItem: Song) = oldItem.id == newItem.id
         }, requireContext())
         featured_songs.adapter = musicAdapter
+        featured_songs.isNestedScrollingEnabled = true
         featured_songs.layoutManager = LinearLayoutManager(requireContext())
     }
 

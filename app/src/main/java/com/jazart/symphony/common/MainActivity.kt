@@ -63,6 +63,11 @@ class MainActivity : AppCompatActivity() {
                 NavigationUI.setupWithNavController(navigation, controller)
                 checkPermissions()
             }
+            if(destination.id == R.id.profileFragment) {
+                navigation.visibility = View.GONE
+            } else {
+                navigation.visibility = View.VISIBLE
+            }
         }
         if (mUser == null) {
             controller.navigate(R.id.signupFragment)

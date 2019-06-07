@@ -2,14 +2,14 @@ package com.jazart.symphony.profile
 
 import android.net.Uri
 import android.os.Bundle
-import android.util.ArrayMap
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentPagerAdapter
 import androidx.fragment.app.FragmentStatePagerAdapter
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.auth.FirebaseAuth
@@ -17,6 +17,7 @@ import com.jazart.symphony.R
 import com.jazart.symphony.posts.PostPage
 import com.jazart.symphony.posts.PostsFragment
 import kotlinx.android.synthetic.main.profile_fragment.*
+import kotlinx.android.synthetic.main.profile_header_view.*
 
 class ProfileFragment : Fragment() {
     val data = arguments?.let { ProfileFragmentArgs.fromBundle(it).user }
@@ -27,6 +28,10 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val adapter = ProfileAdapter(childFragmentManager)
+        profileToolbar.inflateMenu(R.menu.profile_menu)
+        profileToolbar.navigationIcon = resources.getDrawable(R.drawable.ic_arrow_back_white_24dp, null)
+        profileToolbar.setNavigationContentDescription(R.string.back_action)
+        profileToolbar.setNavigationOnClickListener { findNavController().popBackStack() }
         profileViewPager.adapter = adapter
         profileTabLayout.setupWithViewPager(profileViewPager)
         loadProfilePic(FirebaseAuth.getInstance().currentUser?.photoUrl)
