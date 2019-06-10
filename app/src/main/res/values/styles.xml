@@ -34,4 +34,11 @@
         <item name="android:background">@color/colorPrimaryDark</item>
         <item name="android:backgroundTint">@color/colorPrimaryDark</item>
     </style>
+
+    <style name="ProfileHeaderTextViewStyle" parent="Widget.AppCompat.TextView">
+        <item name="android:textSize">12sp</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:textColor">@color/colorAccent</item>
+    </style>
 </resources>

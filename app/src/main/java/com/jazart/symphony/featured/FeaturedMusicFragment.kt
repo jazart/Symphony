@@ -29,7 +29,6 @@ class FeaturedMusicFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, 
     private val songsViewModel by viewModels<SongViewModel> {
         factory
     }
-
     @Nullable
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.feature_music_fragment, container, false)
