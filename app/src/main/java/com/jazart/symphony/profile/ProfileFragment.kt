@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
@@ -17,12 +16,13 @@ import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.jazart.symphony.R
 import com.jazart.symphony.di.SimpleViewModelFactory
-import com.jazart.symphony.featured.MusicAdapter
-import com.jazart.symphony.featured.SongViewModel
+import com.jazart.symphony.di.app
 import com.jazart.symphony.posts.PostPage
 import com.jazart.symphony.posts.PostsFragment
 import kotlinx.android.synthetic.main.profile_fragment.*
 import kotlinx.android.synthetic.main.profile_header_view.*
+import java.text.SimpleDateFormat
+import java.util.*
 import javax.inject.Inject
 
 class ProfileFragment : Fragment() {
@@ -32,6 +32,12 @@ class ProfileFragment : Fragment() {
     private val profileViewModel by viewModels<ProfileViewModel> {
         factory
     }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        inject()
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.profile_fragment, container, false)
     }
@@ -56,13 +62,18 @@ class ProfileFragment : Fragment() {
                 .into(profilePicture)
     }
 
-    private fun bindProfileInfo(){
+    private fun bindProfileInfo() {
         profileViewModel.userLiveData.observe(viewLifecycleOwner, Observer { user ->
-            joinDate.text = user.dateJoined.toString()
-            username.text= user.name
+            joinDate.text = getString(R.string.member_since, SimpleDateFormat("MMM yyyy", Locale.getDefault()).format(user.dateJoined))
+            username.text = user.name
+            likes.text = getString(R.string.likes_count, 0)
+            songCount.text = getString(R.string.song_count, 0)
         })
     }
 
+    private fun inject() {
+        app().component.inject(this)
+    }
 }
 
 private class ProfileAdapter(fm: FragmentManager) :

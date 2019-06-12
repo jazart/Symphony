@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.jazart.symphony.featured.SongViewModel
 import com.jazart.symphony.posts.PostsViewModel
+import com.jazart.symphony.profile.ProfileViewModel
 import dagger.Binds
 import dagger.MapKey
 import dagger.Module
@@ -29,6 +30,11 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(SongViewModel::class)
     abstract fun bindSongViewModel(SongViewModel: SongViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ProfileViewModel::class)
+    abstract fun bindProfileViewModel(profileViewModel: ProfileViewModel): ViewModel
 
     @Binds
     abstract fun bindViewModelFactory(factory: SimpleViewModelFactory): ViewModelProvider.Factory
