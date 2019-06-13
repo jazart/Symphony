@@ -11,7 +11,6 @@ import com.jazart.symphony.repository.posts.FirebaseOnlinePostDataSource
 import com.jazart.symphony.repository.posts.PostRepositoryImpl
 import com.jazart.symphony.repository.songs.FirebaseOfflineSongDataSource
 import com.jazart.symphony.repository.songs.FirebaseOnlineSongDataSource
-import com.jazart.symphony.repository.songs.FirebaseOnlineSongDataSource_Factory
 import com.jazart.symphony.repository.songs.SongRepositoryImpl
 import com.jazart.symphony.repository.users.FetchStrategy
 import com.jazart.symphony.repository.users.FirebaseOfflineUserDataSource
