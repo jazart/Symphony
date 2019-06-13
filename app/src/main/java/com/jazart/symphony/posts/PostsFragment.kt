@@ -5,6 +5,7 @@ package com.jazart.symphony.posts
  */
 
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +14,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.transition.Slide
 import com.bumptech.glide.Glide
 import com.jazart.symphony.R
 import com.jazart.symphony.di.SimpleViewModelFactory
@@ -37,6 +39,7 @@ class PostsFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         app().component.inject(this)
+        enterTransition = Slide(Gravity.TOP)
         return inflater.inflate(R.layout.fragment_posts, container, false)
     }
 

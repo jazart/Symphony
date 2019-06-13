@@ -13,7 +13,8 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/imageView"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        app:layout_constraintBottom_toTopOf="@+id/addMediaBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button">
@@ -21,25 +22,24 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/new_post_body"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:backgroundTint="@android:color/transparent"
             android:gravity="top"
             android:hint="@string/post_new_body" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <ImageView
-        android:id="@+id/imageView"
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/addMediaBtn"
         android:layout_width="88dp"
         android:layout_height="46dp"
-        android:layout_marginStart="8dp"
         android:layout_marginBottom="8dp"
-        android:contentDescription="@string/post_img_desc"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/ic_add_a_photo_black_24dp" />
+        app:srcCompat="@drawable/ic_add_a_photo_black_24dp"
+        app:tint="@color/colorAccent" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/button"
         style="@android:style/Widget.Material.Light.Button.Borderless"
         android:layout_width="wrap_content"
@@ -47,23 +47,21 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:layout_weight="1"
-        android:background="@color/colorPrimary"
         android:text="@string/post_submit"
         android:textColor="@android:color/white"
         android:theme="@style/Base.Widget.AppCompat.Button.Borderless.Colored"
+        app:backgroundTint="@color/colorAccent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.button.MaterialButton
+    <androidx.appcompat.widget.AppCompatImageView
         style="@style/CardButtonTheme"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        app:icon="@drawable/ic_close_24dp"
-        app:iconTint="@color/colorAccent"
-        app:layout_constraintBottom_toTopOf="@+id/new_post_body_til"
+        android:layout_height="0dp"
+        android:focusable="true"
+        android:tint="@color/colorAccent"
+        app:layout_constraintBottom_toBottomOf="@+id/button"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/button"
+        app:srcCompat="@drawable/ic_close_24dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
