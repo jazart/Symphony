@@ -28,14 +28,14 @@ import entities.Post;
 
 
 public class NewPostFragment extends Fragment {
-    @BindView(R.id.new_post_title_til)
-    TextInputLayout mTitleTil;
+//    @BindView(R.id.new_post_title_til)
+//    TextInputLayout mTitleTil;
 
     @BindView(R.id.new_post_body_til)
     TextInputLayout mBodyTil;
 
-    @BindView(R.id.new_post_title)
-    TextInputEditText mTitle;
+//    @BindView(R.id.new_post_title)
+//    TextInputEditText mTitle;
 
     @BindView(R.id.new_post_body)
     TextInputEditText mBody;
@@ -77,7 +77,7 @@ public class NewPostFragment extends Fragment {
 
     @OnClick(R.id.button)
     public void submit() {
-        post = new Post(mTitle.getText().toString(), mBody.getText().toString());
+        post = new Post("", mBody.getText().toString());
         mPostsViewModel.addToDb(post);
     }
 

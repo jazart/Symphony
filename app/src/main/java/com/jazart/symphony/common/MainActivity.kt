@@ -68,6 +68,12 @@ class MainActivity : AppCompatActivity() {
             } else {
                 navigation.visibility = View.VISIBLE
             }
+            if(destination.id == R.id.newPostFragment) {
+                navigation.visibility = View.GONE
+            }
+            else{
+                navigation.visibility = View.VISIBLE
+            }
         }
         if (mUser == null) {
             controller.navigate(R.id.signupFragment)
