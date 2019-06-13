@@ -35,9 +35,11 @@
                 app:srcCompat="@drawable/audience" />
 
             <androidx.appcompat.widget.Toolbar
+                android:id="@+id/post_detail_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="66dp"
                 app:layout_collapseMode="pin"
+                app:navigationIcon="@drawable/ic_arrow_back_white_24dp"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Dark">
 
                 <RelativeLayout
@@ -59,22 +61,11 @@
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <ImageButton
-                        android:id="@+id/post_detail_edit_btn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_alignEnd="@id/main.appbar"
-                        android:adjustViewBounds="true"
-                        android:backgroundTint="@android:color/transparent"
-                        android:cropToPadding="true"
-                        android:src="@drawable/ic_edit_white_24dp"
-                        tools:ignore="NotSibling"/>
-
-                    <ImageButton
                         android:id="@+id/comment_send_btn"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_alignParentBottom="true"
                         android:layout_alignParentEnd="true"
+                        android:layout_alignParentBottom="true"
                         android:layout_marginEnd="45dp"
                         android:backgroundTint="@android:color/transparent"
                         android:src="@drawable/ic_send_white_24dp"
@@ -85,8 +76,8 @@
                         android:id="@+id/post_detail_comment_btn"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_alignParentBottom="true"
                         android:layout_alignParentEnd="true"
+                        android:layout_alignParentBottom="true"
                         android:layout_marginEnd="25dp"
                         android:backgroundTint="@android:color/transparent"
                         android:src="@drawable/ic_insert_comment_white_24dp" />

@@ -57,8 +57,8 @@ public class PostDetailFragment extends Fragment {
     @BindView(R.id.post_detail_title)
     TextView mPostTitle;
 
-    @BindView(R.id.post_detail_edit_btn)
-    ImageButton mPostDetailEditBtn;
+//    @BindView(R.id.post_detail_edit_btn)
+//    ImageButton mPostDetailEditBtn;
 
     @BindView(R.id.post_detail_comment_btn)
     ImageButton mPostDetailCommentBtn;
@@ -121,30 +121,29 @@ public class PostDetailFragment extends Fragment {
         super.onSaveInstanceState(outState);
     }
 
-    @OnClick({R.id.post_detail_edit_btn, R.id.post_detail_comment_btn, R.id.comment_send_btn})
-    public void onBtnClick(View view) {
-        switch (view.getId()) {
-            case R.id.post_detail_comment_btn:
-                isCommenting = !isCommenting;
-                showCommentViews(isCommenting);
-                break;
-            case R.id.post_detail_edit_btn:
-                break;
-            case R.id.comment_send_btn:
-        }
-    }
+//    @OnClick({R.id.post_detail_edit_btn, R.id.post_detail_comment_btn, R.id.comment_send_btn})
+//    public void onBtnClick(View view) {
+//        switch (view.getId()) {
+//            case R.id.post_detail_comment_btn:
+//                isCommenting = !isCommenting;
+//                showCommentViews(isCommenting);
+//                break;
+//            case R.id.post_detail_edit_btn:
+//                break;
+//            case R.id.comment_send_btn:
+//        }
+//    }
 
     private void showCommentViews(boolean isEditing) {
         if (isEditing) {
             mCommentTil.setVisibility(View.VISIBLE);
             mCommentSendBtn.setVisibility(View.VISIBLE);
             mPostDetailCommentBtn.setVisibility(View.GONE);
-            mPostDetailEditBtn.setVisibility(View.GONE);
+
         } else {
             mCommentSendBtn.setVisibility(View.GONE);
             mCommentTil.setVisibility(View.GONE);
             mPostDetailCommentBtn.setVisibility(View.VISIBLE);
-            mPostDetailEditBtn.setVisibility(View.VISIBLE);
         }
     }
 
