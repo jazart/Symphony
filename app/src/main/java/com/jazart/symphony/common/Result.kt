@@ -1,14 +1,7 @@
 package com.jazart.symphony.common
 
-//sealed class Result {
-//    object Loading : Result()
-//    object Success : Result()
-//    data class SuccessWithData<T>(val data: T) : Result()
-//    data class Failure(val e: Throwable = Exception(), val message: Error?) : Result()
-//
-//}
 
-data class Result<out T>(val data: T?, val error: Error?, val status: Status)  {
+data class Result<out T>(val data: T?, val error: Error?, val status: Status) {
     companion object {
         fun <T> success(data: T): Result<T> = Result(data, null, Status.Success)
         fun <T> failure(error: Error): Result<T> = Result(null, error, Status.Failure)

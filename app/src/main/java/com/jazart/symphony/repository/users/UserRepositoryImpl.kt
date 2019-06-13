@@ -17,8 +17,8 @@ class UserRepositoryImpl @Inject constructor(connection: ConnectivityManager,
                                              fetchStrategy: FetchStrategy = FetchStrategy.NETWORK_FIRST) :
         AbstractRepository<User>(connection, memory), UserRepository {
 
-    override suspend fun getUserById(id: String): User? {
-        return super.load(id, { disk.getUserById(id) }, { network.getUserById(id) })
+    override suspend fun findUserById(id: String): User? {
+        return super.load(id, { disk.findUserById(id) }, { network.findUserById(id) })
     }
 
     override suspend fun getUserFriends(id: String): List<User> {

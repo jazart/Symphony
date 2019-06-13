@@ -3,6 +3,7 @@ package com.jazart.data.repo
 import entities.User
 
 interface UserRepository {
-    suspend fun getUserById(id: String): User?
+    suspend fun findUserById(id: String): User?
     suspend fun getUserFriends(id: String): List<User>
+//    suspend fun getNearbyUsers(location: String): List<User>
 }

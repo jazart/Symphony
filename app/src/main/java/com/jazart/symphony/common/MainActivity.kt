@@ -175,8 +175,7 @@ class MainActivity : AppCompatActivity() {
     @SuppressLint("MissingPermission")
     private fun startLocationUpdates() {
         val request = LocationRequest()
-//        request.setInterval(900_000L);
-        request.interval = 3000L // Test duration
+        request.interval = 600_000L
         providerClient.requestLocationUpdates(request, locationCallback, Looper.myLooper())
     }
 

@@ -8,20 +8,19 @@ import com.jazart.symphony.repository.await
 import dagger.Reusable
 import entities.User
 import javax.inject.Inject
-import javax.inject.Singleton
 
 @Reusable
 class FirebaseOfflineUserDataSource constructor(source: Source) : AbstractFirebaseDataSource(source), UserRepository {
     @Inject
     constructor() : this(Source.CACHE)
 
-    override suspend fun getUserById(id: String): User? {
+    override suspend fun findUserById(id: String): User? {
         return db.collection(Constants.USERS).document(id).get(Source.CACHE).await().toObject(User::class.java)
     }
 
     override suspend fun getUserFriends(id: String): List<User> {
-        val user = getUserById(id) ?: return emptyList()
-        return user.friends.mapNotNull { friendId -> getUserById(friendId) }
+        val user = findUserById(id) ?: return emptyList()
+        return user.friends.mapNotNull { friendId -> findUserById(friendId) }
     }
 
 }
