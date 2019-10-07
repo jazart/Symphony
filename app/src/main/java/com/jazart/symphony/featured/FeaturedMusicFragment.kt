@@ -68,10 +68,9 @@ class FeaturedMusicFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, 
     }
 
     private fun loadSongs() {
-        songsViewModel.load()
-        songsViewModel.snackbar.observe(viewLifecycleOwner, Observer { result ->
+        songsViewModel.loadUserSongs()
+        songsViewModel.snackbar.observe(viewLifecycleOwner, Observer {
             view?.let { Snackbar.make(it, "Song does not belong to you", Snackbar.LENGTH_SHORT).show() }
-            musicAdapter.submitList(songsViewModel.songs.value)
         })
         songsViewModel.songs.observe(viewLifecycleOwner, Observer { songs ->
             hideProgress()
@@ -82,7 +81,7 @@ class FeaturedMusicFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, 
 
     override fun onRefresh() {
         swipeRefreshLayout.isRefreshing = false
-        songsViewModel.refreshContent()
+        songsViewModel.loadUserSongs()
     }
 
     private fun hideProgress() {
@@ -104,5 +103,3 @@ class FeaturedMusicFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, 
         app().component.inject(this)
     }
 }
-
-

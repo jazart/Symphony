@@ -1,11 +1,11 @@
 package com.jazart.symphony.repository.posts
 
 import android.net.ConnectivityManager
-import com.jazart.data.repo.PostRepository
 import com.jazart.symphony.repository.InMemoryDataSource
 import com.jazart.symphony.repository.users.FetchStrategy
 import dagger.Reusable
 import entities.Post
+import repo.PostRepository
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -23,6 +23,10 @@ class PostRepositoryImpl @Inject constructor(connection: ConnectivityManager,
 
     override suspend fun loadPostsByUserId(id: String): List<Post> {
         return super.loadMany(id, { disk.loadPostsByUserId(id) }, { network.loadPostsByUserId(id) })
+    }
+
+    override suspend fun deletePost(id: String) {
+        super.delete(id)
     }
 
 }
@@ -61,6 +65,10 @@ abstract class AbstractRepository<T>(private val connection: ConnectivityManager
             memory.putList(id, resource)
             return resource
         }
+    }
+
+    protected fun delete(id: String) {
+        memory.remove(id)
     }
 
     private fun isNetworkSuitable(): Boolean {

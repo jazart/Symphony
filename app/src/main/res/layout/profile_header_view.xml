@@ -1,10 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.motion.widget.MotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/profileHeaderView"
     android:layout_width="match_parent"
-    android:layout_height="240dp"
+    android:layout_height="wrap_content"
     android:layout_gravity="center_vertical"
-    android:background="@color/colorPrimaryDark">
+    android:background="@color/colorPrimaryDark"
+    android:paddingStart="8dp"
+    android:paddingEnd="8dp"
+    android:paddingBottom="8dp"
+    android:paddingTop="24dp"
+    app:currentState="@id/profileHeaderView"
+    app:applyMotionScene="true"
+    app:layoutDescription="@xml/scene_1">
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/profilePicture"
@@ -12,7 +21,7 @@
         android:layout_height="0dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         app:layout_constraintBottom_toTopOf="@id/username"
         app:layout_constraintEnd_toEndOf="parent"
@@ -27,14 +36,15 @@
         style="@style/ProfileHeaderTextViewStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:text="@string/username"
         android:textAlignment="center"
-        android:textSize="14sp"
+        android:textSize="18sp"
         app:layout_constraintEnd_toStartOf="@+id/likes"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/joinDate"
-        app:layout_constraintTop_toBottomOf="@id/profilePicture" />
+        app:layout_constraintTop_toBottomOf="@id/profilePicture"
+        tools:text="Jerum" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/joinDate"
@@ -47,11 +57,12 @@
         android:text="@string/member_since"
         android:textAlignment="textStart"
         android:textColor="@color/colorAccent"
-        android:layout_marginBottom="16dp"
         app:layout_constraintEnd_toStartOf="@+id/username"
         app:layout_constraintHorizontal_bias="0.8"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profilePicture" />
+        app:layout_constraintTop_toBottomOf="@+id/profilePicture"
+        android:visibility="gone"
+        tools:text="Member since 2015" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/songCount"
@@ -59,13 +70,15 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginBottom="24dp"
+        android:layout_marginTop="16dp"
         android:text="@string/song_count"
         android:textAlignment="textStart"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/accountType"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/joinDate"
+        android:visibility="gone"
+        tools:text="500 Songs" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/likes"
@@ -81,7 +94,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/username"
-        app:layout_constraintTop_toBottomOf="@+id/profilePicture" />
+        app:layout_constraintTop_toBottomOf="@+id/profilePicture"
+        android:visibility="gone"
+        tools:text="500 Likes" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/accountType"
@@ -89,12 +104,14 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="24dp"
         android:text="@string/member_standard"
-        android:textAlignment="textEnd"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textAlignment="viewEnd"
+        android:textColor="@color/colorAccent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/songCount" />
+        app:layout_constraintStart_toEndOf="@+id/songCount"
+        app:layout_constraintTop_toTopOf="@+id/songCount"
+        android:visibility="gone"
+        tools:text="Regular Member" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.motion.widget.MotionLayout>

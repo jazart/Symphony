@@ -9,6 +9,7 @@ import android.media.AudioManager
 import android.os.Build
 import android.os.Bundle
 import android.os.Looper
+import android.provider.MediaStore
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -63,15 +64,9 @@ class MainActivity : AppCompatActivity() {
                 NavigationUI.setupWithNavController(navigation, controller)
                 checkPermissions()
             }
-            if(destination.id == R.id.profileFragment) {
+            if(destination.id in listOf(R.id.profileFragment, R.id.newPostFragment, R.id.postDetailFragment)) {
                 navigation.visibility = View.GONE
             } else {
-                navigation.visibility = View.VISIBLE
-            }
-            if(destination.id == R.id.newPostFragment) {
-                navigation.visibility = View.GONE
-            }
-            else{
                 navigation.visibility = View.VISIBLE
             }
         }
@@ -120,7 +115,7 @@ class MainActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == URI_REQUEST && data != null) {
             val uri = data.data ?: return
-            controller.navigate(MainFlowDirections.actionToUploadDialog(uri.toString()))
+            controller.navigate(MainFlowDirections.actionToUploadDialog(uri))
         }
     }
 
@@ -154,9 +149,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setURI() {
-        val musicIntent = Intent()
+        val musicIntent = Intent(Intent.ACTION_GET_CONTENT)
+        musicIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         musicIntent.action = Intent.ACTION_GET_CONTENT
-        musicIntent.type = MimeTypes.AUDIO_MPEG
+        musicIntent.type = "audio/mpeg"
         startActivityForResult(Intent.createChooser(
                 musicIntent, "Open Audio (mp3) file"), URI_REQUEST)
     }

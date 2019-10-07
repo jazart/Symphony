@@ -1,4 +1,4 @@
-package com.jazart.data.repo
+package repo
 
 import entities.Song
 import java.net.URI

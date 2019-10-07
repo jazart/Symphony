@@ -1,11 +1,11 @@
 package com.jazart.symphony.repository.users
 
 import android.net.ConnectivityManager
-import com.jazart.data.repo.UserRepository
 import com.jazart.symphony.repository.InMemoryDataSource
 import com.jazart.symphony.repository.posts.AbstractRepository
 import dagger.Reusable
 import entities.User
+import repo.UserRepository
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -25,6 +25,9 @@ class UserRepositoryImpl @Inject constructor(connection: ConnectivityManager,
         return super.loadMany(id, { disk.getUserFriends(id) }, { network.getUserFriends(id) })
     }
 
+    override suspend fun getNearbyUsers(location: String): List<User> {
+        return super.loadMany(location, { disk.getNearbyUsers(location) }, { network.getNearbyUsers(location) })
+    }
 }
 
 enum class FetchStrategy {

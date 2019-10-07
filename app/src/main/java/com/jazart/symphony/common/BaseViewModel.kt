@@ -30,7 +30,7 @@ abstract class BaseViewModel
         }
     }
 
-    fun load() {
+    open fun load() {
         viewModelScope.launch {
             locationRepo.initBackground()
         }

@@ -7,11 +7,13 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -57,22 +59,24 @@ public class PostDetailFragment extends Fragment {
     @BindView(R.id.post_detail_title)
     TextView mPostTitle;
 
+    @BindView(R.id.post_detail_toolbar)
+    Toolbar mPostDetailToolBar;
 //    @BindView(R.id.post_detail_edit_btn)
 //    ImageButton mPostDetailEditBtn;
 
-    @BindView(R.id.post_detail_comment_btn)
-    ImageButton mPostDetailCommentBtn;
+//    @BindView(R.id.post_detail_comment_btn)
+//    ImageButton mPostDetailCommentBtn;
 
     private CommentAdapter mCommentAdapter;
-
-    @BindView(R.id.comment_et)
-    TextInputEditText mCommentEt;
-
-    @BindView(R.id.comment_til)
-    TextInputLayout mCommentTil;
-
-    @BindView(R.id.comment_send_btn)
-    ImageButton mCommentSendBtn;
+//
+//    @BindView(R.id.comment_et)
+//    TextInputEditText mCommentEt;
+//
+//    @BindView(R.id.comment_til)
+//    TextInputLayout mCommentTil;
+//
+//    @BindView(R.id.comment_send_btn)
+//    ImageButton mCommentSendBtn;
 
     private boolean isCommenting;
     private Post mPost;
@@ -112,6 +116,10 @@ public class PostDetailFragment extends Fragment {
         mViewModel = ViewModelProviders.of(this, mFactory).get(PostsViewModel.class);
         mPost = savedInstanceState != null ? (Post) savedInstanceState.getSerializable(POST_ID)
                 : PostDetailFragmentArgs.fromBundle(getArguments()).getPost();
+        mPostDetailToolBar.inflateMenu(R.menu.profile_menu);
+        mPostDetailToolBar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_arrow_back_white_24dp, null));
+        mPostDetailToolBar.setNavigationContentDescription(R.string.back_action);
+        mPostDetailToolBar.setNavigationOnClickListener(v -> NavHostFragment.findNavController(this).popBackStack());
         buildUi(mPost);
     }
 
@@ -134,18 +142,18 @@ public class PostDetailFragment extends Fragment {
 //        }
 //    }
 
-    private void showCommentViews(boolean isEditing) {
-        if (isEditing) {
-            mCommentTil.setVisibility(View.VISIBLE);
-            mCommentSendBtn.setVisibility(View.VISIBLE);
-            mPostDetailCommentBtn.setVisibility(View.GONE);
-
-        } else {
-            mCommentSendBtn.setVisibility(View.GONE);
-            mCommentTil.setVisibility(View.GONE);
-            mPostDetailCommentBtn.setVisibility(View.VISIBLE);
-        }
-    }
+//    private void showCommentViews(boolean isEditing) {
+//        if (isEditing) {
+//            mCommentTil.setVisibility(View.VISIBLE);
+//            mCommentSendBtn.setVisibility(View.VISIBLE);
+//            mPostDetailCommentBtn.setVisibility(View.GONE);
+//
+//        } else {
+//            mCommentSendBtn.setVisibility(View.GONE);
+//            mCommentTil.setVisibility(View.GONE);
+//            mPostDetailCommentBtn.setVisibility(View.VISIBLE);
+//        }
+//    }
 
     private void buildUi(Post post) {
         if (mPost.getId() != null) mViewModel.loadComments(mPost.getId());

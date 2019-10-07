@@ -56,4 +56,6 @@
     <string name="likes_count">%d Likes</string>
     <string name="member_standard">Standard Member</string>
     <string name="back_action">Back</string>
+    <string name="post_add_err">Unable to add your post. Please try again.</string>
+    <string name="account_type">%s  Member</string>
 </resources>

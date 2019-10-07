@@ -1,15 +1,16 @@
 package com.jazart.symphony.posts
 
+import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
-import com.jazart.data.repo.PostRepository
 import com.jazart.symphony.common.BaseViewModel
 import com.jazart.symphony.common.Event
 import entities.Comment
 import entities.Post
 import kotlinx.coroutines.launch
+import repo.PostRepository
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -30,11 +31,15 @@ class PostsViewModel @Inject constructor(val repo: PostRepository, @Named("uId")
     val nearbyPostsLiveData: LiveData<List<Post>> = locationRepo.nearbyPosts
     val comments: LiveData<List<Comment>> = commentsLiveData
 
+    override fun load() {
+
+    }
+
     fun update() {
         refreshContent()
     }
 
-    fun addToDb(post: Post) {
+    fun addToDb(post: Post, postImageUri: Uri) {
         viewModelScope.launch {
             if (firebaseRepo.addPostToDb(post)) {
                 _addPostResult.value = Event(true)
@@ -45,8 +50,12 @@ class PostsViewModel @Inject constructor(val repo: PostRepository, @Named("uId")
     }
 
     fun deletePost(postId: String?) {
-        if (postId != null) firebaseRepo.deletePost(postId)
-        refreshContent()
+        if (postId.isNullOrEmpty()) {
+            return
+        }
+        viewModelScope.launch {
+            repo.deletePost(postId)
+        }
     }
 
     private fun addComment(comment: Comment, id: String) {

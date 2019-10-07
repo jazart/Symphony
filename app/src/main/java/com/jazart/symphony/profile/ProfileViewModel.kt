@@ -3,7 +3,7 @@ package com.jazart.symphony.profile
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.jazart.data.repo.UserRepository
+import repo.UserRepository
 import com.jazart.symphony.common.BaseViewModel
 import entities.User
 import kotlinx.coroutines.launch

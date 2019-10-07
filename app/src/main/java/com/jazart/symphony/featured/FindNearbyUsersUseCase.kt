@@ -1,6 +1,6 @@
 package com.jazart.symphony.featured
 
-import com.jazart.data.repo.UserRepository
+import repo.UserRepository
 import com.jazart.symphony.common.Error
 import com.jazart.symphony.common.Result
 import entities.User

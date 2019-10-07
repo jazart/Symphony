@@ -1,4 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/progress">
+        <clip>
+            <shape>
+                <corners android:radius="1dp" />
+                <gradient
+                    android:endColor="@color/colorPrimary"
+                    android:startColor="@color/colorAccent"/>
+                <size android:height="2dp"/>
+            </shape>
+        </clip>
+    </item>
 
-</selector>
+    <item android:id="@+id/background">
+        <shape android:shape="rectangle">
+            <size android:height="2dp" />
+            <solid android:color="@android:color/transparent" />
+        </shape>
+    </item>
+</layer-list>

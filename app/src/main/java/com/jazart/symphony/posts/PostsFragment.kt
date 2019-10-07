@@ -107,7 +107,6 @@ class PostsFragment : Fragment() {
             arguments = Bundle().apply { putSerializable(PAGE_TYPE, pageType) }
         }
     }
-
 }
 
 enum class PostPage {

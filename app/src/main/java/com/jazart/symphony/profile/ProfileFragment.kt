@@ -68,13 +68,13 @@ class ProfileFragment : Fragment() {
             username.text = user.name
             likes.text = getString(R.string.likes_count, 0)
             songCount.text = getString(R.string.song_count, 0)
+            accountType.text = resources.getString(R.string.account_type, "Regular")
             joinDate.visibility = View.VISIBLE
             username.visibility = View.VISIBLE
             songCount.visibility = View.VISIBLE
             likes.visibility = View.VISIBLE
+            accountType.visibility = View.VISIBLE
         })
-
-
     }
 
     private fun inject() {

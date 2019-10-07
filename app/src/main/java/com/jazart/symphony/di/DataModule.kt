@@ -2,9 +2,6 @@ package com.jazart.symphony.di
 
 import android.net.ConnectivityManager
 import com.google.firebase.firestore.FirebaseFirestore
-import com.jazart.data.repo.PostRepository
-import com.jazart.data.repo.SongRepository
-import com.jazart.data.repo.UserRepository
 import com.jazart.symphony.repository.InMemoryDataSource
 import com.jazart.symphony.repository.posts.FirebaseOfflinePostDataSource
 import com.jazart.symphony.repository.posts.FirebaseOnlinePostDataSource
@@ -21,6 +18,9 @@ import dagger.Provides
 import entities.Post
 import entities.Song
 import entities.User
+import repo.PostRepository
+import repo.SongRepository
+import repo.UserRepository
 
 @Module
 object DataModule {

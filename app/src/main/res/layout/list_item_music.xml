@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-
     android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        app:cardCornerRadius="3dp"
-        app:cardElevation="4dp"
-        app:cardUseCompatPadding="true"
-        app:contentPaddingRight="8dp">
+    android:layout_height="100dp"
+    android:layout_marginStart="8dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginEnd="8dp"
+    android:layout_marginBottom="8dp"
+    app:cardCornerRadius="3dp"
+    app:cardElevation="4dp"
+    app:cardUseCompatPadding="true"
+    app:contentPaddingRight="8dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -20,8 +19,8 @@
         <LinearLayout
             android:layout_width="204dp"
             android:layout_height="0dp"
-            android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/iv_like_song"
@@ -44,21 +43,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1" />
-
         </LinearLayout>
 
         <ImageButton
-            style="@style/Widget.MaterialComponents.Button.Icon"
             android:id="@+id/play_button"
+            style="@style/Widget.MaterialComponents.Button.Icon"
             android:layout_width="74dp"
             android:layout_height="0dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/song_play_iv"
             android:src="@drawable/ic_play_arrow_24dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
+            android:tint="@color/colorAccent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0"/>
+            app:layout_constraintVertical_bias="1.0" />
 
         <ImageView
             android:id="@+id/iv_like_song"
@@ -69,6 +68,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            android:tint="@color/lb_tv_white"
             app:srcCompat="@drawable/ic_heart_liked_24" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

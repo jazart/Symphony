@@ -1,10 +1,10 @@
 package com.jazart.symphony.featured
 
-import com.jazart.data.repo.SongRepository
 import com.jazart.symphony.common.Error
 import com.jazart.symphony.common.Result
 import com.jazart.symphony.common.Status
 import entities.Song
+import repo.SongRepository
 import javax.inject.Inject
 
 class LoadLocalSongsUseCase @Inject constructor(private val findNearbyUsersUseCase: FindNearbyUsersUseCase, private val songRepository: SongRepository) {
@@ -20,6 +20,4 @@ class LoadLocalSongsUseCase @Inject constructor(private val findNearbyUsersUseCa
             else -> return Result.failure(Error.NOT_FOUND)
         }
     }
-
 }
-

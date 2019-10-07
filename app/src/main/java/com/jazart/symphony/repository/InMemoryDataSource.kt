@@ -28,6 +28,10 @@ import javax.inject.Singleton
 
     fun getList(id: String) = inMemoryList[id] ?: emptyList()
 
+    fun remove(id: String) {
+        inMemoryCache.remove(id)
+    }
+
     companion object {
         private const val MAX_CAPACITY = 100
     }
